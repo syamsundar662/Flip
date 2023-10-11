@@ -123,32 +123,26 @@ import 'package:flip/application/presentation/widgets/textformfield_widget.dart'
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key});
+  const SignUpScreen({super.key,});
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  SignUpScreenState createState() => SignUpScreenState();
 }
-
-class _SignUpScreenState extends State<SignUpScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _slideAnimation;
+class SignUpScreenState extends State<SignUpScreen>{
+bool isVisible = false;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _slideAnimation =
-        Tween<double>(begin: 1, end: 0).animate(_animationController);
-    _animationController.forward();
+   Future.delayed(Duration.zero,(){ 
+    if(mounted){
+      setState(() {
+        isVisible = true;
+      });
+    }
+   });
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,23 +155,33 @@ class _SignUpScreenState extends State<SignUpScreen>
           child: Column(
             children: [
               SizedBox(
-                height: screenFullHeight / 2,
+                height: screenFullHeight / 2,  
                 width: screenFullWidth,
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: Offset(0, -1),
-                    end: Offset.zero,
-                  ).animate(CurvedAnimation(
-                      parent: _animationController, curve: Curves.easeInOut)),
+                child: AnimatedOpacity(
+                   opacity: isVisible ? 1.0 : 0.0,
+                  duration: Duration(milliseconds: 500),
                   child: Align(
-                    child: Text(
-                      'Flip',
-                      style: GoogleFonts.baloo2(
-                          fontSize: 60,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: Offset(0, 1),
+                          end: Offset.zero,
+                        ).animate(
+                          CurvedAnimation(
+                            curve: Curves.easeInOut,
+                            parent: ModalRoute.of(context)?.animation ?? 
+                                AnimationController(vsync: ScaffoldState()),
+                          ),
+                        ), 
+                        
+                        child: Text(
+                          'Flip',
+                          style: GoogleFonts.baloo2(
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
                 ),
               ),
               const TextFormFields(
@@ -226,34 +230,55 @@ class _SignUpScreenState extends State<SignUpScreen>
               ),
               kHeight40,
               kHeight10,
-              Padding(
-                padding: kPaddingForTextfield,
-                child: Container(
-                  height: screenFullHeight * .06,
-                  width: screenFullWidth,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      image: const DecorationImage(
-                          alignment: Alignment(-0.65, 0.0),
-                          image: AssetImage(
-                            'assets/Google__G__Logo 1 (1).png',
+              AnimatedOpacity(
+                opacity: isVisible? 1.0 : 0.0,
+                duration: Duration(milliseconds: 500),
+                child: Column(
+                  children: [
+                    SlideTransition(
+                      position: Tween<Offset>(
+                              begin: Offset(0, 1),
+                              end: Offset.zero,
+                            ).animate(
+                              CurvedAnimation(
+                                curve: Curves.easeInOut,
+                                parent: ModalRoute.of(context)?.animation ?? 
+                                    AnimationController(vsync: ScaffoldState()),
+                              ),
+                            ), 
+                      child: Padding(
+                        padding: kPaddingForTextfield,
+                        child: Container(
+                          height: screenFullHeight * .06,
+                          width: screenFullWidth,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              image: const DecorationImage(
+                                  alignment: Alignment(-0.65, 0.0),
+                                  image: AssetImage(
+                                    'assets/Google__G__Logo 1 (1).png',
+                                  ),
+                                  scale: 15)),
+                          child: const Align(
+                            alignment: Alignment(0.2, 0.0),
+                            child: Text(
+                              'Sign in using google',
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                            ),
                           ),
-                          scale: 15)),
-                  child: const Align(
-                    alignment: Alignment(0.2, 0.0),
-                    child: Text(
-                      'Sign in using google',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              kHeight10,
+                     kHeight10,
               const Text(
                 'Already have an account? Login.',
                 style: TextStyle(fontSize: 14, color: Colors.white),
               ),
+                  ],
+                ),
+              ),
+             
             ],
           ),
         ),

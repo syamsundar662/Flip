@@ -38,20 +38,21 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             SizedBox(
               height: screenFullHeight / 3,
               width: screenFullWidth,
-              child: FlipAlignAnimation(
-                animationWidget: AnimatedOpacity(
+              child:AnimatedOpacity(
                   opacity: _isVisible ? 1.0 : 0.0,
                   duration: Duration(milliseconds: 500),
-                  child: Text(
-                    'Flip',
-                    style: GoogleFonts.baloo2(
-                        fontSize: 60,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                  child: Align(
+                    alignment: Alignment(0.0, 1.5),
+                    child: Text(
+                      'Flip',
+                      style: GoogleFonts.baloo2(
+                          fontSize: 60, 
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
                   ),
                 ),
               ),
-            ),
             Spacer(),
             SizedBox(
               height: screenFullHeight * .05,
@@ -68,10 +69,9 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                           begin: Offset(0, 1),
                           end: Offset.zero,
                         ).animate(
-                          CurvedAnimation(
-                            curve: Curves.easeInOut,
+                          CurvedAnimation( 
+                            curve: Curves.easeIn, 
                             parent: ModalRoute.of(context)?.animation ?? 
-                                // If ModalRoute is null, use default animation controller
                                 AnimationController(vsync: ScaffoldState()),
                           ),
                         ),
