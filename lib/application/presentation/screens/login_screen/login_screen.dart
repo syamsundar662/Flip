@@ -1,10 +1,7 @@
 import 'package:flip/application/presentation/screens/home_screen/home.dart';
-import 'package:flip/application/presentation/screens/signup_screen/signup_screen.dart';
-import 'package:flip/application/presentation/screens/signup_screen/widgets/animations.dart';
 import 'package:flip/application/presentation/utils/constants.dart';
 import 'package:flip/application/presentation/widgets/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/textformfield_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "990403894763",
+    "project_id": "flip-7d204",
+    "storage_bucket": "flip-7d204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990403894763:android:0f398b53844b874c42cdae",
+        "android_client_info": {
+          "package_name": "com.example.flip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPjpk3WtVr4tyzO5E-VliLEoVf084LlZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

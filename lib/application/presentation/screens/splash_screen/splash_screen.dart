@@ -1,8 +1,4 @@
 import 'package:flip/application/presentation/screens/get_started_screen/get_started.dart';
-import 'package:flip/application/presentation/screens/home_screen/home.dart';
-import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
-import 'package:flip/application/presentation/screens/signup_screen/signup_screen.dart';
-import 'package:flip/application/presentation/screens/try/try.dart';
 import 'package:flip/application/presentation/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
