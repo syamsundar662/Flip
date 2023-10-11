@@ -21,4 +21,4 @@ const Gradient mainGradient =  LinearGradient(
  const kWIdth30 = SizedBox(width: 30,);
  const kWIdth40 = SizedBox(width: 40,);
 
- const kPaddingForTextfield = EdgeInsets.only(left: 25,right: 25);
+ const kPaddingForTextfield = EdgeInsets.only(left: 35,right: 35);

@@ -5,6 +5,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return  Scaffold(
+      appBar: AppBar(
+        title: Text('Flip'),
+        automaticallyImplyLeading: false,
+        actions: [IconButton(onPressed: (){}, icon: Icon(Icons.message_rounded))],
+             ),
+    );
   }
 }

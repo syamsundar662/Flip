@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 class FlipAlignAnimation extends StatefulWidget {
-  const FlipAlignAnimation({super.key});
+  const FlipAlignAnimation({super.key, required this.animationWidget});
 
+final Widget animationWidget;
   @override
   State<FlipAlignAnimation> createState() => _FlipAlignAnimationState();
 }
@@ -19,12 +18,8 @@ class _FlipAlignAnimationState extends State<FlipAlignAnimation> {
       child: AnimatedAlign(
         alignment: selected ? Alignment.topCenter : Alignment.bottomCenter,
         duration: const Duration(milliseconds: 3000),
-        curve: Curves.fastLinearToSlowEaseIn,
-        child: Text(
-          'Flip',
-          style: GoogleFonts.baloo2(
-              fontSize: 60, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
+        curve: Curves.fastOutSlowIn,
+        child: widget.animationWidget
       ),
     );
   }
