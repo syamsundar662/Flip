@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
             padding: kPaddingForTextfield,
             child:  ElevatedButtonWidget(
                   onEvent: () => Navigator.push(context,
-                      (MaterialPageRoute(builder: (context) => const HomePage()))),
+                      (MaterialPageRoute(builder: (context) =>  HomePage()))),
                   buttonTitle: 'Login',
                   style: const TextStyle(color: Colors.white),
                   buttonStyles: ButtonStyle(

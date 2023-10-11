@@ -1,11 +1,11 @@
 import 'package:flip/application/presentation/screens/signup_screen/signup_screen.dart';
-import 'package:flip/application/presentation/screens/signup_screen/widgets/animations.dart';
 import 'package:flip/application/presentation/utils/constants.dart';
 import 'package:flip/application/presentation/widgets/elavated_button_widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 class GetStartedScreen extends StatefulWidget {
-  const GetStartedScreen({Key? key});
+  const GetStartedScreen({super.key});
 
   @override
   State<GetStartedScreen> createState() => _GetStartedScreenState();
@@ -40,9 +40,9 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
               width: screenFullWidth,
               child:AnimatedOpacity(
                   opacity: _isVisible ? 1.0 : 0.0,
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   child: Align(
-                    alignment: Alignment(0.0, 1.5),
+                    alignment: const Alignment(0.0, 1.5),
                     child: Text(
                       'Flip',
                       style: GoogleFonts.baloo2(
@@ -53,7 +53,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                   ),
                 ),
               ),
-            Spacer(),
+            const Spacer(),
             SizedBox(
               height: screenFullHeight * .05,
               width: double.infinity,
@@ -63,10 +63,10 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                     height: screenFullHeight * .2,
                     child: AnimatedOpacity(
                       opacity: _isVisible ? 1.0 : 0.0,
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       child: SlideTransition(
                         position: Tween<Offset>(
-                          begin: Offset(0, 1),
+                          begin: const Offset(0, 1),
                           end: Offset.zero,
                         ).animate(
                           CurvedAnimation( 
@@ -77,11 +77,19 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                         ),
                         child: Padding(
                           padding: kPaddingForTextfield,
-                          child: ElevatedButtonWidget(
+                          child: ElevatedButtonWidget( 
+                             style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),  
+                            buttonStyles: ButtonStyle(
+                              
+                      backgroundColor: const MaterialStatePropertyAll(
+                          Color.fromARGB(255, 255, 255, 255)),
+                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                    ),
                             onEvent: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
+                                CupertinoPageRoute (
                                   builder: (context) => const SignUpScreen(),
                                 ),
                               );
@@ -89,9 +97,10 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                                 selected = false;
                               });
                             },
-                            buttonTitle: 'Get Started',
-                            style: const TextStyle(),
-                            buttonStyles: const ButtonStyle(),
+                            
+                            buttonTitle: 'Get Started', 
+                         
+                           
                           ),
                         ),
                       ),
@@ -108,49 +117,3 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
     );
   }
 } 
-
-
-
-
-// class _GetStartedScreenState extends State<GetStartedScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return  Scaffold(
-//       body: Container(
-//         decoration: const BoxDecoration(gradient: mainGradient),
-//         child: Column(
-//           children: [
-//             SizedBox(
-//                 height: screenFullHeight / 3,
-//                 width: screenFullWidth,
-//                 child:  FlipAlignAnimation(animationWidget: Text(
-//           'Flip', 
-//           style: GoogleFonts.baloo2(
-//               fontSize: 60, fontWeight: FontWeight.bold, color: Colors.white),
-//         ),)),
-//         Spacer(),
-//             SizedBox(
-//               height: screenFullHeight*.05,
-//               width: double.infinity,
-//               child: selected? SizedBox(
-//                 height: screenFullHeight*.2 ,                child: Padding(
-//                   padding: kPaddingForTextfield,
-//                   child: ElevatedButtonWidget(
-//                     onEvent: () {
-//                       Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpScreen()));
-//                       setState(() {
-//                         selected = false;
-//                       });
-//                     },
-//                     buttonTitle: 'Get Started',style: const TextStyle(),buttonStyles: const ButtonStyle(),),
-//                 ),
-//               ):Container()
-//             ),
-//             kHeight40,
-//             kHeight40,
-//           ],
-//         ), 
-//       ),
-//     );
-//   }
-// }
