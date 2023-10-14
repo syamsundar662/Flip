@@ -15,38 +15,32 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>(create: (context)=>AuthBloc())
-      ],
+      providers: [BlocProvider<AuthBloc>(create: (context) => AuthBloc())],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flip',
-        theme: ThemeData(colorScheme: const ColorScheme.light(onPrimary: Colors.white)),
-        home: StreamBuilder<User?>(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-
-              return  
-              AnimatedSplashScreen(
-  pageTransitionType: PageTransitionType.rightToLeft  , 
-  backgroundColor: Colors.black,
-  animationDuration: Duration(milliseconds: 2000),
-  splashIconSize: double.infinity,
-  splash: SplashScreen(),
-  nextScreen: snapshot.hasData ? HomePage() : GetStartedScreen(),
-);
-            }
-         
-        ) 
-
-
-      ),
+          debugShowCheckedModeBanner: false,
+          title: 'Flip',
+          theme: ThemeData(
+              colorScheme: const ColorScheme.light(onPrimary: Colors.white)),
+          home: StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                return AnimatedSplashScreen(
+                  pageTransitionType: PageTransitionType.rightToLeft,
+                  backgroundColor: Colors.black, 
+                  animationDuration: const Duration(milliseconds: 1000),
+                  splashIconSize: double.infinity,
+                  splash: const SplashScreen(),
+                  nextScreen:
+                      snapshot.hasData ? HomePage() : const GetStartedScreen(),
+                );
+              })),
     );
   }
 }

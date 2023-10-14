@@ -141,8 +141,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                           obscureTxt =false; 
                         });
 
-                      }, icon: Icon(Icons.visibility_off_outlined),
-                       color: Color.fromARGB(102, 255, 255, 255)) :
+                      }, icon: const Icon(Icons.visibility_off_outlined),
+                       color: const Color.fromARGB(102, 255, 255, 255)) :
                       
                       IconButton(
                         highlightColor: Colors.transparent ,
@@ -152,8 +152,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                           
                         });
                       }, 
-                        icon :Icon(Icons.visibility_outlined ,),
-                        color: Color.fromARGB(102, 255, 255, 255)
+                        icon :const Icon(Icons.visibility_outlined ,),
+                        color: const Color.fromARGB(102, 255, 255, 255)
                         ),
                       )
                     ), 
@@ -232,7 +232,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                               }
                             },
                             buttonTitle: state.isSaving
-                                ? const CircularProgressIndicator()
+                                ? const CupertinoActivityIndicator(color: Colors.white ,)
                                 : const Text(
                                     "Sign Up",
                                     style: TextStyle(color: Colors.white),

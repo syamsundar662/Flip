@@ -11,38 +11,34 @@ class AuthRepository {
       );
       return 'success';
     } on FirebaseAuthException catch (e) {
-     
-        if (e.code == 'weak-password') { 
-          return 'Weak password';
-        } else if (e.code == 'email-already-in-use') {
-          return 'Email already registered'; 
-           
-        }else if(e.code== 'invalid-email'){
-          return 'Invalid email';
-        } 
-      else {
-        return 'Something went wrong'; 
+      if (e.code == 'weak-password') {
+        return 'Weak password';
+      } else if (e.code == 'email-already-in-use') {
+        return 'Email already registered';
+      } else if (e.code == 'invalid-email') {
+        return 'Invalid email';
+      } else {
+        return 'Something went wrong';
       }
     }
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<String> signIn(String email, String password) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-    } catch (e) {
-      if (e is FirebaseAuthException) {
-        if (e.code == 'invalid-email') {
-          throw Exception('Invalid email');
-        } else if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-          throw Exception('Invalid email or password');
-        } else {
-          throw Exception('Sign in failed');
-        }
+      return "log in success";
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        return 'invalid email';
+      } else if (e.code == 'user-not-found') {
+        return 'user not found';
+      } else if (e.code == 'wrong-password') {
+        return 'urong password';
       } else {
-        throw Exception('Sign in failed: ${e.toString()}');
+        return 'log in failed: ${e.toString()}';
       }
     }
   }

@@ -11,5 +11,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final authenticationResult = await AuthRepository().signUp(event.email, event.password);
       emit(AuthState(isSaving: false,returnValue: authenticationResult));
     });
+    on<SignInEvent>((event, emit) async {
+      emit(AuthState(isSaving: true, returnValue: '')); 
+      final signInAuth = await AuthRepository().signIn(event.email, event.password);
+      emit(AuthState(isSaving: false, returnValue: signInAuth));
+    });
   }
 }

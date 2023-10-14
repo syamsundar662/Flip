@@ -152,7 +152,7 @@ class HomePage extends StatelessWidget {
     size(context);
     return Scaffold(
       appBar: AppBar(
-        title: FlipLogoText(
+        title: const FlipLogoText(
           logoColor: Colors.black,
           logoSize: 30,
         ),
@@ -166,10 +166,10 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                     (route) => false);
               },
-              icon: Icon(Icons.message_rounded))
+              icon: const Icon(Icons.message_rounded))
         ],
       ),
-      body: Container(
+      body: SizedBox(
         height: screenFullHeight,
         width: screenFullWidth,
         child: ListView(children: [
@@ -182,7 +182,7 @@ class HomePage extends StatelessWidget {
               children: wid,
             ),
           ),
-          Divider(thickness: .1),
+          const Divider(thickness: .1),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: Stack( 
@@ -246,12 +246,6 @@ class HomePage extends StatelessWidget {
                             ),
                    ),
                  )
-                // Divider(
-                //   thickness: .3,
-                //   height: 120,
-                //   endIndent: 16,
-                //   indent: 16,
-                // ),
               ],
             ),
           ),
@@ -279,12 +273,6 @@ class HomePage extends StatelessWidget {
                     radius: 25,
                   ),
                 ),
-                // Divider(
-                //   thickness: .3,
-                //   height: 120,
-                //   endIndent: 16,
-                //   indent: 16,
-                // ),
               ],
             ),
           ),
