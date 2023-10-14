@@ -5,7 +5,7 @@ class ElevatedButtonWidget extends StatelessWidget {
   const ElevatedButtonWidget({
     super.key, required this.buttonTitle, required this.style, required this.buttonStyles, this.onEvent,
   });
-  final String buttonTitle;
+  final Widget buttonTitle;
   final TextStyle style;
   final ButtonStyle buttonStyles;
   final Function() ? onEvent;
@@ -15,7 +15,7 @@ class ElevatedButtonWidget extends StatelessWidget {
       height: screenFullHeight*.06,
       width: screenFullWidth,
       child: ElevatedButton(onPressed: onEvent,
-      style: buttonStyles, child: Text(buttonTitle,style: style,)),
+      style: buttonStyles, child: buttonTitle),
     );
   }
 }
