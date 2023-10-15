@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 class TextFormFields extends StatelessWidget {
   const TextFormFields({
-    super.key, required this.hintText, required this.filledColor, this.suffixIconWidget, this.controller, required this.validator,  required this.obscure,
+    super.key, required this.hintText, required this.filledColor, this.suffixIconWidget, this.controller, this.validator,  required this.obscure, this.prefixIcons,
   });
   final String hintText;
   final Color filledColor;
   final Widget? suffixIconWidget; 
+  final Widget? prefixIcons; 
   final bool obscure;
   final TextEditingController ? controller;
   final String? Function(String?) ? validator;
@@ -17,7 +18,7 @@ class TextFormFields extends StatelessWidget {
     return Padding(
       padding: kPaddingForTextfield, 
       child: SizedBox(
-        height: 55,
+        // height: screenFullHeight*.08,55
         child: TextFormField( 
           validator: validator,
           controller: controller,
@@ -29,8 +30,8 @@ class TextFormFields extends StatelessWidget {
             hintStyle: const TextStyle(color: Color.fromARGB(147, 255, 255, 255,),fontWeight: FontWeight.w300,fontSize: 15 ),
             hintText: hintText,
             suffixIcon:suffixIconWidget ,
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none ,
+            prefixIcon : prefixIcons,
+            border: OutlineInputBorder( 
               borderRadius:BorderRadius.circular(15)
             )
             

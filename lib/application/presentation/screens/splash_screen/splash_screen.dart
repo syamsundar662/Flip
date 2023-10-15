@@ -1,6 +1,4 @@
-import 'package:flip/application/presentation/screens/get_started_screen/get_started.dart';
 import 'package:flip/application/presentation/utils/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

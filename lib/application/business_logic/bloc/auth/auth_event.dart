@@ -30,3 +30,4 @@ class SignUpEvent extends AuthEvent {
 
   SignUpEvent(this.email, this.password);
 }
+class SignUpWithGoogle extends AuthEvent{}

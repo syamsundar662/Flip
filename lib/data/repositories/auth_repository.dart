@@ -36,7 +36,7 @@ class AuthRepository {
       } else if (e.code == 'user-not-found') {
         return 'user not found';
       } else if (e.code == 'wrong-password') {
-        return 'urong password';
+        return 'wrong password';
       } else {
         return 'log in failed: ${e.toString()}';
       }
@@ -50,6 +50,15 @@ class AuthRepository {
       throw Exception('Sign out failed');
     }
   }
+
+  kunjakuttySignupWIthGoogle()async{
+    
+
+  }
+
+
+
+
 }
 
       //  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sign up successful')));

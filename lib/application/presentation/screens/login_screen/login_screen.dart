@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: screenFullHeight / 2,
+                  height: screenFullHeight / 2.2,
                   width: screenFullWidth,
                   child: AnimatedOpacityWidget(
                       isVisible: isVisible,
@@ -76,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: gmailController,
                       validator: (value) {
                         if (value!.isEmpty) {
+                          HapticFeedback.heavyImpact();
                           return 'Please enter your email';
                         } else {
                           return null;
@@ -143,15 +144,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             gmailController.clear();
                             passwordController.clear();
                           } else if (state.returnValue == 'invalid email') {
-                            HapticFeedback.heavyImpact();
-                            AnimatedSnackBar.material(
-                              state.returnValue,
-                              type: AnimatedSnackBarType.error,
-                              mobileSnackBarPosition:
-                                  MobileSnackBarPosition.top,
-                            ).show(context);
+                            HapticFeedback.heavyImpact(); 
+                            animatedSnackbar(state,AnimatedSnackBarType.error).show(context);
+                          } else if (state.returnValue == 'wrong password') {
+                            HapticFeedback.heavyImpact(); 
+                            animatedSnackbar(state,AnimatedSnackBarType.error).show(context);
+                          } else if (state.returnValue == 'user not found') {
+                            HapticFeedback.heavyImpact(); 
+                            animatedSnackbar(state,AnimatedSnackBarType.error).show(context);
                           }
-                        },
+                        }, 
                         builder: (context, state) {
                           return ElevatedButtonWidget(
                             onEvent: () async {
@@ -162,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     gmailController.text.trim(),
                                     passwordController.text.trim()));
                               } else {
-                                setState(() {});
+                                return Exception('Something went wrong');
                               }
                             },
                             buttonTitle: state.isSaving
@@ -187,11 +189,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                kHeight40,
-                kHeight40,
-                kHeight40,
-                kHeight40,
-                InkWell(
+                kHeight100, 
+                kHeight60, 
+                InkWell( 
                   onTap: () {
                     Navigator.push(
                         context,
@@ -209,5 +209,14 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  AnimatedSnackBar animatedSnackbar(AuthState state,AnimatedSnackBarType type) {
+    return AnimatedSnackBar.material(
+                            state.returnValue,
+                            type: type,
+                            mobileSnackBarPosition:
+                                MobileSnackBarPosition.top,
+                          );
   }
 }

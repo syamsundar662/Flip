@@ -24,7 +24,7 @@ class SignUpScreen extends StatefulWidget {
 class SignUpScreenState extends State<SignUpScreen> {
   final _formkey = GlobalKey<FormState>();
   bool isVisible = false;
-  bool obscureTxt = true; 
+  bool obscureTxt = true;
   @override
   void initState() {
     super.initState();
@@ -36,6 +36,7 @@ class SignUpScreenState extends State<SignUpScreen> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +50,8 @@ class SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: screenFullHeight / 2,
+                  height: screenFullHeight / 2.2
+                  ,
                   width: screenFullWidth,
                   child: AnimatedOpacity(
                     opacity: isVisible ? 1.0 : 0.0,
@@ -92,13 +94,14 @@ class SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     child: TextFormFields(
+                      prefixIcons: const Icon(Icons.mail ,color: Colors.grey ,),
                       obscure: false,
                       validator: (value) {
-                        if (value == null) {
+                        if (value!.isEmpty) { 
                           return 'Enter a valid gmail';
                         } else {
                           return null;
-                        }
+                        } 
                       },
                       filledColor: const Color.fromARGB(50, 158, 158, 158),
                       hintText: 'Enter your gmail',
@@ -111,54 +114,53 @@ class SignUpScreenState extends State<SignUpScreen> {
                   opacity: isVisible ? 1 : 0,
                   duration: const Duration(milliseconds: 700),
                   child: SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0, 1),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(
-                        curve: Curves.easeInOut,
-                        parent: ModalRoute.of(context)?.animation ??
-                            AnimationController(vsync: ScaffoldState()),
-                      ),
-                    ),
-                    child: TextFormFields(
-                      obscure: obscureTxt,
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Enter a password';
-                        } else {
-                          return null;
-                        }
-                      },
-                      filledColor: const Color.fromARGB(50, 158, 158, 158),
-                      hintText: 'Enter a password',
-                      controller: passwordController,
-                      suffixIconWidget: obscureTxt? IconButton(
-                        
-                        highlightColor: Colors.transparent ,
-                        onPressed: (){
-                        setState(() {
-                          obscureTxt =false; 
-                        });
-
-                      }, icon: const Icon(Icons.visibility_off_outlined),
-                       color: const Color.fromARGB(102, 255, 255, 255)) :
-                      
-                      IconButton(
-                        highlightColor: Colors.transparent ,
-                        onPressed:(){
-                        setState(() {
-                        obscureTxt = true; 
-                          
-                        });
-                      }, 
-                        icon :const Icon(Icons.visibility_outlined ,),
-                        color: const Color.fromARGB(102, 255, 255, 255)
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 1),
+                        end: Offset.zero,
+                      ).animate(
+                        CurvedAnimation(
+                          curve: Curves.easeInOut,
+                          parent: ModalRoute.of(context)?.animation ??
+                              AnimationController(vsync: ScaffoldState()),
                         ),
-                      )
-                    ), 
-                  ),
-                
+                      ),
+                      child: TextFormFields(
+                        prefixIcons: const Icon(Icons.lock,color: Colors.grey ,),
+                        obscure: obscureTxt,
+                        validator: (value) {
+                          if (value!.isEmpty) { 
+                            return 'Enter a password';
+                          } else {
+                            return null; 
+                          }
+                        },
+                        filledColor: const Color.fromARGB(50, 158, 158, 158),
+                        hintText: 'Enter a password',
+                        controller: passwordController,
+                        suffixIconWidget: obscureTxt
+                            ? IconButton(
+                                highlightColor: Colors.transparent,
+                                onPressed: () {
+                                  setState(() {
+                                    obscureTxt = false;
+                                  });
+                                },
+                                icon: const Icon(Icons.visibility_off_outlined),
+                                color: const Color.fromARGB(102, 255, 255, 255))
+                            : IconButton(
+                                highlightColor: Colors.transparent,
+                                onPressed: () {
+                                  setState(() {
+                                    obscureTxt = true;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.visibility_outlined,
+                                ),
+                                color:
+                                    const Color.fromARGB(102, 255, 255, 255)),
+                      )),
+                ),
                 kHeight10,
                 AnimatedOpacity(
                   opacity: isVisible ? 1.0 : 0.0,
@@ -178,47 +180,48 @@ class SignUpScreenState extends State<SignUpScreen> {
                       padding: kPaddingForTextfield,
                       child: BlocConsumer<AuthBloc, AuthState>(
                         listener: (context, state) {
-                          if (state.returnValue == 'success') { 
+                          if(state.isLogin == false){ 
+                          if (state.returnValue == 'success') {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 CupertinoPageRoute(
-                                    builder: (context) => LoginScreen()),
+                                    builder: (context) => const LoginScreen()),
                                 (route) => false);
-                                    gmailController.clear(); 
-                                    passwordController.clear();
-                          } else if(state.returnValue == 'Weak password'){
+                            gmailController.clear();
+                            passwordController.clear();
+                          } else if (state.returnValue == 'Weak password') {
                             AnimatedSnackBar.material(
                               state.returnValue,
-                              type: AnimatedSnackBarType.error , 
-                              mobileSnackBarPosition: MobileSnackBarPosition
-                                  .top,
+                              type: AnimatedSnackBarType.error,
+                              mobileSnackBarPosition:
+                                  MobileSnackBarPosition.top,
                             ).show(context);
-                          }else if(state.returnValue=='Email already registered'){
-                             AnimatedSnackBar.material(
-                              state.returnValue,
-                              type: AnimatedSnackBarType.error ,
-                              mobileSnackBarPosition: MobileSnackBarPosition
-                                  .top,
-                            ).show(context);
-
-                          }else if(state.returnValue=='Sign up failed'){
-                             AnimatedSnackBar.material(
+                          } else if (state.returnValue ==
+                              'Email already registered') {
+                            AnimatedSnackBar.material(
                               state.returnValue,
                               type: AnimatedSnackBarType.error,
-                              mobileSnackBarPosition: MobileSnackBarPosition
-                                  .top,
+                              mobileSnackBarPosition:
+                                  MobileSnackBarPosition.top,
                             ).show(context);
-                          }else if(state.returnValue=='Invalid email'){
-                             AnimatedSnackBar.material(
+                          } else if (state.returnValue == 'Sign up failed') {
+                            AnimatedSnackBar.material(
                               state.returnValue,
                               type: AnimatedSnackBarType.error,
-                              mobileSnackBarPosition: MobileSnackBarPosition
-                                  .top,
+                              mobileSnackBarPosition:
+                                  MobileSnackBarPosition.top,
                             ).show(context);
-                          }
+                          } else if (state.returnValue == 'Invalid email') {
+                            AnimatedSnackBar.material(
+                              state.returnValue,
+                              type: AnimatedSnackBarType.error,
+                              mobileSnackBarPosition:
+                                  MobileSnackBarPosition.top,
+                            ).show(context);
+                          }}
                         },
                         builder: (context, state) {
-                          return ElevatedButtonWidget( 
+                          return ElevatedButtonWidget(
                             onEvent: () async {
                               _formkey.currentState!.validate();
                               if (gmailController.text.isNotEmpty ||
@@ -226,13 +229,14 @@ class SignUpScreenState extends State<SignUpScreen> {
                                 context.read<AuthBloc>().add(SignUpEvent(
                                     gmailController.text.trim(),
                                     passwordController.text.trim()));
-
-                              } else { 
+                              } else {
                                 return Exception('error');
                               }
                             },
                             buttonTitle: state.isSaving
-                                ? const CupertinoActivityIndicator(color: Colors.white ,)
+                                ? const CupertinoActivityIndicator(
+                                    color: Colors.white,
+                                  )
                                 : const Text(
                                     "Sign Up",
                                     style: TextStyle(color: Colors.white),
@@ -251,7 +255,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                kHeight40,
+                kHeight30,
                 const Text(
                   'Or',
                   style: TextStyle(
@@ -259,7 +263,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       fontWeight: FontWeight.w400,
                       color: Colors.white),
                 ),
-                kHeight40,
+                kHeight30, 
                 AnimatedOpacity(
                   opacity: isVisible ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 1000),
@@ -305,9 +309,10 @@ class SignUpScreenState extends State<SignUpScreen> {
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (context) => LoginScreen()));
-                                      gmailController.clear();
-                                      passwordController.clear(); 
+                                      builder: (context) =>
+                                          const LoginScreen()));
+                              gmailController.clear();
+                              passwordController.clear();
                             },
                             child: const Text(
                               'Already have an account? Login.',
