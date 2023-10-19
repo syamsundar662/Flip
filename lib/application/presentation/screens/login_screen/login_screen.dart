@@ -56,12 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: screenFullWidth,
                   child: AnimatedOpacityWidget(
                       isVisible: isVisible,
-                      animatedOpacityWidgetVariable: Align (
+                      animatedOpacityWidgetVariable: Align(
                         child: SlideAnimationWidget(
                           slideAnimationWidgetVariable: Text(
                             'Flip',
                             style: GoogleFonts.baloo2(
-                                fontSize: 60, 
+                                fontSize: 60,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
@@ -72,11 +72,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   isVisible: isVisible,
                   animatedOpacityWidgetVariable: SlideAnimationWidget(
                     slideAnimationWidgetVariable: TextFormFields(
+                      prefixIcons: const Icon(
+                        Icons.email_rounded,
+                        color: Colors.grey,
+                      ),
                       obscure: false,
                       controller: gmailController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          HapticFeedback.heavyImpact();
+                          HapticFeedback.vibrate();
                           return 'Please enter your email';
                         } else {
                           return null;
@@ -92,9 +96,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   isVisible: isVisible,
                   animatedOpacityWidgetVariable: SlideAnimationWidget(
                     slideAnimationWidgetVariable: TextFormFields(
+                      prefixIcons: const Icon(
+                        Icons.lock,
+                        color: Colors.grey,
+                      ),
                       obscure: obscureTxt,
                       validator: (value) {
                         if (value!.isEmpty) {
+                          HapticFeedback.vibrate();
                           return 'Please enter a password';
                         } else {
                           return null;
@@ -144,16 +153,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             gmailController.clear();
                             passwordController.clear();
                           } else if (state.returnValue == 'invalid email') {
-                            HapticFeedback.heavyImpact(); 
-                            animatedSnackbar(state,AnimatedSnackBarType.error).show(context);
+                            HapticFeedback.heavyImpact();
+                            animatedSnackbar(state, AnimatedSnackBarType.error)
+                                .show(context);
                           } else if (state.returnValue == 'wrong password') {
-                            HapticFeedback.heavyImpact(); 
-                            animatedSnackbar(state,AnimatedSnackBarType.error).show(context);
+                            HapticFeedback.heavyImpact();
+                            animatedSnackbar(state, AnimatedSnackBarType.error)
+                                .show(context);
                           } else if (state.returnValue == 'user not found') {
-                            HapticFeedback.heavyImpact(); 
-                            animatedSnackbar(state,AnimatedSnackBarType.error).show(context);
+                            HapticFeedback.heavyImpact();
+                            animatedSnackbar(state, AnimatedSnackBarType.error)
+                                .show(context);
                           }
-                        }, 
+                        },
                         builder: (context, state) {
                           return ElevatedButtonWidget(
                             onEvent: () async {
@@ -189,18 +201,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                kHeight100, 
-                kHeight60, 
-                InkWell( 
+                kHeight100,
+                kHeight60,
+                kHeight30,
+                InkWell(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                         context,
                         CupertinoPageRoute(
-                            builder: (context) => const SignUpScreen()));
+                            builder: (context) =>const SignUpScreen()),
+                        (route) => false);
                   },
                   child: const Text(
                     'Dont have an account? Create.',
-                    style: TextStyle(fontSize: 14, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -211,12 +230,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  AnimatedSnackBar animatedSnackbar(AuthState state,AnimatedSnackBarType type) {
+  AnimatedSnackBar animatedSnackbar(
+      AuthState state, AnimatedSnackBarType type) {
     return AnimatedSnackBar.material(
-                            state.returnValue,
-                            type: type,
-                            mobileSnackBarPosition:
-                                MobileSnackBarPosition.top,
-                          );
+      state.returnValue,
+      type: type,
+      mobileSnackBarPosition: MobileSnackBarPosition.top,
+    );
   }
 }

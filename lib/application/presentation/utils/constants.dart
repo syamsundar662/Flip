@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Gradient mainGradient =  LinearGradient(
             transform: GradientRotation(4.7),
-            colors: [Color.fromARGB(255, 43, 1, 1),Color.fromARGB(255, 1, 24, 42)]);
+            colors: [Color.fromARGB(255, 30, 1, 1),Color.fromARGB(255, 1, 21, 37)]);
  
  late double screenFullWidth ;
  late double screenFullHeight;

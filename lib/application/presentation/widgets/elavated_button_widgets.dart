@@ -12,10 +12,11 @@ class ElevatedButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: screenFullHeight*.07,
+      height: screenFullHeight*.06 ,
       width: screenFullWidth,
       child: ElevatedButton(onPressed: onEvent,
       style: buttonStyles, child: buttonTitle),
     );
   }
 }
+ 

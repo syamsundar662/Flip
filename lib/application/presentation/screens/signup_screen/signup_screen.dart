@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
+import 'package:flip/application/presentation/screens/home_screen/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
@@ -50,8 +53,7 @@ class SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: screenFullHeight / 2.2
-                  ,
+                  height: screenFullHeight / 2.2,
                   width: screenFullWidth,
                   child: AnimatedOpacity(
                     opacity: isVisible ? 1.0 : 0.0,
@@ -94,14 +96,17 @@ class SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     child: TextFormFields(
-                      prefixIcons: const Icon(Icons.mail ,color: Colors.grey ,),
+                      prefixIcons: const Icon(
+                        Icons.mail,
+                        color: Colors.grey,
+                      ),
                       obscure: false,
                       validator: (value) {
-                        if (value!.isEmpty) { 
+                        if (value!.isEmpty) {
                           return 'Enter a valid gmail';
                         } else {
                           return null;
-                        } 
+                        }
                       },
                       filledColor: const Color.fromARGB(50, 158, 158, 158),
                       hintText: 'Enter your gmail',
@@ -125,13 +130,16 @@ class SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       child: TextFormFields(
-                        prefixIcons: const Icon(Icons.lock,color: Colors.grey ,),
+                        prefixIcons: const Icon(
+                          Icons.lock,
+                          color: Colors.grey,
+                        ),
                         obscure: obscureTxt,
                         validator: (value) {
-                          if (value!.isEmpty) { 
+                          if (value!.isEmpty) {
                             return 'Enter a password';
                           } else {
-                            return null; 
+                            return null;
                           }
                         },
                         filledColor: const Color.fromARGB(50, 158, 158, 158),
@@ -180,45 +188,47 @@ class SignUpScreenState extends State<SignUpScreen> {
                       padding: kPaddingForTextfield,
                       child: BlocConsumer<AuthBloc, AuthState>(
                         listener: (context, state) {
-                          if(state.isLogin == false){ 
-                          if (state.returnValue == 'success') {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (context) => const LoginScreen()),
-                                (route) => false);
-                            gmailController.clear();
-                            passwordController.clear();
-                          } else if (state.returnValue == 'Weak password') {
-                            AnimatedSnackBar.material(
-                              state.returnValue,
-                              type: AnimatedSnackBarType.error,
-                              mobileSnackBarPosition:
-                                  MobileSnackBarPosition.top,
-                            ).show(context);
-                          } else if (state.returnValue ==
-                              'Email already registered') {
-                            AnimatedSnackBar.material(
-                              state.returnValue,
-                              type: AnimatedSnackBarType.error,
-                              mobileSnackBarPosition:
-                                  MobileSnackBarPosition.top,
-                            ).show(context);
-                          } else if (state.returnValue == 'Sign up failed') {
-                            AnimatedSnackBar.material(
-                              state.returnValue,
-                              type: AnimatedSnackBarType.error,
-                              mobileSnackBarPosition:
-                                  MobileSnackBarPosition.top,
-                            ).show(context);
-                          } else if (state.returnValue == 'Invalid email') {
-                            AnimatedSnackBar.material(
-                              state.returnValue,
-                              type: AnimatedSnackBarType.error,
-                              mobileSnackBarPosition:
-                                  MobileSnackBarPosition.top,
-                            ).show(context);
-                          }}
+                          if (state.isLogin == false) {
+                            if (state.returnValue == 'success') {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()),
+                                  (route) => false);
+                              gmailController.clear();
+                              passwordController.clear();
+                            } else if (state.returnValue == 'Weak password') {
+                              AnimatedSnackBar.material(
+                                state.returnValue,
+                                type: AnimatedSnackBarType.error,
+                                mobileSnackBarPosition:
+                                    MobileSnackBarPosition.top,
+                              ).show(context);
+                            } else if (state.returnValue ==
+                                'Email already registered') {
+                              AnimatedSnackBar.material(
+                                state.returnValue,
+                                type: AnimatedSnackBarType.error,
+                                mobileSnackBarPosition:
+                                    MobileSnackBarPosition.top,
+                              ).show(context);
+                            } else if (state.returnValue == 'Sign up failed') {
+                              AnimatedSnackBar.material(
+                                state.returnValue,
+                                type: AnimatedSnackBarType.error,
+                                mobileSnackBarPosition:
+                                    MobileSnackBarPosition.top,
+                              ).show(context);
+                            } else if (state.returnValue == 'Invalid email') {
+                              AnimatedSnackBar.material(
+                                state.returnValue,
+                                type: AnimatedSnackBarType.error,
+                                mobileSnackBarPosition:
+                                    MobileSnackBarPosition.top,
+                              ).show(context);
+                            }
+                          }
                         },
                         builder: (context, state) {
                           return ElevatedButtonWidget(
@@ -256,6 +266,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 kHeight30,
+                kHeight30,
                 const Text(
                   'Or',
                   style: TextStyle(
@@ -263,7 +274,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                       fontWeight: FontWeight.w400,
                       color: Colors.white),
                 ),
-                kHeight30, 
+                kHeight30,
+                kHeight30,
                 AnimatedOpacity(
                   opacity: isVisible ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 1000),
@@ -282,42 +294,56 @@ class SignUpScreenState extends State<SignUpScreen> {
                       padding: kPaddingForTextfield,
                       child: Column(
                         children: [
-                          Container(
-                            height: screenFullHeight * .06,
-                            width: screenFullWidth,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                image: const DecorationImage(
-                                    alignment: Alignment(-0.65, 0.0),
-                                    image: AssetImage(
-                                      'assets/Google__G__Logo 1 (1).png',
-                                    ),
-                                    scale: 15)),
-                            child: const Align(
-                              alignment: Alignment(0.2, 0.0),
-                              child: Text(
-                                'Sign in using google',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w400),
+                          BlocListener<AuthBloc, AuthState>(
+                            listener: (context, state) {
+                              if(state.returnValue == 'google signin success'){
+                                Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context)=>HomePage()), (route) => false); 
+                              }else{
+                                log(state.returnValue);
+                              } 
+                            }, 
+                            child: InkWell(
+                              onTap: () {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(SignUpWithGoogle());
+                              },
+                              child: Container(
+                                height: screenFullHeight * .06,
+                                width: screenFullWidth,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                    image: const DecorationImage(
+                                        alignment: Alignment(-0.65, 0.0),
+                                        image: AssetImage(
+                                          'assets/Google__G__Logo 1 (1).png',
+                                        ),
+                                        scale: 15)),
+                                child: const Align(
+                                  alignment: Alignment(0.2, 0.0),
+                                  child: Text(
+                                    'Sign in using google',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                           kHeight10,
+                          kHeight10,
                           InkWell(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) =>
-                                          const LoginScreen()));
+                              Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context)=>const LoginScreen()), (route) => false);
                               gmailController.clear();
                               passwordController.clear();
                             },
                             child: const Text(
                               'Already have an account? Login.',
                               style:
-                                  TextStyle(fontSize: 14, color: Colors.white),
+                                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 255, 255, 255),decoration: TextDecoration.underline,decorationColor: Colors.white,),
                             ),
                           ),
                         ],

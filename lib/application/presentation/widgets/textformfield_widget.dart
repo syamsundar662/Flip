@@ -20,13 +20,17 @@ class TextFormFields extends StatelessWidget {
       child: SizedBox(
         // height: screenFullHeight*.08,55
         child: TextFormField( 
-          validator: validator,
+          validator: validator, 
           controller: controller,
           style: const TextStyle(color: Colors.grey),
           obscureText: obscure,
+          cursorColor: const Color.fromARGB(255, 95, 95, 95) ,
           decoration: InputDecoration(
+            
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15),borderSide: const BorderSide(color: Color.fromARGB(255, 191, 191, 191),width: .2 ),),
             fillColor: filledColor ,
-            filled: true,
+            filled: true, 
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide.none,borderRadius: BorderRadius.circular(15)),
             hintStyle: const TextStyle(color: Color.fromARGB(147, 255, 255, 255,),fontWeight: FontWeight.w300,fontSize: 15 ),
             hintText: hintText,
             suffixIcon:suffixIconWidget ,

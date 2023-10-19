@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -46,19 +47,26 @@ class AuthRepository {
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
+      GoogleSignIn().signOut(); 
     } catch (e) {
       throw Exception('Sign out failed');
     }
   }
 
-  kunjakuttySignupWIthGoogle()async{
-    
+  signinWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
 
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      return 'google signin success';
+    } catch (e) {
+      return 'failed to sign in';
+    }
   }
-
-
-
-
 }
-
-      //  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sign up successful')));
