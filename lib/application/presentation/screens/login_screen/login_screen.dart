@@ -1,6 +1,6 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/home_screen/home.dart';
+import 'package:flip/application/presentation/screens/home_screen/home_screem.dart';
 import 'package:flip/application/presentation/screens/signup_screen/signup_screen.dart';
 import 'package:flip/application/presentation/utils/constants.dart';
 import 'package:flip/application/presentation/widgets/animated_opactity.dart';
@@ -146,9 +146,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         listener: (context, state) {
                           if (state.returnValue == 'log in success') {
                             Navigator.pushAndRemoveUntil(
-                                context,
+                                context, 
                                 CupertinoPageRoute(
-                                    builder: (context) => HomePage()),
+                                    builder: (context) => const HomeScreen()),
                                 (route) => false);
                             gmailController.clear();
                             passwordController.clear();

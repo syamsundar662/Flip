@@ -3,19 +3,20 @@ import 'package:google_fonts/google_fonts.dart';
 
 class FlipLogoText extends StatelessWidget {
   const FlipLogoText({
-    super.key, required this.logoSize, required this.logoColor,
+    super.key,
+    required this.logoSize,
   });
   final double logoSize;
-  final Color logoColor;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-                  'Flip',
-                  style: GoogleFonts.baloo2(
-                      fontSize: logoSize, 
-                      fontWeight: FontWeight.bold,
-                      color:logoColor),
-                );
+      'Flip',
+      style: GoogleFonts.baloo2(
+        fontSize: logoSize,
+        fontWeight: FontWeight.bold,
+        // color:logoColor
+      ),
+    );
   }
 }

@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await AuthRepository().signIn(event.email, event.password);
       emit(AuthState(isSaving: false, returnValue: signInAuth, isLogin: true));
     });
+
     on<SignUpWithGoogle>((event, emit) async {
       emit(AuthState(isSaving: false, returnValue: ''));
       final String result = await AuthRepository().signinWithGoogle();

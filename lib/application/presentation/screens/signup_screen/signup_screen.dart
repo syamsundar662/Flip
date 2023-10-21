@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/home_screen/home.dart';
+import 'package:flip/application/presentation/screens/home_screen/home_shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
