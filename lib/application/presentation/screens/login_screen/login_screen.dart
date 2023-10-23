@@ -1,12 +1,12 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/home_screen/home_screem.dart';
+import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/screens/signup_screen/signup_screen.dart';
 import 'package:flip/application/presentation/utils/constants.dart';
-import 'package:flip/application/presentation/widgets/animated_opactity.dart';
+import 'package:flip/application/presentation/widgets/animations/animated_opactity.dart';
+import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
 import 'package:flip/application/presentation/widgets/elavated_button_widgets.dart';
-import 'package:flip/application/presentation/widgets/slide_animation.dart';
-import 'package:flip/application/presentation/widgets/textformfield_widget.dart';
+import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushAndRemoveUntil(
                                 context, 
                                 CupertinoPageRoute(
-                                    builder: (context) => const HomeScreen()),
+                                    builder: (context) => const RootScreen ()),
                                 (route) => false);
                             gmailController.clear();
                             passwordController.clear();

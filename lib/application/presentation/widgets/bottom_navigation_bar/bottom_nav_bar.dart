@@ -18,12 +18,15 @@ class BottomNavBarWidget extends StatelessWidget {
           onTap: (value){ 
             context.read<BottomNavBarBloc>().add(BottomNavbarOnTapEvent(index: value));
           },
-          selectedItemColor: Colors.amber,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          iconSize: 23,
           type: BottomNavigationBarType.fixed,
           items: const [
              BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home'),
              BottomNavigationBarItem(icon: Icon(Iconsax.discover), label: 'Explore'),
-             BottomNavigationBarItem(icon: Icon(Iconsax.notification_1), label: 'Notification'),
+             BottomNavigationBarItem(icon: Icon(Iconsax.add_square), label: 'Flip'),
+             BottomNavigationBarItem(icon: Icon(Iconsax.notification_status), label: 'Notification'),
              BottomNavigationBarItem(icon: Icon(Iconsax.user),label: 'Profile'),
           ],
         );
