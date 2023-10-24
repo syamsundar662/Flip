@@ -102,7 +102,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                                 },
                                 
                                 buttonTitle:Text(
-                      'Register Now',
+                      'Create an account',
                       style: GoogleFonts.baloo2 (
                           fontSize: 15, 
                           fontWeight: FontWeight.w500  ,
@@ -114,11 +114,12 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                               kHeight10, 
                               ElevatedButtonWidget( 
                                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),  
-                                buttonStyles: ButtonStyle(
-                                  
+                                buttonStyles: ButtonStyle(   
+                                  side: MaterialStatePropertyAll(BorderSide(width: .7,color: Colors.white)),           
                       backgroundColor: const MaterialStatePropertyAll(
-                              Color.fromARGB(255, 255, 255, 255)),
+                            Colors.transparent),
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+
                               borderRadius: BorderRadius.circular(15))),
                     ),
                                 onEvent: () {
@@ -138,7 +139,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                       style: GoogleFonts.baloo2(
                           fontSize: 15, 
                           fontWeight: FontWeight.w500,
-                          color: Colors.black),
+                          color: Colors.white),
                     ),
                          
                                

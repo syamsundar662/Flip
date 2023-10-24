@@ -12,6 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await AuthRepository().signUp(event.email, event.password);
       emit(AuthState(isSaving: false, returnValue: authenticationResult));
     });
+    
     on<SignInEvent>((event, emit) async {
       emit(AuthState(isSaving: true, returnValue: '', isLogin: true));
       final signInAuth =

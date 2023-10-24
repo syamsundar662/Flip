@@ -9,6 +9,7 @@ import 'package:flip/application/presentation/screens/login_screen/login_screen.
 import 'package:flip/application/presentation/utils/constants.dart';
 import 'package:flip/application/presentation/widgets/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,7 +54,7 @@ class SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: screenFullHeight / 2.2,
+                  height: screenFullHeight / 2.6 ,
                   width: screenFullWidth,
                   child: AnimatedOpacity(
                     opacity: isVisible ? 1.0 : 0.0,
@@ -199,10 +200,11 @@ class SignUpScreenState extends State<SignUpScreen> {
                               gmailController.clear();
                               passwordController.clear();
                             } else if (state.returnValue == 'Weak password') {
+                              HapticFeedback.heavyImpact(); 
                               AnimatedSnackBar.material(
                                 state.returnValue,
                                 type: AnimatedSnackBarType.error,
-                                mobileSnackBarPosition:
+                                mobileSnackBarPosition: 
                                     MobileSnackBarPosition.top,
                               ).show(context);
                             } else if (state.returnValue ==
@@ -265,8 +267,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                kHeight30,
-                kHeight30,
+                kHeight50, 
                 const Text(
                   'Or',
                   style: TextStyle(
@@ -274,8 +275,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       fontWeight: FontWeight.w400,
                       color: Colors.white),
                 ),
-                kHeight30,
-                kHeight30,
+                kHeight50,
                 AnimatedOpacity(
                   opacity: isVisible ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 1000),
@@ -326,7 +326,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                                     'Sign in using google',
                                     style: TextStyle(
                                         fontSize: 18,
-                                        fontWeight: FontWeight.w400),
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black),
                                   ),
                                 ),
                               ),
@@ -341,9 +342,9 @@ class SignUpScreenState extends State<SignUpScreen> {
                               passwordController.clear();
                             },
                             child: const Text(
-                              'Already have an account? Login.',
-                              style:
-                                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 255, 255, 255),decoration: TextDecoration.underline,decorationColor: Colors.white,),
+                              'Already have an account?',
+                              style: 
+                                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold,),
                             ),
                           ),
                         ],

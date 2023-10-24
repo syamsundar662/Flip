@@ -1,6 +1,4 @@
-import 'package:flip/application/presentation/utils/constants.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -10,47 +8,54 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: DefaultTabController(length: 2, child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios)),
-          bottom: TabBar(tabs: [Text('data'),Text('data')]),
-        ),
-        body: TabBarView(children: [Center(child: Text('data')),
-        Center(
-          child: SizedBox(
-                        height: screenFullHeight/2 ,
-                        width: double.infinity,
-                        child: ClipRRect( 
-                          borderRadius: BorderRadius.circular(10),
-                          child: GoogleMap(
-                            scrollGesturesEnabled: false ,
-                            mapType: MapType.hybrid ,  
-                            myLocationButtonEnabled: true,
-                            myLocationEnabled: true, 
-                            zoomControlsEnabled: true, 
-                            zoomGesturesEnabled: true,
-                            initialCameraPosition:  CameraPosition(
-                              target: LatLng(
-        10.005999,76.342802), 
-                              zoom: 14,
-                            ), 
-                            markers: { 
-                               Marker( 
-                                markerId: const MarkerId('marker_id'),
-                                position:
-                                    LatLng(
-        10.005999,76.342802),
-                              ),
-                            }, 
-                            // ignore: prefer_collection_literals
-                            gestureRecognizers: Set()
-                             ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
-                            
-                            ),
-                        ),
+        child: DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                title: const CupertinoSearchTextField(),
+                bottom: const PreferredSize(
+                  preferredSize: Size.fromHeight(40),
+                  child: TabBar(
+                    labelColor: Colors.blue,indicatorColor: Colors.blue,
+                    overlayColor: MaterialStatePropertyAll(Color.fromARGB(21, 255, 255, 255)),
+                    labelPadding: EdgeInsets.all(10),
+                
+                    tabs: [Text('Explore'), Text('Nearby')]),
+                ),
+              ),
+              body: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,crossAxisSpacing: 2, mainAxisSpacing: 2,childAspectRatio: 1/1.5), 
+                    itemBuilder: (BuildContext context,int index){
+                      return Container(color: const Color.fromARGB(48, 93, 93, 93),);
+                    }),
+                    const GoogleMap(
+                      trafficEnabled: false,
+                      tiltGesturesEnabled: false,
+                      buildingsEnabled: false,
+                      scrollGesturesEnabled: true,
+                      mapType: MapType.normal,
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: true,
+                      zoomControlsEnabled: true,
+                      zoomGesturesEnabled: true,
+                      
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(10.005999, 76.342802),
+                        zoom: 14,
                       ),
-        )]),
-      ))
-    );
+                      //                   markers: {
+                      //                      Marker(
+                      //                       markerId: const MarkerId('marker_id'),
+                      //                       position:
+                      //                           LatLng(
+                      // 10.005999,76.342802),
+                      //                     ),
+                      // },
+                    )
+                  ]),
+            )));
   }
-} 
+}
+

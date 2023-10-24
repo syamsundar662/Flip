@@ -18,7 +18,6 @@ class TextFormFields extends StatelessWidget {
     return Padding(
       padding: kPaddingForTextfield, 
       child: SizedBox(
-        // height: screenFullHeight*.08,55
         child: TextFormField( 
           validator: validator, 
           controller: controller,
@@ -26,7 +25,6 @@ class TextFormFields extends StatelessWidget {
           obscureText: obscure,
           cursorColor: const Color.fromARGB(255, 95, 95, 95) ,
           decoration: InputDecoration(
-            
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15),borderSide: const BorderSide(color: Color.fromARGB(255, 191, 191, 191),width: .2 ),),
             fillColor: filledColor ,
             filled: true, 
