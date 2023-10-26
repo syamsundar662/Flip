@@ -1,5 +1,5 @@
 import 'package:flip/application/business_logic/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
-import 'package:flip/application/presentation/widgets/bottom_navigation_bar/bottom_nav_bar.dart';
+import 'package:flip/application/presentation/screens/root_screen/widgets/bottom_navigation_bar/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

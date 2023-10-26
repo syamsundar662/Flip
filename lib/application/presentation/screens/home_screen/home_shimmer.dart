@@ -1,9 +1,9 @@
+import 'package:flip/data/firebase/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/application/presentation/utils/constants.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
-import 'package:flip/data/repositories/auth_repository.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                AuthRepository().signOut();
+                AuthServices().signOut();
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(

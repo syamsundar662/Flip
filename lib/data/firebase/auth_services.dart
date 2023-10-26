@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthRepository {
+import '../../domain/repositories/auth_repo/auth_repository.dart';
+
+class AuthServices implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  @override
   Future<String> signUp(String email, String password) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
@@ -24,6 +27,7 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<String> signIn(String email, String password) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
@@ -44,6 +48,7 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
@@ -53,6 +58,7 @@ class AuthRepository {
     }
   }
 
+  @override
   signinWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();

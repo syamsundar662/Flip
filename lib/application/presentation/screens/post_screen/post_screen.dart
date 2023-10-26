@@ -1,6 +1,7 @@
 import 'package:flip/application/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 
 class PostScreen extends StatelessWidget {
   const PostScreen({super.key});
@@ -12,28 +13,58 @@ class PostScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              kHeight20,
+              Padding(
+                padding: const EdgeInsets.only(left: 6.0),
+                child: Text('Share your thoughts',
+                    style: GoogleFonts.balooDa2(
+                        fontSize: 23, fontWeight: FontWeight.w500)),
+              ),
+              SizedBox(
                   height: screenFullHeight / 5,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 71, 71, 71).withOpacity(.7),
-                      border: Border.all(color: const Color.fromARGB(255, 45, 45, 45).withOpacity(.3)),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Share your thoughts!',
-                            style: GoogleFonts.baloo2(
-                                fontSize: 20, fontWeight: FontWeight.w500)),
-                        Text('type here....',
-                            style: GoogleFonts.baloo2(
-                                fontSize: 17, fontWeight: FontWeight.w500,color: Colors.grey.withOpacity(.7))),
-                      ],
-                    ),
+                  child: TextField(
+                    maxLines: 10,
+                    // controller: descriptionController,
+                    decoration: InputDecoration(
+                        hintText: 'type here....',
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        fillColor: Theme.of(context).colorScheme.primary,
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        )),
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w400),
+                    cursorColor: Theme.of(context).colorScheme.secondary,
                   )),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.photo_camera_outlined,
+                        color: Theme.of(context).colorScheme.secondary,
+                      )),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.photo_library_outlined,
+                        color: Theme.of(context).colorScheme.secondary,
+                      )),
+                  const Spacer(),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Iconsax.send_24,
+                        color: Theme.of(context).colorScheme.secondary,
+                      )),
+                ],
+              ),
             ],
           ),
         ),

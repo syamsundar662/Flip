@@ -8,26 +8,28 @@ class BottomNavBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-    return 
-    BlocBuilder<BottomNavBarBloc, BottomNavBarState>(
+    return BlocBuilder<BottomNavBarBloc, BottomNavBarState>(
       builder: (context, state) {
         return BottomNavigationBar(
           currentIndex: state.index,
-          onTap: (value){ 
-            context.read<BottomNavBarBloc>().add(BottomNavbarOnTapEvent(index: value));
+          onTap: (value) {
+            context
+                .read<BottomNavBarBloc>()
+                .add(BottomNavbarOnTapEvent(index: value));
           },
           showSelectedLabels: false,
           showUnselectedLabels: false,
           iconSize: 23,
           type: BottomNavigationBarType.fixed,
           items: const [
-             BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home'),
-             BottomNavigationBarItem(icon: Icon(Iconsax.discover), label: 'Explore'),
-             BottomNavigationBarItem(icon: Icon(Iconsax.add_square), label: 'Flip'),
-             BottomNavigationBarItem(icon: Icon(Iconsax.notification_status), label: 'Notification'),
-             BottomNavigationBarItem(icon: Icon(Iconsax.user),label: 'Profile'),
+            BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Iconsax.discover), label: 'Explore'),
+            BottomNavigationBarItem(
+                icon: Icon(Iconsax.add_square), label: 'Flip'),
+            BottomNavigationBarItem(
+                icon: Icon(Iconsax.notification_status), label: 'Notification'),
+            BottomNavigationBarItem(icon: Icon(Iconsax.user), label: 'Profile'),
           ],
         );
       },
