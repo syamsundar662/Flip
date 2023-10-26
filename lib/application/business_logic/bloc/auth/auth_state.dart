@@ -1,13 +1,16 @@
 part of 'auth_bloc.dart';
 
-class AuthState {
-  bool isSaving;
-  bool isLogin;
-  String returnValue;
-  AuthState({required this.isSaving,required this.returnValue,this.isLogin=false});
-}
+abstract class AuthState {}
 
-final class AuthInitial extends AuthState {
-  AuthInitial():super(isSaving: false,returnValue:'');
-}
+class AuthInitial extends AuthState {}
+
+class AuthLoadingState extends AuthState{}
+
+class AuthSuccessState extends AuthState{}
+
+class AuthErrorState extends AuthState{}
+
+class EmailVerifiedSuccessState extends AuthState{}
+
+class PasswordResetSuccessState extends AuthState{}
 

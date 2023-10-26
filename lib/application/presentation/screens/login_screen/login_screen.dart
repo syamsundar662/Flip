@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
+import 'package:flip/application/presentation/screens/home_screen/home_screen.dart';
 import 'package:flip/application/presentation/screens/home_screen/home_shimmer.dart';
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/screens/signup_screen/signup_screen.dart';
@@ -215,9 +216,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           listener: (context, state) {
                             if (state.returnValue == 'google signin success') {
                               Navigator.pushAndRemoveUntil(
-                                  context,
+                                  context,       
                                   CupertinoPageRoute(
-                                      builder: (context) => HomePage()),
+                                      builder: (context) =>const RootScreen()),
                                   (route) => false);
                             } else {
                               log(state.returnValue);
@@ -225,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: InkWell(
                             onTap: () {
-                              context.read<AuthBloc>().add(SignUpWithGoogle());
+                              context.read<AuthBloc>().add(SignUpWithGoogleEvent());
                             },
                             child: Container(
                               height: screenFullHeight * .07,

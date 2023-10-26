@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -9,10 +11,12 @@ class AuthServices implements AuthRepository {
   @override
   Future<String> signUp(String email, String password) async {
     try {
+      final UserCredential userCredential =
       await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      userCredential.user!.sendEmailVerification(); 
       return 'success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -49,6 +53,29 @@ class AuthServices implements AuthRepository {
   }
 
   @override
+  Future<String> verifyEmail() async {
+    await FirebaseAuth.instance.currentUser!.reload();
+    final isEmailVerified =
+        FirebaseAuth.instance.currentUser?.emailVerified ?? false;
+    if (isEmailVerified) {
+      return 'varified';
+    } else {
+      Completer<String> completer = Completer<String>();
+      Timer.periodic(const Duration(seconds: 5), (timer) async {
+        if (FirebaseAuth.instance.currentUser == null) {
+          timer.cancel();
+          completer.complete('error');
+        }
+        await FirebaseAuth.instance.currentUser!.reload();
+        if (FirebaseAuth.instance.currentUser!.emailVerified) {
+          timer.cancel();
+          completer.complete('verified');
+        }
+      });
+      return completer.future;
+    }
+  }
+  @override
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
@@ -64,6 +91,7 @@ class AuthServices implements AuthRepository {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
+
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,

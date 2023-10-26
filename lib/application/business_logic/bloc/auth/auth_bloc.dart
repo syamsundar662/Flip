@@ -21,6 +21,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInEvent>(signInEvent);
 
     on<SignUpWithGoogle>(signUpWithGoogle);
+
+    on<VerifyWithEmail>(verifyWithEmail);
   }
 
   FutureOr<void> signUpEvent(SignUpEvent event, Emitter<AuthState> emit) async {
@@ -44,5 +46,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthState(isSaving: false, returnValue: ''));
     final String result = await authRepository.signinWithGoogle();
     emit(AuthState(isSaving: false, returnValue: result));
+  }
+
+  FutureOr<void> verifyWithEmail(VerifyWithEmail event, Emitter<AuthState> emit) {
+    final verifiedEmail = authRepository.verifyEmail();
+    if(verifiedEmail == 'verified'){
+      emit(verifyWithEmail());
+    }
   }
 }
