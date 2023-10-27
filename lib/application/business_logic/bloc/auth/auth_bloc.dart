@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/domain/models/login_in/login_model.dart';
@@ -17,6 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController passwordResetController = TextEditingController();
 
   AuthBloc(this.authRepository) : super(AuthInitial()) {
     on<SignUpEvent>(signUpEvent);
@@ -26,6 +25,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpWithGoogleEvent>(signUpWithGoogle);
 
     on<VerifyWithEmailEvent>(verifyWithEmail);
+
+    on<PasswordResetEvent>(passwordResetEvent);
   }
 
   FutureOr<void> signUpEvent(SignUpEvent event, Emitter<AuthState> emit) async {
@@ -66,5 +67,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (verifiedEmailResponse == AuthenticationResults.verificationSuccess) {
       emit(EmailVerifiedSuccessState());
     }
+  }
+
+  FutureOr<void> passwordResetEvent(
+      PasswordResetEvent event, Emitter<AuthState> emit) async {
+        emit(AuthLoadingState());
+    final String resetPasswordResponse =
+        await authRepository.resetPassword(event.email);
+      emit(PasswordResetSuccessState(response: resetPasswordResponse)); 
+    
   }
 }

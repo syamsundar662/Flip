@@ -6,6 +6,7 @@ import 'package:flip/application/presentation/widgets/elevated_button/elavated_b
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmailVerificaitonScreen extends StatelessWidget {
   const EmailVerificaitonScreen({super.key});
@@ -17,8 +18,16 @@ class EmailVerificaitonScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(gradient: mainGradient),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end ,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text('A verification Email have been sent to your email account',style: GoogleFonts.baloo2(fontSize: 25 ,fontWeight: FontWeight.bold),textAlign: TextAlign.center  ,),
+            kHeight10, 
+            Image.asset('assets/Daco_566588.png',scale: 4 ,), 
+            kHeight10,
+            Text('Please click on the link that has been sent to your email account to verify your email and continue sign in.',style: GoogleFonts.baloo2(fontSize: 15,fontWeight: FontWeight.w500 ),textAlign: TextAlign.center  ),
+            kHeight100, 
+            CupertinoActivityIndicator(), 
             BlocListener<AuthBloc, AuthState>(
               listener: (context, state) {
                 if (state is EmailVerifiedSuccessState) {
@@ -26,8 +35,9 @@ class EmailVerificaitonScreen extends StatelessWidget {
                       CupertinoPageRoute(builder: (context) => RootScreen()));
                 }
               },
-              child: ElevatedButtonWidget(
-                  onEvent: () {
+              child: TextButton(
+                child: Text('Please wait'),
+                  onPressed: () {
                     if (FirebaseAuth.instance.currentUser!.emailVerified) {
                       Navigator.push(
                           context,
@@ -37,11 +47,9 @@ class EmailVerificaitonScreen extends StatelessWidget {
                       print('not done');
                     }
                   },
-                  buttonTitle: Text('Verify and continue'),
-                  style: TextStyle(color: Colors.white),
-                  buttonStyles: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.blue))),
-            )
+                ),
+            ),
+            kHeight60 
           ],
         ),
       ),

@@ -1,5 +1,4 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
 import 'package:flip/application/presentation/screens/signup_screen/4_sign_in_email_verification.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
@@ -70,11 +69,14 @@ class SignUpWithEmail extends StatelessWidget {
                 padding: kPaddingForTextfield,
                 child: BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
-                   
                     if (state is AuthSuccessState &&
                         state.authResponse ==
                             AuthenticationResults.signUpSuccess) {
-                              Navigator.push(context, CupertinoPageRoute(builder: (context)=>const EmailVerificaitonScreen()));
+                      Navigator.push(
+                          context,  
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  const EmailVerificaitonScreen()));
                     }
                     if (state is AuthErrorState) {
                       if (state.authResponse ==
@@ -98,6 +100,13 @@ class SignUpWithEmail extends StatelessWidget {
                           type: AnimatedSnackBarType.error,
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
+                      } else if (state.authResponse ==
+                          AuthenticationResults.errorOccurs) {
+                        AnimatedSnackBar.material(
+                          state.authResponse.name,
+                          type: AnimatedSnackBarType.error,
+                          mobileSnackBarPosition: MobileSnackBarPosition.top,
+                        ).show(context);
                       }
                     }
                   },
@@ -108,7 +117,7 @@ class SignUpWithEmail extends StatelessWidget {
                       );
                     }
                     return ElevatedButtonWidget(
-                      onEvent: () async { 
+                      onEvent: () async {
                         _formkey.currentState!.validate();
                         if (authBlocProvider.emailController.text.isNotEmpty ||
                             createdPassword.isNotEmpty) {
@@ -133,88 +142,9 @@ class SignUpWithEmail extends StatelessWidget {
                   },
                 )),
             kHeight50,
-            BlocListener<AuthBloc, AuthState>(
-              listener: (context, state) { 
-
-                        // authBlocProvider.add(VerifyWithEmailEvent()) ; 
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const EmailVerificaitonScreen()));
-                if (state is EmailVerifiedSuccessState) {}
-              },
-              child: ElevatedButtonWidget(
-                onEvent: () async {
-                  if (FirebaseAuth.instance.currentUser?.emailVerified ??
-                      false) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const EmailVerificaitonScreen()));
-                  }
-                },
-                buttonTitle: const Text(
-                  "Continue",
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: const TextStyle(color: Colors.white),
-                buttonStyles: ButtonStyle(
-                  backgroundColor: const MaterialStatePropertyAll(
-                      Color.fromARGB(255, 41, 87, 195)),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15))),
-                ),
-              ),
-            )
           ]),
         ),
       ),
     );
   }
 }
-
-//  else if (state.authResponse == AuthenticationResults.alreadyRegisteredEmail) {
-//                       AnimatedSnackBar.material(
-//                         state.returnValue,
-//                         type: AnimatedSnackBarType.error,
-//                         mobileSnackBarPosition: MobileSnackBarPosition.top,
-//                       ).show(context);
-//                     } else if (state.returnValue == 'Sign up failed') {
-//                       AnimatedSnackBar.material(
-//                         state.returnValue,
-//                         type: AnimatedSnackBarType.error,
-//                         mobileSnackBarPosition: MobileSnackBarPosition.top,
-//                       ).show(context);
-//                     } else if (state.returnValue == 'Invalid email') {
-//                       AnimatedSnackBar.material(
-//                         state.returnValue,
-//                         type: AnimatedSnackBarType.error,
-//                         mobileSnackBarPosition: MobileSnackBarPosition.top,
-//                       ).show(context);
-//                     }
-
-// else if (state.returnValue ==
-//                           'Email already registered') {
-//                         AnimatedSnackBar.material(
-//                           state.returnValue,
-//                           type: AnimatedSnackBarType.error,
-//                           mobileSnackBarPosition: MobileSnackBarPosition.top,
-//                         ).show(context);
-//                       }
-// else if (state.returnValue == 'Sign up failed') {
-//                         AnimatedSnackBar.material(
-//                           state.returnValue,
-//                           type: AnimatedSnackBarType.error,
-//                           mobileSnackBarPosition: MobileSnackBarPosition.top,
-//                         ).show(context);
-//                       } else if (state.returnValue == 'Invalid email') {
-//                         AnimatedSnackBar.material(
-//                           state.returnValue,
-//                           type: AnimatedSnackBarType.error,
-//                           mobileSnackBarPosition: MobileSnackBarPosition.top,
-//                         ).show(context);
-//                       }
-
-// else if (emailController.text.isNotEmpty ||
-//                             passwordController.text.isNotEmpty ||
-//                             confirmPasswordController.text.isNotEmpty) {
-//                           context.read<AuthBloc>().add(SignUpEvent(
-//                               emailController.text.trim(),
-//                               passwordController.text.trim()));
-//                         }

@@ -45,7 +45,7 @@ class SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authBlocProvider= context.read<AuthBloc>();
+    final authBlocProvider = context.read<AuthBloc>();
     return Scaffold(
       body: Container(
         height: screenFullHeight,
@@ -94,7 +94,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                         filledColor: const Color.fromARGB(50, 158, 158, 158),
                         hintText: 'Create new password',
                         controller: authBlocProvider.passwordController,
-                        suffixIconWidget: obscureTxt  ? IconButton(
+                        suffixIconWidget: obscureTxt
+                            ? IconButton(
                                 highlightColor: Colors.transparent,
                                 onPressed: () {
                                   setState(() {
@@ -133,53 +134,55 @@ class SignUpScreenState extends State<SignUpScreen> {
                         filledColor: const Color.fromARGB(50, 158, 158, 158),
                         hintText: 'Confirm password',
                         controller: authBlocProvider.confirmPasswordController,
-                       
                       ),
                     ],
                   ),
                 ),
               ),
               kHeight10,
-
-
               Padding(
-                padding: kPaddingForTextfield,
-                 child:
-                  ElevatedButtonWidget(
-                      onEvent: () async {
-                        _formkey.currentState!.validate();
+                  padding: kPaddingForTextfield,
+                  child: ElevatedButtonWidget(
+                    onEvent: () async {
+                      _formkey.currentState!.validate();
 
-                       if (authBlocProvider.passwordController.text.length < 6 ) {
+                      if (authBlocProvider.passwordController.text.length < 6) {
                         HapticFeedback.heavyImpact();
                         AnimatedSnackBar.material(
-                           'Weak password', 
+                          'Weak password',
                           type: AnimatedSnackBarType.error,
-                          mobileSnackBarPosition: MobileSnackBarPosition.top, 
+                          mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
-                      }
-                       else if ( authBlocProvider.passwordController.text !=
-                            authBlocProvider.confirmPasswordController.text) {
-                          AnimatedSnackBar.material(
-                            'Confirm password does\'nt match',
-                            type: AnimatedSnackBarType.error,
-                            mobileSnackBarPosition: MobileSnackBarPosition.top,
-                          ).show(context); 
-                        }  else { 
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpWithEmail(createdPassword: authBlocProvider.confirmPasswordController.text.trim(),)));
-                        }
-                      },
-                      buttonTitle : const Text(
-                              "Continue",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                      style: const TextStyle(color: Colors.white),
-                      buttonStyles: ButtonStyle(
-                        backgroundColor: const MaterialStatePropertyAll(
-                            Color.fromARGB(255, 41, 87, 195)),
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15))),
-                      ),)),
-              
+                      } else if (authBlocProvider.passwordController.text !=
+                          authBlocProvider.confirmPasswordController.text) {
+                        AnimatedSnackBar.material(
+                          'Confirm password does not match',
+                          type: AnimatedSnackBarType.error,
+                          mobileSnackBarPosition: MobileSnackBarPosition.top,
+                        ).show(context);
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute( 
+                                builder: (context) => SignUpWithEmail(
+                                      createdPassword: authBlocProvider
+                                          .confirmPasswordController.text
+                                          .trim(),
+                                    )));
+                      } 
+                    },
+                    buttonTitle: const Text(
+                      "Continue",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    buttonStyles: ButtonStyle(
+                      backgroundColor: const MaterialStatePropertyAll(
+                          Color.fromARGB(255, 41, 87, 195)),
+                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                    ),
+                  )),
               kHeight40,
               InkWell(
                 onTap: () {
@@ -188,8 +191,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                       CupertinoPageRoute(
                           builder: (context) => const LoginScreen()),
                       (route) => false);
-                  emailController.clear();
-                  passwordController.clear();
                 },
                 child: const Text(
                   'Already have an account?',

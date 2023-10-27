@@ -17,5 +17,8 @@ class AuthErrorState extends AuthState{
 }
 class EmailVerifiedSuccessState extends AuthState{}
 
-class PasswordResetSuccessState extends AuthState{}
+class PasswordResetSuccessState extends AuthState{
+  final String response;
+  PasswordResetSuccessState({required this.response});
+}
 

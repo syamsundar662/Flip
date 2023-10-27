@@ -1,12 +1,12 @@
-import 'dart:developer';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/home_screen/home_screen.dart';
-import 'package:flip/application/presentation/screens/home_screen/home_shimmer.dart';
+import 'package:flip/application/presentation/screens/forgot_password_screen.dart/forgot_password.dart';
+import 'package:flip/application/presentation/screens/forgot_password_screen.dart/forgot_password_screen_step_one.dart';
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/screens/signup_screen/2_password_creation_screen.dart';
 import 'package:flip/application/presentation/screens/signup_screen/1_username_creation_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/application/presentation/utils/validations/snackbars/snackbars.dart';
 import 'package:flip/application/presentation/widgets/animations/animated_opactity.dart';
 import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         height: screenFullHeight,
         width: screenFullWidth,
-        decoration: const BoxDecoration(gradient: mainGradient),
+        decoration:  BoxDecoration(gradient: mainGradient),
         child: Form(
           key: _formkey,
           child: Column(
@@ -64,17 +64,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         slideAnimationWidgetVariable: Text(
                           'Flip',
                           style: GoogleFonts.baloo2(
-                              fontSize: 60,
+                              fontSize: 58,
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
                         ),
                       ),
                     )),
               ),
-
-
-
-
+              
+              
+              
+              
               AnimatedOpacityWidget(
                 isVisible: isVisible,
                 animatedOpacityWidgetVariable: SlideAnimationWidget(
@@ -138,7 +138,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 color:
                                     const Color.fromARGB(102, 255, 255, 255)),
-                      ),
+                      ),kHeight10, 
+                       Padding(
+                        padding: kPaddingForTextfield, 
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end ,
+                          children: [
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(context, CupertinoPageRoute(builder: (context)=>ForgotPasswordScreenStepOne()));
+                              },
+                              child: Text('Forgot password? ',style: TextStyle(color: Colors.white),)),
+                          ],
+                        ),
+                      ), 
                       kHeight10,
                       Padding(
                         padding: kPaddingForTextfield,
@@ -150,19 +163,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   CupertinoPageRoute(
                                       builder: (context) => const RootScreen()),
                                   (route) => false);
-                              emailController.clear();
+                              emailController.clear();  
                               passwordController.clear();
                             } if(state is AuthErrorState){
-                              if(state.authResponse == AuthenticationResults.invalidEmail){
-                                AnimatedSnackBar.material(state.authResponse.name, type: AnimatedSnackBarType.error);
-                              }
-                              else if(state.authResponse == AuthenticationResults.wrongPassword){
-                                AnimatedSnackBar.material(state.authResponse.name, type: AnimatedSnackBarType.error);
-                              }
-                              else if(state.authResponse == AuthenticationResults.userNotFound){
-                                AnimatedSnackBar.material(state.authResponse.name, type: AnimatedSnackBarType.error);
-                              }
-                            }
+                              validationSnackbars(context: context, authResult: state.authResponse);
+                            } 
                           },
                           child: ElevatedButtonWidget(
                               onEvent: () async {
@@ -176,9 +181,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return Exception('Something went wrong');
                                 }
                               },
-                              buttonTitle: Text(
+                              buttonTitle: const Text(
                                       "Login",
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: Colors.white,fontSize: 16),
                                     ),
                               style: const TextStyle(color: Colors.white),
                               buttonStyles: ButtonStyle(
@@ -201,48 +206,59 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: kPaddingForTextfield,
                     child: Column(
                       children: [
-                        // BlocListener<AuthBloc, AuthState>(
-                        //   listener: (context, state) {
-                        //     if (state.returnValue == 'google signin success') {
-                        //       Navigator.pushAndRemoveUntil(
-                        //           context,       
-                        //           CupertinoPageRoute(
-                        //               builder: (context) =>const RootScreen()),
-                        //           (route) => false);
-                        //     } else {
-                        //       log(state.returnValue);
-                        //     }
-                        //   },
-                        //   child: InkWell(
-                        //     onTap: () {
-                        //       context.read<AuthBloc>().add(SignUpWithGoogleEvent());
-                        //     },
-                        //     child: Container(
-                        //       height: screenFullHeight * .07,
-                        //       width: screenFullWidth,
-                        //       decoration: BoxDecoration(
-                        //           color: Colors.white,
-                        //           borderRadius: BorderRadius.circular(15),
-                        //           image: const DecorationImage(
-                        //               alignment: Alignment(-0.65, 0.0),
-                        //               image: AssetImage(
-                        //                 'assets/Google__G__Logo 1 (1).png',
-                        //               ),
-                        //               scale: 15)),
-                        //       child: const Align(
-                        //         alignment: Alignment(0.2, 0.0),
-                        //         child: Text(
-                        //           'Sign in using google',
-                        //           style: TextStyle(
-                        //               fontSize: 18,
-                        //               fontWeight: FontWeight.w400,
-                        //               color: Colors.black),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        kHeight30,
+                        BlocListener<AuthBloc, AuthState>(
+                          listenWhen: (previous,current)=> current is AuthSuccessState,
+                          listener: (context, state) {
+                            if(state is AuthErrorState){
+                              print(state.authResponse ); 
+                            }
+                            state as AuthSuccessState;
+                            if (AuthenticationResults.googleSignInSuccess == state.authResponse) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,       
+                                  CupertinoPageRoute(
+                                      builder: (context) =>const RootScreen()),
+                                  (route) => false);
+                            } else if(AuthenticationResults.newUser == state.authResponse){
+                              Navigator.pushAndRemoveUntil(
+                                  context,       
+                                  CupertinoPageRoute(
+                                      builder: (context) => UsernameRegistration()),
+                                  (route) => false);
+                            }else if(AuthenticationResults.googleSignInFailed ==state.authResponse){
+                              print(state.authResponse); 
+                            }
+                          },
+                          child: InkWell(
+                            onTap: () {
+                              context.read<AuthBloc>().add(SignUpWithGoogleEvent());
+                            },
+                            child: Container(
+                              height: screenFullHeight * .07,
+                              width: screenFullWidth,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: const DecorationImage(
+                                      alignment: Alignment(-0.65, 0.0),
+                                      image: AssetImage(
+                                        'assets/Google__G__Logo 1 (1).png',
+                                      ),
+                                      scale: 15)),
+                              child: const Align(
+                                alignment: Alignment(0.2, 0.0),
+                                child: Text(
+                                  'Sign in using google',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        kHeight20,
                         InkWell(
                           onTap: () {
                             Navigator.pushAndRemoveUntil(
@@ -264,8 +280,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-
-
+              
+              
               kHeight30, 
             ],
           ),
@@ -273,13 +289,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
- 
-  // AnimatedSnackBar animatedSnackbar(
-  //     AuthState state, AnimatedSnackBarType type) {
-  //   return AnimatedSnackBar.material(
-  //     state.returnValue,
-  //     type: type,
-  //     mobileSnackBarPosition: MobileSnackBarPosition.top,
-  //   );
-  // }
 }

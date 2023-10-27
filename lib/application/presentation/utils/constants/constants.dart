@@ -46,7 +46,9 @@ userNotFound,
 loginFailed,
 googleSignInSuccess,
 googleSignInFailed,
-googleSignInVerified
+googleSignInVerified,
+newUser,
+passwordResetSuccess
 
  }
  

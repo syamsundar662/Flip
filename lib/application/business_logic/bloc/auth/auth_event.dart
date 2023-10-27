@@ -19,4 +19,7 @@ class EmailVarificationPopUp extends AuthState{}
 
 class VerifyWithEmailEvent extends AuthEvent{}
 
-class PasswordResetEvent extends AuthEvent{}
+class PasswordResetEvent extends AuthEvent{
+  final String email;
+  PasswordResetEvent({required this.email});
+}

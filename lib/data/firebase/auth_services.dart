@@ -20,7 +20,7 @@ class AuthServices implements AuthRepository {
         password: signUp.password,
       );
       userCredential.user!.sendEmailVerification();
-      return AuthenticationResults.success;
+      return AuthenticationResults.signUpSuccess;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return AuthenticationResults.weakPassword;
@@ -31,6 +31,8 @@ class AuthServices implements AuthRepository {
       } else {
         return AuthenticationResults.somethingWentWrong;
       }
+    }catch (e){
+      return AuthenticationResults.errorOccurs;
     }
   }
 
@@ -105,6 +107,18 @@ class AuthServices implements AuthRepository {
       return AuthenticationResults.googleSignInSuccess;
     } catch (e) {
       return AuthenticationResults.googleSignInFailed;
+    }
+  }
+
+  @override
+  Future<String> resetPassword(String email)async{
+    try{
+  await _firebaseAuth.sendPasswordResetEmail(email: email);
+  return 'passwordResetSuccess';
+    } catch(e){
+      return 'Error sending password reseting email $e' ; 
+      // return AuthenticationResults.somethingWentWrong ;
+
     }
   }
 }
