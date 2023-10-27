@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/domain/models/login_in/login_model.dart';
+import 'package:flip/domain/models/sign_up/sign_up_model.dart';
 import 'package:flip/domain/repositories/auth_repo/auth_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -18,40 +21,50 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this.authRepository) : super(AuthInitial()) {
     on<SignUpEvent>(signUpEvent);
 
-    on<SignInEvent>(signInEvent);
+    on<LogInEvent>(signInEvent);
 
-    on<SignUpWithGoogle>(signUpWithGoogle);
+    on<SignUpWithGoogleEvent>(signUpWithGoogle);
 
-    on<VerifyWithEmail>(verifyWithEmail);
+    on<VerifyWithEmailEvent>(verifyWithEmail);
   }
 
   FutureOr<void> signUpEvent(SignUpEvent event, Emitter<AuthState> emit) async {
-    emit(AuthState(isSaving: true, returnValue: ''));
-    final authenticationResult =
-        await authRepository.signUp(event.email, event.password);
-        log(authenticationResult);
-    emit(AuthState(isSaving: false, returnValue: authenticationResult));
+    emit(AuthLoadingState());
+    final AuthenticationResults signUpResponse =
+        await authRepository.signUp(event.signUp);
+    if (signUpResponse == AuthenticationResults.signUpSuccess) {
+      emit(AuthSuccessState(authResponse: signUpResponse));
+    } else {
+      emit(AuthErrorState(authResponse: signUpResponse));
+    }
   }
 
-  FutureOr<void> signInEvent(SignInEvent event, Emitter<AuthState> emit) async {
-    emit(AuthState(isSaving: true, returnValue: '', isLogin: true));
-    final signInAuthenthication =
-        await authRepository.signIn(event.email, event.password);
-    emit(AuthState(
-        isSaving: false, returnValue: signInAuthenthication, isLogin: true));
+  FutureOr<void> signInEvent(LogInEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoadingState());
+    final AuthenticationResults logInResponse =
+        await authRepository.signIn(event.logIn);
+
+    logInResponse == AuthenticationResults.logInSuccess
+        ? emit(AuthSuccessState(authResponse: logInResponse))
+        : emit(AuthErrorState(authResponse: logInResponse));
   }
 
   FutureOr<void> signUpWithGoogle(
-      SignUpWithGoogle event, Emitter<AuthState> emit) async {
-    emit(AuthState(isSaving: false, returnValue: ''));
-    final String result = await authRepository.signinWithGoogle();
-    emit(AuthState(isSaving: false, returnValue: result));
+      SignUpWithGoogleEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoadingState());
+    final AuthenticationResults googleSignInResponse =
+        await authRepository.signInWithGoogle();
+    googleSignInResponse == AuthenticationResults.googleSignInSuccess
+        ? emit(AuthSuccessState(authResponse: googleSignInResponse))
+        : emit(AuthErrorState(authResponse: googleSignInResponse));
   }
 
-  FutureOr<void> verifyWithEmail(VerifyWithEmail event, Emitter<AuthState> emit) {
-    final verifiedEmail = authRepository.verifyEmail();
-    if(verifiedEmail == 'verified'){
-      emit(verifyWithEmail());
+  FutureOr<void> verifyWithEmail(
+      VerifyWithEmailEvent event, Emitter<AuthState> emit) async {
+    final AuthenticationResults verifiedEmailResponse =
+        await authRepository.verifyEmail();
+    if (verifiedEmailResponse == AuthenticationResults.verificationSuccess) {
+      emit(EmailVerifiedSuccessState());
     }
   }
 }

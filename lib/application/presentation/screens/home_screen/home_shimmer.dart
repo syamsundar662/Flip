@@ -2,7 +2,7 @@ import 'package:flip/data/firebase/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
-import 'package:flip/application/presentation/utils/constants.dart';
+import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 
 class HomePage extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:flip/application/presentation/screens/signup_screen/email_varification.dart';
+import 'package:flip/application/presentation/screens/signup_screen/3_email_validation_screen.dart';
 import 'package:flip/application/presentation/widgets/animations/animated_opactity.dart';
 import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
 import 'package:flutter/services.dart';
@@ -8,9 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
-import 'package:flip/application/presentation/widgets/elavated_button_widgets.dart';
+import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/utils/constants.dart';
+import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 TextEditingController emailController = TextEditingController();
@@ -163,16 +163,12 @@ class SignUpScreenState extends State<SignUpScreen> {
                             'Confirm password does\'nt match',
                             type: AnimatedSnackBarType.error,
                             mobileSnackBarPosition: MobileSnackBarPosition.top,
-                          ).show(context);
+                          ).show(context); 
                         }  else { 
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpWithEmail(createdPassword: authBlocProvider.confirmPasswordController.text.trim(),)));
                         }
                       },
-                      buttonTitle 
-                          // ? const CupertinoActivityIndicator(
-                          //     color: Colors.white,
-                          //   )
-                          : const Text(
+                      buttonTitle : const Text(
                               "Continue",
                               style: TextStyle(color: Colors.white),
                             ),

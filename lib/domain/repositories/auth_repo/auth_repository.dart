@@ -1,9 +1,13 @@
 
+import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/domain/models/login_in/login_model.dart';
+import 'package:flip/domain/models/sign_up/sign_up_model.dart';
+
 abstract class AuthRepository{
 
-  Future<String> signUp(String email, String password);
-  Future<String> signIn(String email, String password);
-  Future<String> verifyEmail(); 
+  Future<AuthenticationResults> signUp(SignUpModel signUp);
+  Future<AuthenticationResults> signIn(LogInModel logIn);
+  Future<AuthenticationResults> verifyEmail(); 
   Future<void> signOut() ;
-  signinWithGoogle();
+  Future<AuthenticationResults> signInWithGoogle();
 }

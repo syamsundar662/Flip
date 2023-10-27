@@ -1,4 +1,4 @@
-import 'package:flip/application/presentation/utils/constants.dart';
+import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {

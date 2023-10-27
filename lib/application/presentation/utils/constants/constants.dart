@@ -30,3 +30,23 @@ const Gradient mainGradient =  LinearGradient(
  const kWIdth40 = SizedBox(width: 40,);
 
  const kPaddingForTextfield = EdgeInsets.only(left: 35,right: 35);
+
+ enum AuthenticationResults {
+success,
+errorOccurs,
+invalidEmail,
+logInSuccess,
+signUpSuccess,
+verificationSuccess,
+wrongPassword,
+weakPassword,
+alreadyRegisteredEmail,
+somethingWentWrong,
+userNotFound,
+loginFailed,
+googleSignInSuccess,
+googleSignInFailed,
+googleSignInVerified
+
+ }
+ 

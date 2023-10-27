@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/domain/models/login_in/login_model.dart';
+import 'package:flip/domain/models/sign_up/sign_up_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../domain/repositories/auth_repo/auth_repository.dart';
@@ -9,98 +12,99 @@ class AuthServices implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
-  Future<String> signUp(String email, String password) async {
+  Future<AuthenticationResults> signUp(SignUpModel signUp) async {
     try {
       final UserCredential userCredential =
-      await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+          await _firebaseAuth.createUserWithEmailAndPassword(
+        email: signUp.email,
+        password: signUp.password,
       );
-      userCredential.user!.sendEmailVerification(); 
-      return 'success';
+      userCredential.user!.sendEmailVerification();
+      return AuthenticationResults.success;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return 'Weak password';
+        return AuthenticationResults.weakPassword;
       } else if (e.code == 'email-already-in-use') {
-        return 'Email already registered';
+        return AuthenticationResults.alreadyRegisteredEmail;
       } else if (e.code == 'invalid-email') {
-        return 'Invalid email';
+        return AuthenticationResults.invalidEmail;
       } else {
-        return 'Something went wrong';
+        return AuthenticationResults.somethingWentWrong;
       }
     }
   }
 
   @override
-  Future<String> signIn(String email, String password) async {
+  Future<AuthenticationResults> signIn(LogInModel logIn) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: logIn.email,
+        password: logIn.password,
       );
-      return "log in success";
+      return AuthenticationResults.signUpSuccess;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        return 'invalid email';
+        return AuthenticationResults.invalidEmail;
       } else if (e.code == 'user-not-found') {
-        return 'user not found';
+        return AuthenticationResults.userNotFound;
       } else if (e.code == 'wrong-password') {
-        return 'wrong password';
+        return AuthenticationResults.wrongPassword;
       } else {
-        return 'log in failed: ${e.toString()}';
+        return AuthenticationResults.loginFailed;
       }
     }
   }
 
   @override
-  Future<String> verifyEmail() async {
+  Future<AuthenticationResults> verifyEmail() async {
     await FirebaseAuth.instance.currentUser!.reload();
     final isEmailVerified =
         FirebaseAuth.instance.currentUser?.emailVerified ?? false;
     if (isEmailVerified) {
-      return 'varified';
+      return AuthenticationResults.verificationSuccess;
     } else {
-      Completer<String> completer = Completer<String>();
+      Completer<AuthenticationResults> completer =
+          Completer<AuthenticationResults>();
       Timer.periodic(const Duration(seconds: 5), (timer) async {
         if (FirebaseAuth.instance.currentUser == null) {
           timer.cancel();
-          completer.complete('error');
+          completer.complete(AuthenticationResults.errorOccurs);
         }
         await FirebaseAuth.instance.currentUser!.reload();
         if (FirebaseAuth.instance.currentUser!.emailVerified) {
           timer.cancel();
-          completer.complete('verified');
+          completer.complete(AuthenticationResults.verificationSuccess);
         }
       });
       return completer.future;
     }
   }
+
   @override
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
-      GoogleSignIn().signOut(); 
+      GoogleSignIn().signOut();
     } catch (e) {
       throw Exception('Sign out failed');
     }
   }
 
   @override
-  signinWithGoogle() async {
+  signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
-
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
-      return 'google signin success';
+      return AuthenticationResults.googleSignInSuccess;
     } catch (e) {
-      return 'failed to sign in';
+      return AuthenticationResults.googleSignInFailed;
     }
   }
 }
