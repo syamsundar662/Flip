@@ -1,10 +1,8 @@
-import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'dart:developer';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/forgot_password_screen.dart/forgot_password.dart';
-import 'package:flip/application/presentation/screens/forgot_password_screen.dart/forgot_password_screen_step_one.dart';
+import 'package:flip/application/presentation/screens/forgot_password_sections/forgot_password_step_one/forgot_password_screen_step_one.dart';
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
-import 'package:flip/application/presentation/screens/signup_screen/2_password_creation_screen.dart';
-import 'package:flip/application/presentation/screens/signup_screen/1_username_creation_screen.dart';
+import 'package:flip/application/presentation/screens/signup_section/username_creation/username_creation_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/validations/snackbars/snackbars.dart';
 import 'package:flip/application/presentation/widgets/animations/animated_opactity.dart';
@@ -50,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         height: screenFullHeight,
         width: screenFullWidth,
-        decoration:  BoxDecoration(gradient: mainGradient),
+        decoration: const BoxDecoration(gradient: mainGradient),
         child: Form(
           key: _formkey,
           child: Column(
@@ -71,10 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     )),
               ),
-              
-              
-              
-              
               AnimatedOpacityWidget(
                 isVisible: isVisible,
                 animatedOpacityWidgetVariable: SlideAnimationWidget(
@@ -107,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscure: obscureTxt,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            HapticFeedback.heavyImpact ();
+                            HapticFeedback.heavyImpact();
                             return 'Please enter a password';
                           } else {
                             return null;
@@ -138,53 +132,78 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 color:
                                     const Color.fromARGB(102, 255, 255, 255)),
-                      ),kHeight10, 
-                       Padding(
-                        padding: kPaddingForTextfield, 
+                      ),
+                      kHeight10,
+                      Padding(
+                        padding: kPaddingForTextfield,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end ,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             InkWell(
-                              onTap: (){
-                                Navigator.push(context, CupertinoPageRoute(builder: (context)=>ForgotPasswordScreenStepOne()));
-                              },
-                              child: Text('Forgot password? ',style: TextStyle(color: Colors.white),)),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) =>
+                                              const ForgotPasswordScreenStepOne()));
+                                },
+                                child: const Text(
+                                  'Forgot password? ',
+                                  style: TextStyle(color: Colors.white),
+                                )),
                           ],
                         ),
-                      ), 
+                      ),
                       kHeight10,
                       Padding(
                         padding: kPaddingForTextfield,
                         child: BlocListener<AuthBloc, AuthState>(
-                          listener: (context, state) {
-                            if (state is AuthSuccessState && state.authResponse == AuthenticationResults.logInSuccess) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) => const RootScreen()),
-                                  (route) => false);
-                              emailController.clear();  
-                              passwordController.clear();
-                            } if(state is AuthErrorState){
-                              validationSnackbars(context: context, authResult: state.authResponse);
-                            } 
-                          },
-                          child: ElevatedButtonWidget(
+                            listener: (context, state) {
+                              print(state);
+                              if (state is AuthSuccessState &&
+                                  state.authResponse ==
+                                      AuthenticationResults.logInSuccess) {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) =>
+                                            const RootScreen()),
+                                    (route) => false);
+
+                                authBlocProvider.passwordController.clear();
+                              }
+                              if (state is AuthErrorState) {
+                                validationSnackbars(
+                                    context: context,
+                                    authResult: state.authResponse);
+                              }
+                            },
+                            child: ElevatedButtonWidget(
                               onEvent: () async {
                                 _formkey.currentState!.validate();
-                                if (authBlocProvider.emailController.text.isNotEmpty ||
-                                   authBlocProvider.passwordController.text.isNotEmpty) {
-                                    final response = LogInModel(email: authBlocProvider.emailController.text, password: authBlocProvider.passwordController.text);
-                                  context.read<AuthBloc>().add(LogInEvent(logIn:response ));
+                                if (authBlocProvider
+                                        .emailController.text.isNotEmpty ||
+                                    authBlocProvider
+                                        .passwordController.text.isNotEmpty) {
+                                  final response = LogInModel(
+                                      email:
+                                          authBlocProvider.emailController.text,
+                                      password: authBlocProvider
+                                          .passwordController.text);
+                                  context
+                                      .read<AuthBloc>()
+                                      .add(LogInEvent(logIn: response));
+                                  log('success');
                                 } else {
-                                     HapticFeedback.heavyImpact();  
+                                  HapticFeedback.heavyImpact();
                                   return Exception('Something went wrong');
                                 }
                               },
                               buttonTitle: const Text(
-                                      "Login",
-                                      style: TextStyle(color: Colors.white,fontSize: 16),
-                                    ),
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
                               style: const TextStyle(color: Colors.white),
                               buttonStyles: ButtonStyle(
                                   backgroundColor:
@@ -194,8 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(15)))),
-                            )
-                        ),
+                            )),
                       ),
                     ],
                   ),
@@ -203,86 +221,87 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               kHeight10,
               Padding(
-                    padding: kPaddingForTextfield,
-                    child: Column(
-                      children: [
-                        BlocListener<AuthBloc, AuthState>(
-                          listenWhen: (previous,current)=> current is AuthSuccessState,
-                          listener: (context, state) {
-                            if(state is AuthErrorState){
-                              print(state.authResponse ); 
-                            }
-                            state as AuthSuccessState;
-                            if (AuthenticationResults.googleSignInSuccess == state.authResponse) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,       
-                                  CupertinoPageRoute(
-                                      builder: (context) =>const RootScreen()),
-                                  (route) => false);
-                            } else if(AuthenticationResults.newUser == state.authResponse){
-                              Navigator.pushAndRemoveUntil(
-                                  context,       
-                                  CupertinoPageRoute(
-                                      builder: (context) => UsernameRegistration()),
-                                  (route) => false);
-                            }else if(AuthenticationResults.googleSignInFailed ==state.authResponse){
-                              print(state.authResponse); 
-                            }
-                          },
-                          child: InkWell(
-                            onTap: () {
-                              context.read<AuthBloc>().add(SignUpWithGoogleEvent());
-                            },
-                            child: Container(
-                              height: screenFullHeight * .07,
-                              width: screenFullWidth,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: const DecorationImage(
-                                      alignment: Alignment(-0.65, 0.0),
-                                      image: AssetImage(
-                                        'assets/Google__G__Logo 1 (1).png',
-                                      ),
-                                      scale: 15)),
-                              child: const Align(
-                                alignment: Alignment(0.2, 0.0),
-                                child: Text(
-                                  'Sign in using google',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                                ),
-                              ),
+                padding: kPaddingForTextfield,
+                child: Column(
+                  children: [
+                    BlocListener<AuthBloc, AuthState>(
+                      listenWhen: (previous, current) =>
+                          current is AuthSuccessState,
+                      listener: (context, state) {
+                        if (state is AuthErrorState) {
+                          print(state.authResponse);
+                        }
+                        state as AuthSuccessState;
+                        if (AuthenticationResults.googleSignInSuccess ==
+                            state.authResponse) {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => const RootScreen()),
+                              (route) => false);
+                        } else if (AuthenticationResults.newUser ==
+                            state.authResponse) {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => UsernameRegistration()),
+                              (route) => false);
+                        } else if (AuthenticationResults.googleSignInFailed ==
+                            state.authResponse) {
+                          print(state.authResponse);
+                        }
+                      },
+                      child: InkWell(
+                        onTap: () {
+                          context.read<AuthBloc>().add(SignUpWithGoogleEvent());
+                        },
+                        child: Container(
+                          height: screenFullHeight * .07,
+                          width: screenFullWidth,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              image: const DecorationImage(
+                                  alignment: Alignment(-0.65, 0.0),
+                                  image: AssetImage(
+                                    'assets/Google__G__Logo 1 (1).png',
+                                  ),
+                                  scale: 15)),
+                          child: const Align(
+                            alignment: Alignment(0.2, 0.0),
+                            child: Text(
+                              'Sign in using google',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black),
                             ),
                           ),
                         ),
-                        kHeight20,
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (context) =>
-                                        UsernameRegistration()),
-                                (route) => false);
-                          },
-                          child: const Text(
-                  'Dont have an account? Create',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-              
-              
-              kHeight30, 
+                    kHeight20,
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => UsernameRegistration()),
+                            (route) => false);
+                      },
+                      child: const Text(
+                        'Dont have an account? Create',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              kHeight30,
             ],
           ),
         ),

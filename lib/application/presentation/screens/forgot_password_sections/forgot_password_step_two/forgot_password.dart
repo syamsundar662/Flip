@@ -1,6 +1,5 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flutter/cupertino.dart';

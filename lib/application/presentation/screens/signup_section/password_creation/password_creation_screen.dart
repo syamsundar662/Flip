@@ -1,7 +1,6 @@
-import 'package:flip/application/presentation/screens/signup_screen/3_email_validation_screen.dart';
+import 'package:flip/application/presentation/screens/signup_section/email_verification/email_validation_screen.dart';
 import 'package:flip/application/presentation/widgets/animations/animated_opactity.dart';
 import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,10 +11,6 @@ import 'package:flip/application/presentation/widgets/elevated_button/elavated_b
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
-TextEditingController confirmPasswordController = TextEditingController();
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({
@@ -144,31 +139,30 @@ class SignUpScreenState extends State<SignUpScreen> {
                   padding: kPaddingForTextfield,
                   child: ElevatedButtonWidget(
                     onEvent: () async {
-                      _formkey.currentState!.validate();
-
+                     if(!_formkey.currentState!.validate()) return;
+                     print("object"); 
                       if (authBlocProvider.passwordController.text.length < 6) {
-                        HapticFeedback.heavyImpact();
+                        // HapticFeedback.heavyImpact();
                         AnimatedSnackBar.material(
                           'Weak password',
                           type: AnimatedSnackBarType.error,
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
-                      } else if (authBlocProvider.passwordController.text !=
+                      } 
+                      else if (authBlocProvider.passwordController.text !=
                           authBlocProvider.confirmPasswordController.text) {
                         AnimatedSnackBar.material(
                           'Confirm password does not match',
                           type: AnimatedSnackBarType.error,
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
-                      } else {
+                      } 
+                      else {
+                        // final confirmPassword = authBlocProvider.confirmPasswordController.text;
                         Navigator.push(
                             context,
-                            MaterialPageRoute( 
-                                builder: (context) => SignUpWithEmail(
-                                      createdPassword: authBlocProvider
-                                          .confirmPasswordController.text
-                                          .trim(),
-                                    )));
+                            MaterialPageRoute(  
+                                builder: (context) => EmailValidationScreen())); 
                       } 
                     },
                     buttonTitle: const Text(

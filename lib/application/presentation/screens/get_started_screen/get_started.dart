@@ -1,5 +1,5 @@
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
-import 'package:flip/application/presentation/screens/signup_screen/1_username_creation_screen.dart';
+import 'package:flip/application/presentation/screens/signup_section/username_creation/username_creation_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';

@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flip/application/presentation/screens/home_screen/home_screen.dart';
 import 'package:flip/application/presentation/screens/notification_screen/notification_screen.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
-import 'package:flip/application/presentation/screens/profile_screen.dart/profile_screen.dart';
-import 'package:flip/application/presentation/screens/search_screen.dart/search_screen.dart';
+import 'package:flip/application/presentation/screens/profile_screen/profile_screen.dart';
+import 'package:flip/application/presentation/screens/search_screen/search_screen.dart';
 part 'bottom_nav_bar_event.dart';
 part 'bottom_nav_bar_state.dart';
 

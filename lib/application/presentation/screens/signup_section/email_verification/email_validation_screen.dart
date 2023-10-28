@@ -1,6 +1,6 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/signup_screen/4_sign_in_email_verification.dart';
+import 'package:flip/application/presentation/screens/signup_section/emal_verification/email_verification_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
@@ -10,10 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignUpWithEmail extends StatelessWidget {
-  SignUpWithEmail({super.key, required this.createdPassword});
+class EmailValidationScreen extends StatelessWidget {
+  EmailValidationScreen({super.key,});
   final _formkey = GlobalKey<FormState>();
-  final String createdPassword;
   @override
   Widget build(BuildContext context) {
     final authBlocProvider = context.read<AuthBloc>();
@@ -120,10 +119,10 @@ class SignUpWithEmail extends StatelessWidget {
                       onEvent: () async {
                         _formkey.currentState!.validate();
                         if (authBlocProvider.emailController.text.isNotEmpty ||
-                            createdPassword.isNotEmpty) {
+                            authBlocProvider.passwordController.text.isNotEmpty) { 
                           final signUp = SignUpModel(
                               email: authBlocProvider.emailController.text,
-                              password: createdPassword);
+                              password: authBlocProvider.passwordController.text);
                           authBlocProvider.add(SignUpEvent(signUp: signUp));
                         }
                       },

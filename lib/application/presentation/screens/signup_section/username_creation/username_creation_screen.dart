@@ -1,4 +1,4 @@
-import 'package:flip/application/presentation/screens/signup_screen/2_password_creation_screen.dart';
+import 'package:flip/application/presentation/screens/signup_section/password_creation/password_creation_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
@@ -67,7 +67,13 @@ class UsernameRegistration extends StatelessWidget {
                   child: ElevatedButtonWidget(
                       onEvent: () {
                         _formkey.currentState!.validate();
-                        Navigator.push(context, CupertinoPageRoute(builder: (context)=> SignUpScreen(userName: usernameRegistrationCOntroller.text,))); 
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => SignUpScreen(
+                                      userName:
+                                          usernameRegistrationCOntroller.text,
+                                    )));
                       },
                       buttonTitle: const Text(
                         'Continue ',

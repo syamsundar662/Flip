@@ -41,10 +41,11 @@ class AuthServices implements AuthRepository {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
         email: logIn.email,
-        password: logIn.password,
+        password: logIn.password, 
       );
-      return AuthenticationResults.signUpSuccess;
+      return AuthenticationResults.logInSuccess ;
     } on FirebaseAuthException catch (e) {
+      print(e.toString()); 
       if (e.code == 'invalid-email') {
         return AuthenticationResults.invalidEmail;
       } else if (e.code == 'user-not-found') {
