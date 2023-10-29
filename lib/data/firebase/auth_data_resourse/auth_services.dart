@@ -1,12 +1,12 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/domain/models/login_in/login_model.dart';
-import 'package:flip/domain/models/sign_up/sign_up_model.dart';
+import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
+import 'package:flip/domain/models/login_in_model/login_model.dart';
+import 'package:flip/domain/models/sign_up_model/sign_up_model.dart';
+import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import '../../domain/repositories/auth_repo/auth_repository.dart';
+import '../../../domain/repositories/auth_repository/auth_repository.dart';
 
 class AuthServices implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -20,6 +20,11 @@ class AuthServices implements AuthRepository {
         password: signUp.password,
       );
       userCredential.user!.sendEmailVerification();
+      final String uid = userCredential.user!.uid;
+      final userSignUpInformation = UserRepositoryModel(
+          userId: uid, username: signUp.username, email: signUp.email);
+      UserDataService().userAuthDataCollection(userSignUpInformation);
+
       return AuthenticationResults.signUpSuccess;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -31,7 +36,7 @@ class AuthServices implements AuthRepository {
       } else {
         return AuthenticationResults.somethingWentWrong;
       }
-    }catch (e){
+    } catch (e) {
       return AuthenticationResults.errorOccurs;
     }
   }
@@ -41,11 +46,10 @@ class AuthServices implements AuthRepository {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
         email: logIn.email,
-        password: logIn.password, 
+        password: logIn.password,
       );
-      return AuthenticationResults.logInSuccess ;
+      return AuthenticationResults.logInSuccess;
     } on FirebaseAuthException catch (e) {
-      print(e.toString()); 
       if (e.code == 'invalid-email') {
         return AuthenticationResults.invalidEmail;
       } else if (e.code == 'user-not-found') {
@@ -83,6 +87,10 @@ class AuthServices implements AuthRepository {
     }
   }
 
+  void deleteUserFromFirebase() {
+    FirebaseAuth.instance.currentUser!.uid;
+  }
+
   @override
   Future<void> signOut() async {
     try {
@@ -112,14 +120,13 @@ class AuthServices implements AuthRepository {
   }
 
   @override
-  Future<String> resetPassword(String email)async{
-    try{
-  await _firebaseAuth.sendPasswordResetEmail(email: email);
-  return 'passwordResetSuccess';
-    } catch(e){
-      return 'Error sending password reseting email $e' ; 
+  Future<String> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return 'passwordResetSuccess';
+    } catch (e) {
+      return 'Error sending password reseting email $e';
       // return AuthenticationResults.somethingWentWrong ;
-
     }
   }
 }

@@ -1,19 +1,17 @@
+import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
 import 'package:flip/application/presentation/screens/signup_section/password_creation/password_creation_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UsernameRegistration extends StatelessWidget {
   UsernameRegistration({super.key});
 
   final _formkey = GlobalKey<FormState>();
-
-  final String nameee = 'syam';
-  final usernameRegistrationCOntroller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +44,7 @@ class UsernameRegistration extends StatelessWidget {
               ),
               kHeight10,
               TextFormFields(
-                controller: usernameRegistrationCOntroller,
+                controller: context.read<AuthBloc>().usernameController, 
                 suffixIconWidget: const Icon(
                   Icons.done,
                   color: Colors.green,
@@ -70,11 +68,11 @@ class UsernameRegistration extends StatelessWidget {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (context) => SignUpScreen(
+                                builder: (context) => PasswordConfirmationScreen(
                                       userName:
-                                          usernameRegistrationCOntroller.text,
+                                          context.read<AuthBloc>().usernameController.text, 
                                     )));
-                      },
+                      }, 
                       buttonTitle: const Text(
                         'Continue ',
                         style: TextStyle(color: Colors.white),

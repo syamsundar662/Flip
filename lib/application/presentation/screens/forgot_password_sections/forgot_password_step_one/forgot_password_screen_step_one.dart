@@ -46,7 +46,7 @@ class ForgotPasswordScreenStepOne extends StatelessWidget {
                     style: const TextStyle(),
                     buttonStyles:  ButtonStyle( shape: MaterialStatePropertyAll(
                                       RoundedRectangleBorder(
-                                          borderRadius:BorderRadius.circular(15))),   backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 41, 87, 195)))), 
+                                          borderRadius:BorderRadius.circular(15))),   backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 41, 87, 195)))), 
               ),
               kHeight60    
             ],  

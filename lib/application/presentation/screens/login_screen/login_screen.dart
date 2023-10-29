@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
 import 'package:flip/application/presentation/screens/forgot_password_sections/forgot_password_step_one/forgot_password_screen_step_one.dart';
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
@@ -9,7 +8,7 @@ import 'package:flip/application/presentation/widgets/animations/animated_opacti
 import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
-import 'package:flip/domain/models/login_in/login_model.dart';
+import 'package:flip/domain/models/login_in_model/login_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -159,17 +158,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: kPaddingForTextfield,
                         child: BlocListener<AuthBloc, AuthState>(
                             listener: (context, state) {
-                              print(state);
-                              if (state is AuthSuccessState &&
-                                  state.authResponse ==
-                                      AuthenticationResults.logInSuccess) {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) =>
-                                            const RootScreen()),
-                                    (route) => false);
-
+                              if (state is AuthSuccessState && state.authResponse == AuthenticationResults.logInSuccess) {
+                                Navigator.pushAndRemoveUntil(context,CupertinoPageRoute(
+                                        builder: (context) => const RootScreen()),(route) => false);
                                 authBlocProvider.passwordController.clear();
                               }
                               if (state is AuthErrorState) {
@@ -180,20 +171,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             child: ElevatedButtonWidget(
                               onEvent: () async {
-                                _formkey.currentState!.validate();
-                                if (authBlocProvider
-                                        .emailController.text.isNotEmpty ||
-                                    authBlocProvider
-                                        .passwordController.text.isNotEmpty) {
-                                  final response = LogInModel(
-                                      email:
-                                          authBlocProvider.emailController.text,
-                                      password: authBlocProvider
-                                          .passwordController.text);
-                                  context
-                                      .read<AuthBloc>()
-                                      .add(LogInEvent(logIn: response));
-                                  log('success');
+                                // if(_formkey.currentState!.validate())  
+                                  if (authBlocProvider.emailController.text.isNotEmpty ||
+                                    authBlocProvider.passwordController.text.isNotEmpty) {
+                                  final response = LogInModel(email:authBlocProvider.emailController.text,
+                                      password: authBlocProvider.passwordController.text);
+                                  context.read<AuthBloc>().add(LogInEvent(logIn: response));
+                                  print('object');  
                                 } else {
                                   HapticFeedback.heavyImpact();
                                   return Exception('Something went wrong');
@@ -206,13 +190,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               style: const TextStyle(color: Colors.white),
                               buttonStyles: ButtonStyle(
-                                  backgroundColor:
-                                      const MaterialStatePropertyAll(
-                                          Color.fromARGB(255, 41, 87, 195)),
-                                  shape: MaterialStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)))),
+                                  backgroundColor:const MaterialStatePropertyAll( Color.fromARGB(255, 41, 87, 195)),
+                                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius:BorderRadius.circular(15)))),
                             )),
                       ),
                     ],
@@ -229,7 +208,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           current is AuthSuccessState,
                       listener: (context, state) {
                         if (state is AuthErrorState) {
-                          print(state.authResponse);
                         }
                         state as AuthSuccessState;
                         if (AuthenticationResults.googleSignInSuccess ==
@@ -248,7 +226,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               (route) => false);
                         } else if (AuthenticationResults.googleSignInFailed ==
                             state.authResponse) {
-                          print(state.authResponse);
                         }
                       },
                       child: InkWell(

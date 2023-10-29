@@ -1,4 +1,4 @@
-import 'package:flip/application/presentation/screens/signup_section/email_verification/email_validation_screen.dart';
+import 'package:flip/application/presentation/screens/signup_section/email_validation/email_validation_screen.dart';
 import 'package:flip/application/presentation/widgets/animations/animated_opactity.dart';
 import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +12,17 @@ import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({
+class  PasswordConfirmationScreen extends StatefulWidget {
+  const  PasswordConfirmationScreen({
     super.key,
     this.userName,
   });
   final String? userName;
-  @override
-  SignUpScreenState createState() => SignUpScreenState();
+  @override 
+   PasswordConfirmationScreenState createState() => PasswordConfirmationScreenState();
 }
 
-class SignUpScreenState extends State<SignUpScreen> {
+class PasswordConfirmationScreenState extends State<PasswordConfirmationScreen> {
   final _formkey = GlobalKey<FormState>();
   bool isVisible = false;
   bool obscureTxt = true;
@@ -140,7 +140,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                   child: ElevatedButtonWidget(
                     onEvent: () async {
                      if(!_formkey.currentState!.validate()) return;
-                     print("object"); 
                       if (authBlocProvider.passwordController.text.length < 6) {
                         // HapticFeedback.heavyImpact();
                         AnimatedSnackBar.material(

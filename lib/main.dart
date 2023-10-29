@@ -1,4 +1,4 @@
-import 'package:flip/data/firebase/auth_services.dart';
+import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
