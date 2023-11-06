@@ -44,7 +44,7 @@ class UsernameRegistration extends StatelessWidget {
               ),
               kHeight10,
               TextFormFields(
-                controller: context.read<AuthBloc>().usernameController, 
+                controller: context.read<AuthBloc>().usernameController,
                 suffixIconWidget: const Icon(
                   Icons.done,
                   color: Colors.green,
@@ -64,15 +64,20 @@ class UsernameRegistration extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 33, right: 33, top: 15),
                   child: ElevatedButtonWidget(
                       onEvent: () {
-                        _formkey.currentState!.validate();
-                        Navigator.push(
+                        _formkey.currentState!.validate(); 
+                        if(context.read<AuthBloc>().usernameController.text.isNotEmpty) {
+                          Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (context) => PasswordConfirmationScreen(
-                                      userName:
-                                          context.read<AuthBloc>().usernameController.text, 
+                                builder: (context) =>
+                                    PasswordConfirmationScreen(
+                                      userName: context
+                                          .read<AuthBloc>()
+                                          .usernameController
+                                          .text,
                                     )));
-                      }, 
+                        }
+                      },
                       buttonTitle: const Text(
                         'Continue ',
                         style: TextStyle(color: Colors.white),

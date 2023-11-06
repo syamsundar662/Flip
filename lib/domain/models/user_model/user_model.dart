@@ -6,7 +6,7 @@ class UserRepositoryModel {
   final String? displayName;
   final String? bio;
   final String? saves;
-  final String? profileImageUrl;
+  final String profileImageUrl;
   final List<String>? followers;
   final List<String>? following;
   final List<String>? posts;
@@ -16,7 +16,7 @@ class UserRepositoryModel {
     this.displayName,
     this.bio,
     this.saves,
-    this.profileImageUrl, 
+    this.profileImageUrl ='', 
     this.followers,
     this.following,
     this.posts,

@@ -1,8 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> 
     <application
         android:label="flip"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"> 
+
+        <meta-data android:name="com.google.android.geo.API_KEY" 
+        android:value="AIzaSyAeNBbTuK7BDOFJWE_c93uCluyq03K-Eg`4"/>
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"

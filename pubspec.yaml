@@ -57,6 +57,7 @@ dependencies:
   firebase_storage: ^11.4.0
   cloud_firestore: ^4.12.0
   image_gradient: ^0.0.2
+  flutter_sliding_box: ^1.1.3
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
+import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,7 +80,9 @@ class ForgotPasswordScreenStepTwo extends StatelessWidget {
                             await Future.delayed(const Duration(seconds: 4));
                             authBlocProvider.passwordResetController.clear();
                           } else {
-                            AnimatedSnackBar.material('Something went wrong', type: AnimatedSnackBarType.error).show(context);
+                            AnimatedSnackBar.material('Something went wrong',
+                                    type: AnimatedSnackBarType.error)
+                                .show(context);
                           }
                         },
                         buttonStyles: ButtonStyle(
@@ -97,6 +100,15 @@ class ForgotPasswordScreenStepTwo extends StatelessWidget {
                   );
                 },
               ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        (MaterialPageRoute(
+                            builder: (context) => const LoginScreen())),
+                        (route) => false);
+                  },
+                  child: const Text('Back to Login'))
             ],
           ),
         ),

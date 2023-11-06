@@ -11,10 +11,10 @@ class SearchScreen extends StatelessWidget {
         child: DefaultTabController(
             length: 2,
             child: Scaffold(
-              appBar: AppBar(
+              appBar: AppBar( 
                 title: const CupertinoSearchTextField(),
                 bottom: const PreferredSize(
-                  preferredSize: Size.fromHeight(40),
+                  preferredSize: Size.fromHeight(40),      
                   child: TabBar(
                     labelColor: Colors.blue,indicatorColor: Colors.blue,
                     overlayColor: MaterialStatePropertyAll(Color.fromARGB(21, 255, 255, 255)),
@@ -35,7 +35,7 @@ class SearchScreen extends StatelessWidget {
                       tiltGesturesEnabled: false,
                       buildingsEnabled: false,
                       scrollGesturesEnabled: true,
-                      mapType: MapType.normal,
+                      mapType: MapType.hybrid, 
                       myLocationButtonEnabled: true,
                       myLocationEnabled: true,
                       zoomControlsEnabled: true,

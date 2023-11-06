@@ -1,19 +1,19 @@
-import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/forgot_password_sections/forgot_password_step_one/forgot_password_screen_step_one.dart';
-import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
-import 'package:flip/application/presentation/screens/signup_section/username_creation/username_creation_screen.dart';
-import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/application/presentation/utils/validations/snackbars/snackbars.dart';
-import 'package:flip/application/presentation/widgets/animations/animated_opactity.dart';
-import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
-import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
-import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
-import 'package:flip/domain/models/login_in_model/login_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flip/application/presentation/widgets/animations/animated_opactity.dart';
+import 'package:flip/application/presentation/utils/validations/snackbars/snackbars.dart';
+import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
+import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
+import 'package:flip/application/presentation/screens/signup_section/username_creation/username_creation_screen.dart';
+import 'package:flip/application/presentation/screens/forgot_password_sections/forgot_password_step_one/forgot_password_screen_step_one.dart';
+import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
+import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
+import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
+import 'package:flip/domain/models/login_in_model/login_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -156,43 +156,61 @@ class _LoginScreenState extends State<LoginScreen> {
                       kHeight10,
                       Padding(
                         padding: kPaddingForTextfield,
-                        child: BlocListener<AuthBloc, AuthState>(
+                        child: BlocConsumer<AuthBloc, AuthState>(
                             listener: (context, state) {
-                              if (state is AuthSuccessState && state.authResponse == AuthenticationResults.logInSuccess) {
-                                Navigator.pushAndRemoveUntil(context,CupertinoPageRoute(
-                                        builder: (context) => const RootScreen()),(route) => false);
-                                authBlocProvider.passwordController.clear();
-                              }
-                              if (state is AuthErrorState) {
-                                validationSnackbars(
-                                    context: context,
-                                    authResult: state.authResponse);
+                          if (state is AuthSuccessState &&
+                              state.authResponse ==
+                                  AuthenticationResults.logInSuccess) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => const RootScreen()),
+                                (route) => false);
+                            authBlocProvider.passwordController.clear();
+                          }
+                          if (state is AuthErrorState) {
+                            validationSnackbars(
+                                context: context,
+                                authResult: state.authResponse);
+                          }
+                        }, builder: (context, state) {
+                          return ElevatedButtonWidget(
+                            onEvent: () async {
+                              if (_formkey.currentState!.validate() &&
+                                      authBlocProvider
+                                          .emailController.text.isNotEmpty ||
+                                  authBlocProvider
+                                      .passwordController.text.isNotEmpty) {
+                                final response = LogInModel(
+                                    email:
+                                        authBlocProvider.emailController.text,
+                                    password: authBlocProvider
+                                        .passwordController.text);
+                                context
+                                    .read<AuthBloc>()
+                                    .add(LogInEvent(logIn: response));
+                              } else {
+                                HapticFeedback.heavyImpact();
+                                return Exception('Something went wrong');
                               }
                             },
-                            child: ElevatedButtonWidget(
-                              onEvent: () async {
-                                // if(_formkey.currentState!.validate())  
-                                  if (authBlocProvider.emailController.text.isNotEmpty ||
-                                    authBlocProvider.passwordController.text.isNotEmpty) {
-                                  final response = LogInModel(email:authBlocProvider.emailController.text,
-                                      password: authBlocProvider.passwordController.text);
-                                  context.read<AuthBloc>().add(LogInEvent(logIn: response));
-                                  print('object');  
-                                } else {
-                                  HapticFeedback.heavyImpact();
-                                  return Exception('Something went wrong');
-                                }
-                              },
-                              buttonTitle: const Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                              style: const TextStyle(color: Colors.white),
-                              buttonStyles: ButtonStyle(
-                                  backgroundColor:const MaterialStatePropertyAll( Color.fromARGB(255, 41, 87, 195)),
-                                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius:BorderRadius.circular(15)))),
-                            )),
+                            buttonTitle: state is AuthLoadingState
+                                ? const CupertinoActivityIndicator()
+                                : const Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                            style: const TextStyle(color: Colors.white),
+                            buttonStyles: ButtonStyle(
+                                backgroundColor: const MaterialStatePropertyAll(
+                                    Color.fromARGB(255, 41, 87, 195)),
+                                shape: MaterialStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)))),
+                          );
+                        }),
                       ),
                     ],
                   ),
@@ -207,8 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       listenWhen: (previous, current) =>
                           current is AuthSuccessState,
                       listener: (context, state) {
-                        if (state is AuthErrorState) {
-                        }
+                        if (state is AuthErrorState) {}
                         state as AuthSuccessState;
                         if (AuthenticationResults.googleSignInSuccess ==
                             state.authResponse) {
@@ -225,8 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   builder: (context) => UsernameRegistration()),
                               (route) => false);
                         } else if (AuthenticationResults.googleSignInFailed ==
-                            state.authResponse) {
-                        }
+                            state.authResponse) {}
                       },
                       child: InkWell(
                         onTap: () {
@@ -260,11 +276,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     kHeight20,
                     InkWell(
                       onTap: () {
-                        Navigator.pushAndRemoveUntil(
+                        Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (context) => UsernameRegistration()),
-                            (route) => false);
+                                builder: (context) => UsernameRegistration()));
                       },
                       child: const Text(
                         'Dont have an account? Create',
