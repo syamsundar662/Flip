@@ -1,10 +1,26 @@
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/application/presentation/utils/image/image_picker.dart';
+import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
+import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 
-class PostScreen extends StatelessWidget {
-  const PostScreen({super.key});
+class PostScreen extends StatefulWidget {
+  PostScreen({super.key});
+
+  @override
+  State<PostScreen> createState() => _PostScreenState();
+}
+
+class _PostScreenState extends State<PostScreen> {
+  final List<XFile> imagePaths = [];
+
+  List<File> path = [];
+  final TextEditingController textContentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +42,7 @@ class PostScreen extends StatelessWidget {
                   height: screenFullHeight / 5,
                   child: TextField(
                     maxLines: 10,
-                    // controller: descriptionController,
+                    controller: textContentController,
                     decoration: InputDecoration(
                         hintText: 'type here....',
                         focusedBorder: OutlineInputBorder(
@@ -45,20 +61,36 @@ class PostScreen extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        path.clear();
+                      },
                       icon: Icon(
                         Icons.photo_camera_outlined,
                         color: Theme.of(context).colorScheme.secondary,
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final imagePath = await PickImage().multiImagePicker();
+
+                        path = imagePath;
+                      },
                       icon: Icon(
                         Icons.photo_library_outlined,
                         color: Theme.of(context).colorScheme.secondary,
                       )),
                   const Spacer(),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final imageUrl = await PickImage().uploadImages(path);
+                        final post = PostModel(
+                            userId: FirebaseAuth.instance.currentUser!.uid,
+                            textContent: textContentController.text,
+                            imageUrls: imageUrl,
+                            timestamp: DateTime.now(),
+                            likes: [],
+                            comments: []);
+                        Post().createPost(post);
+                      },
                       icon: Icon(
                         Iconsax.send_24,
                         color: Theme.of(context).colorScheme.secondary,
