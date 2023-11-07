@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/image/image_picker.dart';
 import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 

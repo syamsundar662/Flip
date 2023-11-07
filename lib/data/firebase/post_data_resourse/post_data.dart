@@ -34,11 +34,13 @@ class Post {
       final postData =
           instance.collection('PostCollection').where('userId', isEqualTo: uid);
       final fetchedData = await postData.get();
+      
 
-      yield fetchedData.docs.map((data) {
+      final sortedData =  fetchedData.docs.map((data) {
         final post = data.data();
         return PostModel.fromJson(post);
       }).toList();
+      yield sortedData.where((post) => post.imageUrls.isNotEmpty).toList();
     } catch (e) {
       yield [];
     }

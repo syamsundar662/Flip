@@ -6,43 +6,49 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
+  @override 
   Widget build(BuildContext context) {
+    super.build(context); 
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                kWidth10,
-                const FlipLogoText(
-                  logoSize: 35,
-                ),
-                const Spacer(),
-                IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const MessageScreen()));
-                    },
-                    icon: const Icon(Iconsax.sms_notification)),
-              ],
-            ),
-            StorySection(),
-            const Divider(
-              thickness: .1,
-            ),
-            HomeMainFeedsCard()
-          ],
-        ),
-      ),
-    ));
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  kWidth10,
+                  const FlipLogoText(
+                    logoSize: 35,
+                  ),
+                  const Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => const MessageScreen()));
+                      },
+                      icon: const Icon(Iconsax.sms_notification)),
+                ],
+              ),
+              StorySection(),
+              const Divider(
+                thickness: .1,
+              ),
+              HomeMainFeedsCard()
+            ],
+          ),
+        ));
   }
 }
 

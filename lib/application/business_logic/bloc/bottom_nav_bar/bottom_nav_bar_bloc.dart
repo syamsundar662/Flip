@@ -21,7 +21,7 @@ class BottomNavBarBloc extends Bloc<BottomNavBarEvent, BottomNavBarState> {
   final pages = [
     const HomeScreen(),
     const SearchScreen(),
-     PostScreen(),
+    const PostScreen(),
      const NotificationScreen(),
     const ProfileScreen()
   ];

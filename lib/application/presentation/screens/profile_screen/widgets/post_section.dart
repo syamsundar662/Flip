@@ -16,13 +16,13 @@ class PostSection extends StatelessWidget {
           return const Center(child: CircularProgressIndicator.adaptive());
         }
         final data = snapshot.data;
-        int postsWithNoImages = data?.where((post) => post.imageUrls.isEmpty).length ?? 0;
+        // int postsWithNoImages = data?.where((post) => post.imageUrls.isEmpty).length ?? 0;
 
         return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.all(0),  
             shrinkWrap: true,
-            itemCount: snapshot.data!.length - 5,
+            itemCount: snapshot.data!.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, mainAxisSpacing: 2, crossAxisSpacing: 2),
             itemBuilder: (context, index) {
