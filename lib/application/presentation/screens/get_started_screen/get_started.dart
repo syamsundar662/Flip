@@ -90,7 +90,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                               color: Colors.white),
                         ),
                       ),
-                      kHeight50
+                      kHeight60
                     ],
                   ),
                 );

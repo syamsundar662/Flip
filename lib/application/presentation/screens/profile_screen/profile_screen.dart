@@ -27,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
               SliverAppBar(
                 centerTitle: false,
                 title: const Text(
-                  '@syamsundar',
+                  '',
                   style: TextStyle(fontSize: 15),
                 ),
                 actions: [

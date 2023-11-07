@@ -1,21 +1,18 @@
- import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_box/flutter_sliding_box.dart';
 
 Future<dynamic> showSlidingBoxWidget(BuildContext context) {
-    return showSlidingBox(
-                      context: context,
-                      box: SlidingBox(
-                        maxHeight: screenFullHeight / 1.3,
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        style: BoxStyle.shadow,
-                        draggableIconBackColor:
-                            Theme.of(context).colorScheme.onTertiary,
-                        body: _body(),
-                      ));
-  }
-
-
+  return showSlidingBox(
+      context: context,
+      box: SlidingBox(
+        maxHeight: screenFullHeight / 1.3,
+        color: Theme.of(context).colorScheme.onTertiary,
+        style: BoxStyle.shadow,
+        draggableIconBackColor: Theme.of(context).colorScheme.onTertiary,
+        body: _body(),
+      ));
+}
 
 _body() {
   return ListView.separated(
