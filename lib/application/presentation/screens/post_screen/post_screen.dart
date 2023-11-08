@@ -1,106 +1,132 @@
-import 'dart:io';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
+import 'package:flip/application/presentation/screens/post_screen/post_image_preview.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/application/presentation/utils/image/image_picker.dart';
-import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
-class PostScreen extends StatefulWidget {
+class PostScreen extends StatelessWidget {
   const PostScreen({super.key});
 
   @override
-  State<PostScreen> createState() => _PostScreenState();
-}
-
-class _PostScreenState extends State<PostScreen> {
-
-  List<File> path = [];
-  final TextEditingController textContentController = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final postBlocProvider = context.read<PostBloc>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  kHeight20,
-                  Padding(
-                    padding: const EdgeInsets.only(left: 6.0),
-                    child: Text('Share your thoughts',
-                        style: GoogleFonts.balooDa2(
-                            fontSize: 23, fontWeight: FontWeight.w500)),
-                  ),
-                  SizedBox(
-                      height: screenFullHeight / 5,
-                      child: TextField(
-                        maxLines: 10,
-                        controller: textContentController,
-                        decoration: InputDecoration(
-                            hintText: 'type here....',
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            fillColor: Theme.of(context).colorScheme.primary,
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10),
-                            )),
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w400),
-                        cursorColor: Theme.of(context).colorScheme.secondary,
-                      )),
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            path.clear();
-                          },
-                          icon: Icon(
-                            Icons.photo_camera_outlined,
-                            color: Theme.of(context).colorScheme.secondary,
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                kHeight20,
+                Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Text('Share your thoughts',
+                      style: GoogleFonts.balooDa2(
+                          fontSize: 23, fontWeight: FontWeight.w500)),
+                ),
+                SizedBox(
+                    height: screenFullHeight / 5,
+                    child: TextField(  
+                      maxLines: 10,
+                      controller: postBlocProvider.textContentController,
+                      decoration: InputDecoration(
+                          hintText: 'type here....',
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          fillColor: Theme.of(context).colorScheme.primary,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
                           )),
-                      IconButton(
-                          onPressed: () async {
-                            final imagePath =
-                                await PickImage().multiImagePicker();
-
-                            path = imagePath;
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w400),
+                      cursorColor: Theme.of(context).colorScheme.secondary,
+                    )),
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.photo_camera_outlined,
+                          color: Theme.of(context).colorScheme.secondary,
+                        )),
+                    BlocListener<PostBloc, PostState>(
+                      listenWhen: (previous, current) =>
+                          current is PostImageSelectedState &&
+                          previous is PostInitial,
+                      listener: (context, state) {
+                        if (state is PostImageSelectedState) {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => PostImagePreview(
+                                      selecedImage: state.selectedImageFile)),
+                              (route) => false);
+                        }
+                      },
+                      child: IconButton(
+                          onPressed: () {
+                            postBlocProvider.add(PostImageSelectionEvent());
                           },
                           icon: Icon(
                             Icons.photo_library_outlined,
                             color: Theme.of(context).colorScheme.secondary,
                           )),
-                      const Spacer(),
-                      IconButton(
-                          onPressed: () async {
-                            final imageUrl =
-                                await PickImage().uploadImages(path);
-                            final post = PostModel(
-                                userId: FirebaseAuth.instance.currentUser!.uid,
-                                textContent: textContentController.text,
-                                imageUrls: imageUrl,
-                                timestamp: DateTime.now(),
-                                likes: [],
-                                comments: []);
-                            Post().createPost(post);
-                          },
-                          icon: Icon(
-                            Iconsax.send_24,
-                            color: Theme.of(context).colorScheme.secondary,
-                          )),
-                    ],
-                  ),
-                ],
-              )
-          ),
-        ),
-      );
+                    ),
+                    const Spacer(),
+                    BlocConsumer<PostBloc, PostState>(
+                      listenWhen: (pre,curre)=> curre is PostThoughtsAdditionSuccessState,
+                        listener: (context, state) {
+                          AnimatedSnackBar.material(
+                            'success', 
+                            type: AnimatedSnackBarType.error,
+                            mobileSnackBarPosition: MobileSnackBarPosition.top,
+                          ).show(context);
+                        },
+                        builder: (context, state) {
+                          return IconButton(
+                              onPressed: () {
+                                final model = PostModel(
+                                    userId:
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                    textContent: postBlocProvider
+                                        .textContentController.text,
+                                    imageUrls: [],
+                                    timestamp: DateTime.now(),
+                                    likes: [],
+                                    comments: []); 
+                                postBlocProvider
+                                    .add(PostThoughtsEvents(model: model));
+                                    print('hjj ');
+                              },
+                              icon: Icon(
+                                Iconsax.send_24,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ));
+                        }),
+                  ],
+                ),
+              ],
+            )),
+      ),
+    );
   }
 }
+
+// final imageUrl = await PickImage().uploadImages(path);
+                          // final post = PostModel(
+                          //     userId: FirebaseAuth.instance.currentUser!.uid,
+                          //     textContent: textContentController.text,
+                          //     imageUrls: imageUrl,
+                          //     timestamp: DateTime.now(),
+                          //     likes: [],
+                          //     comments: []);
+                          // Post().createPost(post);

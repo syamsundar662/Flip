@@ -3,7 +3,7 @@ import 'package:flip/domain/models/post_model/post_model.dart';
 
 class Post {
   final FirebaseFirestore instance = FirebaseFirestore.instance;
-  void createPost(PostModel post) {
+Future <void> createPost(PostModel post) async{
     final CollectionReference postData = instance.collection('PostCollection');
     final DocumentReference documentReference = postData.doc();
     final String postId = documentReference.id;
@@ -14,9 +14,10 @@ class Post {
       'imageUrls': post.imageUrls,
       'timestamp': post.timestamp,
       'likes': post.likes,
-      'comments': post.comments
+      'comments': post.comments 
     };
     documentReference.set(postCollectionData);
+
   }
 
   Stream<List<PostModel>> getAllPosts() async* {

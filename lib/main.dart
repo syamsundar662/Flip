@@ -1,3 +1,4 @@
+import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/firebase_options.dart';
@@ -19,7 +20,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
-
+  
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc(AuthServices())),
-        BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc())
+        BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
+        BlocProvider<PostBloc>(create: (context)=>PostBloc()) 
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

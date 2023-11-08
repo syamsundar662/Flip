@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
@@ -26,14 +27,14 @@ class ProfileScreen extends StatelessWidget {
             slivers: [
               SliverAppBar(
                 centerTitle: false,
-                title: const Text(
-                  '',
+                title:  Text(
+                  FirebaseAuth.instance.currentUser!.displayName.toString(),
                   style: TextStyle(fontSize: 15),
                 ),
                 actions: [
-                  IconButton(
+                  IconButton( 
                       onPressed: () {
-                        showSlidingBoxWidget(context);
+                        SlideUpWidget().showSlidingBoxWidget(context);
                       },
                       icon: const Icon(Icons.menu_outlined)),
                 ],
@@ -169,7 +170,7 @@ class ProfileScreen extends StatelessWidget {
                                 icon: const Icon(Icons.list_alt)),
                           ),
                         ),
-                          Padding( 
+                        Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: PostSection(),
                         )

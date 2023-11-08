@@ -1,5 +1,6 @@
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card.dart';
 import 'package:flip/application/presentation/screens/message_screen/message_screen.dart';
+import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +32,14 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                     logoSize: 35,
                   ),
                   const Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => const PostScreen()));
+                      },
+                      icon: const Icon(Iconsax.add_square)),
                   IconButton(
                       onPressed: () {
                         Navigator.push(

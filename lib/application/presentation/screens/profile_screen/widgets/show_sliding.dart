@@ -2,6 +2,9 @@ import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_box/flutter_sliding_box.dart';
 
+class SlideUpWidget {
+  
+
 Future<dynamic> showSlidingBoxWidget(BuildContext context) {
   return showSlidingBox(
       context: context,
@@ -64,3 +67,4 @@ List<IconButton> iconButtons = [
     onPressed: () {},
   ),
 ];
+}
