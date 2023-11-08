@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DarkThemeClass {
+  
   ThemeData darkTheme = ThemeData(
       textButtonTheme: const TextButtonThemeData(
         style: ButtonStyle(
@@ -18,6 +19,7 @@ class DarkThemeClass {
       highlightColor: Colors.transparent,
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.black,
+        surfaceTintColor: Colors.transparent 
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: Colors.lightBlue,

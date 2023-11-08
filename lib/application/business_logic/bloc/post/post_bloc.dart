@@ -14,6 +14,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc() : super(PostInitial()) {
     on<PostImageSelectionEvent>(postImageSelectionEvent);
     on<PostThoughtsEvents>(postThoughtsEvents);
+    on<PostAddingEvent>(postAddingEvent);
   }
 
   Future<void> postImageSelectionEvent(
@@ -24,11 +25,21 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostImageSelectedState(selectedImageFile: imagePath));
     }
   }
- 
+
   FutureOr<void> postThoughtsEvents(
-      PostThoughtsEvents event, Emitter<PostState> emit)async {
-        emit(PostAdditionLoadingState());
-        await Post().createPost(event.model);
-       return  emit(PostThoughtsAdditionSuccessState());
-      }
+      PostThoughtsEvents event, Emitter<PostState> emit) async {
+    emit(PostAdditionLoadingState());
+    await Post().createPost(event.model);
+    return emit(PostThoughtsAdditionSuccessState());
+  }
+
+  FutureOr<void> postAddingEvent(
+      PostAddingEvent event, Emitter<PostState> emit) async {
+    emit(PostAdditionLoadingState());
+    final selectdImagesUrls =
+        await PickImage().uploadImages(event.model.imageUrls);
+        event.model.imageUrls=selectdImagesUrls;
+    await Post().createPost(event.model);
+    emit(PostAdditionSuccessState());
+  }
 }

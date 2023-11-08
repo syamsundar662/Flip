@@ -11,7 +11,8 @@ class PostImageSelectedState extends PostState {
 }
 class PostThoughtsAdditionSuccessState extends PostState {}
 
-class PostAdditionSuccessState extends PostState {}
+class PostAdditionSuccessState extends PostState {
+}
 
 class PostAdditionErrorState extends PostState {}
 

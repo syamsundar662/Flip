@@ -15,14 +15,14 @@ class PickImage {
     return paths; 
   }
 
-  Future<List<String>> uploadImages(List<File> imageFiles) async {
+  Future<List<String>> uploadImages(List<String> imageFiles) async {
     List<String> downloadUrls = [];
 
-    for (File imageFile in imageFiles) {
+    for (var imageFile in imageFiles) {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       Reference storageReference =
           FirebaseStorage.instance.ref().child('images/$fileName');
-      UploadTask uploadTask = storageReference.putFile(imageFile);
+      UploadTask uploadTask = storageReference.putFile(File(imageFile));
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
       downloadUrls.add(downloadUrl);

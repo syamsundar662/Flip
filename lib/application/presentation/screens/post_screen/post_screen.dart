@@ -18,104 +18,113 @@ class PostScreen extends StatelessWidget {
     final postBlocProvider = context.read<PostBloc>();
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row( 
+              mainAxisAlignment: MainAxisAlignment.end 
+              ,
+              children: [IconButton(onPressed: (){
+                Navigator.pop(context);
+              }, icon: Icon(Icons.close))],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 6.0),
+              child: Text('Share your thoughts',
+                  style: GoogleFonts.balooDa2(
+                      fontSize: 23, fontWeight: FontWeight.w500)),
+            ),
+            SizedBox(
+                height: screenFullHeight / 5,
+                child: TextField(
+                  maxLines: 10,
+                  controller: postBlocProvider.textContentController,
+                  decoration: InputDecoration(
+                      hintText: 'type here....',
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      fillColor: Theme.of(context).colorScheme.primary,
+                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      )),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w400),
+                  cursorColor: Theme.of(context).colorScheme.secondary,
+                )),
+            Row(
               children: [
-                kHeight20,
-                Padding(
-                  padding: const EdgeInsets.only(left: 6.0),
-                  child: Text('Share your thoughts',
-                      style: GoogleFonts.balooDa2(
-                          fontSize: 23, fontWeight: FontWeight.w500)),
-                ),
-                SizedBox(
-                    height: screenFullHeight / 5,
-                    child: TextField(  
-                      maxLines: 10,
-                      controller: postBlocProvider.textContentController,
-                      decoration: InputDecoration(
-                          hintText: 'type here....',
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          fillColor: Theme.of(context).colorScheme.primary,
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10),
-                          )),
-                      style: const TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w400),
-                      cursorColor: Theme.of(context).colorScheme.secondary,
+                IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.photo_camera_outlined,
+                      color: Theme.of(context).colorScheme.secondary,
                     )),
-                Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.photo_camera_outlined,
-                          color: Theme.of(context).colorScheme.secondary,
-                        )),
-                    BlocListener<PostBloc, PostState>(
-                      listenWhen: (previous, current) =>
-                          current is PostImageSelectedState &&
-                          previous is PostInitial,
-                      listener: (context, state) {
-                        if (state is PostImageSelectedState) {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => PostImagePreview(
-                                      selecedImage: state.selectedImageFile)),
-                              (route) => false);
-                        }
+                BlocListener<PostBloc, PostState>(
+                  listenWhen: (previous, current) =>
+                      current is PostImageSelectedState &&
+                      previous is PostInitial,
+                  listener: (context, state) {
+                    if (state is PostImageSelectedState) {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => PostImagePreview(
+                                  selecedImage: state.selectedImageFile)),
+                         );
+                    } 
+                  },
+                  child: IconButton(
+                      onPressed: () {
+                        postBlocProvider.add(PostImageSelectionEvent());
                       },
-                      child: IconButton(
+                      icon: Icon(
+                        Icons.photo_library_outlined,
+                        color: Theme.of(context).colorScheme.secondary,
+                      )),
+                ),
+                const Spacer(),
+                BlocConsumer<PostBloc, PostState>(
+                    listenWhen: (pre, curre) =>
+                        curre is PostThoughtsAdditionSuccessState,
+                    listener: (context, state) {
+                      AnimatedSnackBar.material(
+                        'success',
+                        type: AnimatedSnackBarType.error,
+                        mobileSnackBarPosition: MobileSnackBarPosition.top,
+                      ).show(context);
+                    },
+                    builder: (context, state) {
+                      if (state is PostAdditionLoadingState) {
+                        CircularProgressIndicator();
+                      }
+                      return IconButton(
                           onPressed: () {
-                            postBlocProvider.add(PostImageSelectionEvent());
+                            final model = PostModel(
+                                userId:
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                textContent: postBlocProvider
+                                    .textContentController.text,
+                                imageUrls: [],
+                                timestamp: DateTime.now(),
+                                likes: [],
+                                comments: []);
+                            postBlocProvider
+                                .add(PostThoughtsEvents(model: model));
+                            print('hjj ');
                           },
                           icon: Icon(
-                            Icons.photo_library_outlined,
+                            Iconsax.send_24,
                             color: Theme.of(context).colorScheme.secondary,
-                          )),
-                    ),
-                    const Spacer(),
-                    BlocConsumer<PostBloc, PostState>(
-                      listenWhen: (pre,curre)=> curre is PostThoughtsAdditionSuccessState,
-                        listener: (context, state) {
-                          AnimatedSnackBar.material(
-                            'success', 
-                            type: AnimatedSnackBarType.error,
-                            mobileSnackBarPosition: MobileSnackBarPosition.top,
-                          ).show(context);
-                        },
-                        builder: (context, state) {
-                          return IconButton(
-                              onPressed: () {
-                                final model = PostModel(
-                                    userId:
-                                        FirebaseAuth.instance.currentUser!.uid,
-                                    textContent: postBlocProvider
-                                        .textContentController.text,
-                                    imageUrls: [],
-                                    timestamp: DateTime.now(),
-                                    likes: [],
-                                    comments: []); 
-                                postBlocProvider
-                                    .add(PostThoughtsEvents(model: model));
-                                    print('hjj ');
-                              },
-                              icon: Icon(
-                                Iconsax.send_24,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ));
-                        }),
-                  ],
-                ),
+                          ));
+                    }),
               ],
-            )),
+            ),
+          ],
+        ),
       ),
     );
   }

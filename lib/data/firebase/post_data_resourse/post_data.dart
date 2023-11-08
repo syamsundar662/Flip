@@ -20,17 +20,17 @@ Future <void> createPost(PostModel post) async{
 
   }
 
-  Stream<List<PostModel>> getAllPosts() async* {
+  Future<List<PostModel>> getAllPosts() async {
     final CollectionReference postData = instance.collection('PostCollection');
     final fetchedData = await postData.get();
 
-    yield fetchedData.docs.map((data) {
+    return fetchedData.docs.map((data) {
       final post = data.data() as Map<String, dynamic>;
-      return PostModel.fromJson(post);
+      return PostModel.fromJson(post); 
     }).toList();
   }
 
-  Stream<List<PostModel>> fetchDataByUser(String uid) async* {
+  Future<List<PostModel>> fetchDataByUser(String uid) async {
     try {
       final postData =
           instance.collection('PostCollection').where('userId', isEqualTo: uid);
@@ -41,9 +41,9 @@ Future <void> createPost(PostModel post) async{
         final post = data.data();
         return PostModel.fromJson(post);
       }).toList();
-      yield sortedData.where((post) => post.imageUrls.isNotEmpty).toList();
+      return sortedData.where((post) => post.imageUrls.isNotEmpty).toList();
     } catch (e) {
-      yield [];
+      return [];
     }
   }
 }

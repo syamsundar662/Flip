@@ -1,20 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flip/application/business_logic/bloc/profile_post/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_gradient/image_gradient.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
+
+  final id = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
+    context.read<ProfileBloc>().add(ProfilePostDataFetchEvent(id: id));
     return SafeArea(
       child: RefreshIndicator.adaptive(
         displacement: 20,
@@ -26,13 +31,16 @@ class ProfileScreen extends StatelessWidget {
           body: CustomScrollView(
             slivers: [
               SliverAppBar(
+                floating: true,
+                pinned: false,
+                // snap: true,
                 centerTitle: false,
-                title:  Text(
+                title: Text(
                   FirebaseAuth.instance.currentUser!.displayName.toString(),
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                 ),
                 actions: [
-                  IconButton( 
+                  IconButton(
                       onPressed: () {
                         SlideUpWidget().showSlidingBoxWidget(context);
                       },
@@ -150,24 +158,49 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 8.0, right: 8, top: 10, bottom: 3),
-                          child: Container(
-                            width: double.infinity,
-                            height: screenFullHeight * .06,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Theme.of(context).colorScheme.primary),
-                            child: IconButton(
-                                onPressed: () {
-                                  AuthServices().signOut();
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginScreen()),
-                                      (route) => false);
-                                },
-                                icon: const Icon(Icons.list_alt)),
+                              left: 8.0, right: 8, top: 10, bottom: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: screenFullWidth / 2.1,
+                                height: screenFullHeight * .06,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                child: IconButton(
+                                    onPressed: () {
+                                      AuthServices().signOut();
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LoginScreen()),
+                                          (route) => false);
+                                    },
+                                    icon: const Icon(Icons.list_alt)),
+                              ),
+                              Container(
+                                width: screenFullWidth / 2.1,
+                                height: screenFullHeight * .06,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                child: IconButton(
+                                    onPressed: () {
+                                      AuthServices().signOut();
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LoginScreen()),
+                                          (route) => false);
+                                    },
+                                    icon: const Icon(Icons.list_alt)),
+                              ),
+                            ],
                           ),
                         ),
                         Padding(

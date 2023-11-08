@@ -9,8 +9,14 @@ class PostThoughtsEvents extends PostEvent {
   final PostModel model;
   PostThoughtsEvents({required this.model});
 }
-class PostOpenCameraEvent extends PostEvent {}
+class PostOpenCameraEvent extends PostEvent {
+ 
+}
 
-class PostAddingEvent extends PostEvent {}
+class PostAddingEvent extends PostEvent {
+   final PostModel model;
+
+  PostAddingEvent({required this.model});
+}
 
 class PostScreenCloseEvent extends PostEvent {}
