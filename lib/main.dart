@@ -1,6 +1,7 @@
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
-import 'package:flip/application/business_logic/bloc/profile_post/profile_bloc.dart';
+import 'package:flip/application/business_logic/bloc/profile_post/profile_post_bloc.dart';
+import 'package:flip/application/business_logic/bloc/user_data/profile_bloc.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/firebase_options.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
         BlocProvider<PostBloc>(create: (context)=>PostBloc()) ,
         BlocProvider<FetchBloc>(create: (context)=>FetchBloc()), 
+        BlocProvider<ProfilePostBloc>(create: (context)=>ProfilePostBloc()),
         BlocProvider<ProfileBloc>(create: (context)=>ProfileBloc()),
       ],
       child: MaterialApp(

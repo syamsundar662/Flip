@@ -17,11 +17,11 @@ class PostImagePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final postBlocProvider = context.read<PostBloc>();
     return Scaffold(
-      body: Center(
+      body: Padding( 
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            kHeight60,
             IconButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -77,6 +77,7 @@ class PostImagePreview extends StatelessWidget {
                           postBlocProvider
                               .textContentController.text.isNotEmpty) {
                         final post = PostModel(
+                              username: FirebaseAuth.instance.currentUser!.displayName!,
                             userId: FirebaseAuth.instance.currentUser!.uid,
                             textContent:
                                 postBlocProvider.textContentController.text,
@@ -93,7 +94,7 @@ class PostImagePreview extends StatelessWidget {
                         ? const CircularProgressIndicator.adaptive()
                         : const Text('Submit'),
                     style: const TextStyle(),
-                    buttonStyles: const ButtonStyle());
+                    buttonStyles: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.blueGrey )));
               },
             ),
             kHeight40,

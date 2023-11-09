@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class PostModel {
   String postId;
   String userId;
+  String username;
   String textContent;
   List<String> imageUrls;
   DateTime timestamp;
@@ -12,6 +13,7 @@ class PostModel {
   PostModel({
     this.postId = '',
     required this.userId,
+    required this.username,
     required this.textContent,
     required this.imageUrls,
     required this.timestamp,
@@ -21,10 +23,11 @@ class PostModel {
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
         userId: json['userId'],
-        textContent: json['textContent']??'',
-        imageUrls: List.from( json['imageUrls']),
-        timestamp:( json['timestamp'] as Timestamp).toDate(),
-        likes: json['likes']??[],
-        comments: json['comments']??[]);
+        username: json['username'] ?? '',
+        textContent: json['textContent'] ?? '',
+        imageUrls: List.from(json['imageUrls']),
+        timestamp: (json['timestamp'] as Timestamp).toDate(),
+        likes: json['likes'] ?? [],
+        comments: json['comments'] ?? []);
   }
 }

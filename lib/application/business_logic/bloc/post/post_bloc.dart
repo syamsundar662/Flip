@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/utils/image/image_picker.dart';
 import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
@@ -38,7 +39,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     emit(PostAdditionLoadingState());
     final selectdImagesUrls =
         await PickImage().uploadImages(event.model.imageUrls);
-        event.model.imageUrls=selectdImagesUrls;
+    final currentUser =
+        await Post().fetchDataByUser(FirebaseAuth.instance.currentUser!.uid);
+        //user profile imageurl should be here
+    event.model.username = currentUser == null ? '' : currentUser.username;
+    event.model.imageUrls = selectdImagesUrls;
     await Post().createPost(event.model);
     emit(PostAdditionSuccessState());
   }
