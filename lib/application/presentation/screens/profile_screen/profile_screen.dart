@@ -11,12 +11,24 @@ import 'package:flip/application/business_logic/bloc/user_data/profile_bloc.dart
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveClientMixin {
+    @override
+  bool get wantKeepAlive => true;
+
   final id = FirebaseAuth.instance.currentUser!.uid;
-  final email = FirebaseAuth.instance.currentUser!.email;
+
+  final email = FirebaseAuth.instance.currentUser!.email; 
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     context.read<ProfilePostBloc>().add(ProfilePostDataFetchEvent(id: id));
     context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
     return SafeArea(
@@ -32,10 +44,8 @@ class ProfileScreen extends StatelessWidget {
         child: Scaffold(
           body: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
-              if (state is UserDataFetchingState) {
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                );
+              if (state is  UserDataFetchingState) {  
+                return Center(child: CircularProgressIndicator.adaptive(),);
               } else if (state is UserDataFetchedState) {
                 return CustomScrollView(
                   slivers: [
@@ -222,9 +232,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 );
               }
-              return const Center(
-                child: Text('Something went wrong'),
-              );
+              return SizedBox(); 
             },
           ),
         ),

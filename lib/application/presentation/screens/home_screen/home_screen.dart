@@ -1,4 +1,5 @@
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
+import 'package:flip/application/presentation/screens/home_screen/widgets/home_shimmer.dart';
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
 import 'package:flip/application/presentation/screens/message_screen/message_screen.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
@@ -67,7 +68,8 @@ class _HomeScreenState extends State<HomeScreen>
                   builder: (context, state) {
                     if (state is HomeDataFetchingState) {
                       return const Center(
-                          child: CircularProgressIndicator.adaptive());
+                  child: CircularProgressIndicator.adaptive(),
+                );
                     } else if (state is HomeDataFechedState) {
                       return ListView.builder(
                           padding: const EdgeInsets.all(8),

@@ -30,7 +30,7 @@ class PostScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.close))
+                      icon: const Icon(Icons.close))
                 ],
               ),
               Padding(
@@ -97,13 +97,13 @@ class PostScreen extends StatelessWidget {
                       listener: (context, state) {
                         AnimatedSnackBar.material(
                           'success',
-                          type: AnimatedSnackBarType.error,
+                          type: AnimatedSnackBarType.success,
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
                       },
                       builder: (context, state) {
                         if (state is PostAdditionLoadingState) {
-                          CircularProgressIndicator();
+                          const CircularProgressIndicator();
                         }
                         return IconButton(
                             onPressed: () {

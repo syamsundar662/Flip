@@ -5,7 +5,7 @@ import 'package:flutter_sliding_box/flutter_sliding_box.dart';
 class SlideUpWidget {
   
 
-Future<dynamic> showSlidingBoxWidget(BuildContext context) {
+Future<dynamic> showSlidingBoxWidget(BuildContext context,) {
   return showSlidingBox(
       context: context,
       box: SlidingBox(

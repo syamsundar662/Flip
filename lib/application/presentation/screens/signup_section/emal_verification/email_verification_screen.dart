@@ -48,7 +48,7 @@ class EmailVerificaitonScreen extends StatelessWidget {
                 listener: (context, state) {
                   if (state is EmailVerifiedSuccessState) {
                     Navigator.push(context,
-                        CupertinoPageRoute(builder: (context) => const RootScreen()));
+                        CupertinoPageRoute(builder: (context) =>  RootScreen()));
                   }
                 },
                 child: TextButton(
@@ -58,7 +58,7 @@ class EmailVerificaitonScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => const RootScreen()));
+                              builder: (context) =>  RootScreen()));
                     }
                   },
                 ),

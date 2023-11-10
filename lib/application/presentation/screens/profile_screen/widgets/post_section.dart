@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/profile_post/profile_post_bloc.dart';
+import 'package:flip/application/presentation/screens/profile_screen/widgets/post_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,15 +24,20 @@ class PostSection extends StatelessWidget {
                   crossAxisCount: 3, mainAxisSpacing: 2, crossAxisSpacing: 2),
               itemBuilder: (context, index) {
                 return state.model[index].imageUrls[0].isNotEmpty
-                    ? Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    state.model[index].imageUrls[0]),
-                                fit: BoxFit.cover),
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(1)),
-                      )
+                    ? GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PostViewScreen(model: state.model[index])));
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      state.model[index].imageUrls[0]),
+                                  fit: BoxFit.cover),
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(1)),
+                        ),
+                    )
                     : const SizedBox();
               });
         }

@@ -61,12 +61,12 @@ class PostImagePreview extends StatelessWidget {
                 if (state is PostAdditionSuccessState) {
                   AnimatedSnackBar.material(
                     'success',
-                    type: AnimatedSnackBarType.error,
+                    type: AnimatedSnackBarType.success,
                     mobileSnackBarPosition: MobileSnackBarPosition.top,
                   ).show(context);
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => const RootScreen()),
+                      MaterialPageRoute(builder: (context) =>  RootScreen()),
                       (route) => false);
                 }
               },

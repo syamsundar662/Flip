@@ -9,7 +9,7 @@ class RootScreen extends StatelessWidget {
   const RootScreen({super.key});
  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     context.read<FetchBloc>().add(HomeFetchPostEvent());
     return ColorfulSafeArea(
       color:Theme.of(context).colorScheme.background,

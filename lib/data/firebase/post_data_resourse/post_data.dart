@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
@@ -58,4 +60,13 @@ class Post {
     }
     return null;
   }
+
+  Future<void> deletePost(String postId)async{
+    try{
+    await instance.collection('PostCollection').doc(postId).delete();
+    }catch(e){
+      log(e.toString()); 
+    }
+  }
+
 }
