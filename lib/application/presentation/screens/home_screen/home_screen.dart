@@ -1,6 +1,4 @@
-import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
-import 'package:flip/application/presentation/screens/home_screen/widgets/home_shimmer.dart';
-import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
+import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
 import 'package:flip/application/presentation/screens/message_screen/message_screen.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';

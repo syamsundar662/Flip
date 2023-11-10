@@ -1,12 +1,9 @@
-import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 
 class ProfileShimmerEffect extends StatelessWidget {
-  ProfileShimmerEffect({Key? key}) : super(key: key);
+  const ProfileShimmerEffect({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,28 +57,28 @@ class ProfileShimmerEffect extends StatelessWidget {
                     ),
                   ),
                 ),
-                  Positioned(
+                Positioned(
                   right: 15,
-                    bottom: 40 ,
-                    child: Shimmer.fromColors(
-                      baseColor: const Color.fromARGB(255, 215, 215, 215),
-                      highlightColor: Colors.grey[200]!,
-                      child: Container(
-                        height: screenFullHeight * .05,
-                        width: screenFullWidth/2.2,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(4)),
-                      ),
+                  bottom: 40,
+                  child: Shimmer.fromColors(
+                    baseColor: const Color.fromARGB(255, 215, 215, 215),
+                    highlightColor: Colors.grey[200]!,
+                    child: Container(
+                      height: screenFullHeight * .05,
+                      width: screenFullWidth / 2.2,
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(4)),
                     ),
                   ),
+                ),
               ],
             ),
           ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Positioned(
                   left: 68,
@@ -91,15 +88,15 @@ class ProfileShimmerEffect extends StatelessWidget {
                     highlightColor: Colors.grey[200]!,
                     child: Container(
                       height: screenFullHeight * .05,
-                      width: screenFullWidth/2.2,
+                      width: screenFullWidth / 2.2,
                       decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(4)),
                     ),
                   ),
                 ),
-                          ),
-                Padding(
+              ),
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Positioned(
                   left: 68,
@@ -109,16 +106,16 @@ class ProfileShimmerEffect extends StatelessWidget {
                     highlightColor: Colors.grey[200]!,
                     child: Container(
                       height: screenFullHeight * .05,
-                      width: screenFullWidth/2.2,
+                      width: screenFullWidth / 2.2,
                       decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(4)),
                     ),
                   ),
                 ),
-                          ),
-              ],
-            ),
+              ),
+            ],
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -126,22 +123,22 @@ class ProfileShimmerEffect extends StatelessWidget {
                 height: 300,
                 child: GridView.builder(
                     gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3
-                        ,crossAxisSpacing: 2,mainAxisSpacing: 2
-                        
-                        ), 
-                        itemCount: 9,
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 2,
+                            mainAxisSpacing: 2),
+                    itemCount: 9,
                     itemBuilder: (context, index) {
                       return Shimmer.fromColors(
                         baseColor: Colors.grey[400]!,
                         highlightColor: Colors.grey[300]!,
                         child: Container(
-                              // height: screenFullHeight / 2.3,
-                              // width: screenFullWidth ,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(1),
-                                  color: Colors.green),
-                            ),
+                          // height: screenFullHeight / 2.3,
+                          // width: screenFullWidth ,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(1),
+                              color: Colors.green),
+                        ),
                       );
                     }),
               ),

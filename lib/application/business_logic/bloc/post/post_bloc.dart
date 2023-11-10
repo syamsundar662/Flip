@@ -44,7 +44,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         //user profile imageurl should be here
     event.model.username = currentUser == null ? '' : currentUser.username;
     event.model.imageUrls = selectdImagesUrls;
-    await Post().createPost(event.model);
+    await Post().createPost(event.model); 
     emit(PostAdditionSuccessState());
   }
 }

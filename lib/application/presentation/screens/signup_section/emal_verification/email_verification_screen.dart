@@ -16,8 +16,8 @@ class EmailVerificaitonScreen extends StatelessWidget {
     context.read<AuthBloc>().add(VerifyWithEmailEvent());
     return Scaffold(
       body: PopScope(
-        onPopInvoked: (value)async{
-           AuthServices().deleteUserFromFirebase(); 
+        onPopInvoked: (value) async {
+          AuthServices().deleteUserFromFirebase();
         },
         child: Container(
           decoration: const BoxDecoration(gradient: mainGradient),
@@ -47,8 +47,10 @@ class EmailVerificaitonScreen extends StatelessWidget {
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is EmailVerifiedSuccessState) {
-                    Navigator.push(context,
-                        CupertinoPageRoute(builder: (context) =>  RootScreen()));
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => const RootScreen()));
                   }
                 },
                 child: TextButton(
@@ -58,7 +60,7 @@ class EmailVerificaitonScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) =>  RootScreen()));
+                              builder: (context) => const RootScreen()));
                     }
                   },
                 ),

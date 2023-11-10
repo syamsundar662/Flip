@@ -10,7 +10,7 @@ part 'bottom_nav_bar_state.dart';
 
 class BottomNavBarBloc extends Bloc<BottomNavBarEvent, BottomNavBarState> {
   BottomNavBarBloc() : super(BottomNavBarInitial()) {
-    on<BottomNavbarOnTapEvent>(bottomNavbarOnTapEvent); 
+    on<BottomNavbarOnTapEvent>(bottomNavbarOnTapEvent);
   }
 
   FutureOr<void> bottomNavbarOnTapEvent(
@@ -23,6 +23,6 @@ class BottomNavBarBloc extends Bloc<BottomNavBarEvent, BottomNavBarState> {
     const SearchScreen(),
     const NearByFlips(),
     const NotificationScreen(),
-     ProfileScreen()
+    const ProfileScreen()
   ];
 }

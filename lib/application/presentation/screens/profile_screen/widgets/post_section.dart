@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flip/application/business_logic/bloc/profile_post/profile_post_bloc.dart';
+import 'package:flip/application/business_logic/bloc/profile/profile_post/profile_post_bloc.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

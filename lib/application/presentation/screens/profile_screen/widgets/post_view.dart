@@ -1,13 +1,9 @@
-import 'package:flip/application/business_logic/bloc/profile_post/profile_post_bloc.dart';
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
-import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sliding_box/flutter_sliding_box.dart';
 
 class PostViewScreen extends StatelessWidget {
   const PostViewScreen({super.key, required this.model});
@@ -41,34 +37,40 @@ class PostViewScreen extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                         onPressed: () async {
-                          showSlidingBox(
-                              context: context,
-                              box: SlidingBox(
-                                maxHeight: screenFullHeight / 5,
-                                color: Theme.of(context).colorScheme.onTertiary,
-                                style: BoxStyle.shadow,
-                                draggableIconBackColor:
-                                    Theme.of(context).colorScheme.onTertiary,
-                                body: SizedBox(
-                                  height: screenFullHeight/5,
-                                  child: ListView.builder(
-                                    itemCount: 1,
-                                    itemBuilder: (context,index){
-                                      return ListTile(leading: Icon(Icons.delete),title: Text('delete'),);
-                                    },
-                                    
-                                    
-                                  ),
-                                ),
-                              ));
+                          SlideUpWidget().showSlidingBoxWidget(
+                              context,
+                              screenFullHeight / 5,
+                              SlideUpWidget.optionsForProfilePostViewScreen,
+                              SlideUpWidget.optionIconListForProfilePostViewScreen);
+                          // showSlidingBox(
+                          //     context: context,
+                          //     box: SlidingBox(
+                          //       maxHeight: screenFullHeight / 5,
+                          //       color: Theme.of(context).colorScheme.onTertiary,
+                          //       style: BoxStyle.shadow,
+                          //       draggableIconBackColor:
+                          //           Theme.of(context).colorScheme.onTertiary,
+                          //       body: SizedBox(
+                          //         height: screenFullHeight / 5,
+                          //         child: ListView.builder(
+                          //           itemCount: 1,
+                          //           itemBuilder: (context, index) {
+                          //             return const ListTile(
+                          //               leading: Icon(Icons.delete),
+                          //               title: Text('delete'),
+                          //             );
+                          //           },
+                          //         ),
+                          //       ),
+                          //     ));
 
                           // Navigator.pop(context);
 
-                          context
-                              .read<ProfilePostBloc>()
-                              .add(ProfilePostDataFetchEvent(id: model.userId));
+                          // context
+                          //     .read<ProfilePostBloc>()
+                          //     .add(ProfilePostDataFetchEvent(id: model.userId));
                         },
-                        icon: Icon(Icons.more_vert),
+                        icon: const Icon(Icons.more_vert),
                       )
                     ],
                   ),

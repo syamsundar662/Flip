@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
-  
-  appBarTheme: AppBarTheme(surfaceTintColor: Colors.transparent ),
-  
+    appBarTheme: const AppBarTheme(surfaceTintColor: Colors.transparent),
     textButtonTheme: const TextButtonThemeData(
       style:
           ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.black)),
@@ -11,13 +9,11 @@ ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.black,
     colorScheme: const ColorScheme.light().copyWith(
-      
         background: Colors.white,
         primary: const Color.fromARGB(75, 179, 179, 179),
         secondary: Colors.grey,
         onPrimary: Colors.black,
-        onTertiary: Colors.white 
-        ),
+        onTertiary: Colors.white),
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(

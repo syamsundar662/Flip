@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 CupertinoPageRoute(
-                                    builder: (context) =>  RootScreen()),
+                                    builder: (context) => const RootScreen()),
                                 (route) => false);
                             authBlocProvider.passwordController.clear();
                           }
@@ -225,14 +225,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       listenWhen: (previous, current) =>
                           current is AuthSuccessState,
                       listener: (context, state) {
-                        if (state is AuthErrorState) {}     
+                        if (state is AuthErrorState) {}
                         state as AuthSuccessState;
                         if (AuthenticationResults.googleSignInSuccess ==
                             state.authResponse) {
                           Navigator.pushAndRemoveUntil(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) =>  RootScreen()),
+                                  builder: (context) => const RootScreen()),
                               (route) => false);
                         } else if (AuthenticationResults.newUser ==
                             state.authResponse) {

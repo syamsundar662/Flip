@@ -1,7 +1,7 @@
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
-import 'package:flip/application/business_logic/bloc/profile_post/profile_post_bloc.dart';
-import 'package:flip/application/business_logic/bloc/user_data/profile_bloc.dart';
+import 'package:flip/application/business_logic/bloc/profile/profile_post/profile_post_bloc.dart';
+import 'package:flip/application/business_logic/bloc/profile/user_data/profile_bloc.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/firebase_options.dart';

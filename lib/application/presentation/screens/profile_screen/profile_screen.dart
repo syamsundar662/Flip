@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_gradient/image_gradient.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/application/business_logic/bloc/profile_post/profile_post_bloc.dart';
-import 'package:flip/application/business_logic/bloc/user_data/profile_bloc.dart';
+import 'package:flip/application/business_logic/bloc/profile/profile_post/profile_post_bloc.dart';
+import 'package:flip/application/business_logic/bloc/profile/user_data/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 
@@ -18,19 +18,20 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveClientMixin {
-    @override
-  bool get wantKeepAlive => true;
-
+class _ProfileScreenState extends State<ProfileScreen>
+     {
   final id = FirebaseAuth.instance.currentUser!.uid;
-
-  final email = FirebaseAuth.instance.currentUser!.email; 
+  final email = FirebaseAuth.instance.currentUser!.email;
+  @override
+  void initState() {
+    context.read<ProfilePostBloc>().add(ProfilePostDataFetchEvent(id: id));
+    context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    context.read<ProfilePostBloc>().add(ProfilePostDataFetchEvent(id: id));
-    context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
+    // super.build(context); 
     return SafeArea(
       child: RefreshIndicator.adaptive(
         displacement: 20,
@@ -44,8 +45,10 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
         child: Scaffold(
           body: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
-              if (state is  UserDataFetchingState) {  
-                return Center(child: CircularProgressIndicator.adaptive(),);
+              if (state is UserDataFetchingState) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
               } else if (state is UserDataFetchedState) {
                 return CustomScrollView(
                   slivers: [
@@ -60,7 +63,11 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                       actions: [
                         IconButton(
                             onPressed: () {
-                              SlideUpWidget().showSlidingBoxWidget(context);
+                              SlideUpWidget().showSlidingBoxWidget(
+                                  context,
+                                  screenFullHeight / 2.4,
+                                  SlideUpWidget.optionsForProfileScreen,
+                                  SlideUpWidget.optionIconListForProfileScreen);
                             },
                             icon: const Icon(Icons.menu_outlined)),
                       ],
@@ -153,28 +160,29 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                               const Divider(
                                 thickness: .1,
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 20, right: 20),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '163 posts',
-                                      style: TextStyle(
+                                      state.model.posts!.length.toString(),
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    Text(
+                                    const Text(
                                       '2k followers',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    Text(
+                                    const Text(
                                       '538 followings',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    Text(
+                                    const Text(
                                       '59k likes',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500),
@@ -232,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                   ],
                 );
               }
-              return SizedBox(); 
+              return const SizedBox();
             },
           ),
         ),
