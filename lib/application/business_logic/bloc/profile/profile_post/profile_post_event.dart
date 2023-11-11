@@ -1,8 +1,8 @@
-part of 'profile_post_bloc.dart';
+// part of 'profile_post_bloc.dart';
 
-class ProfilePostEvent {}
+// class ProfilePostEvent {}
 
-class ProfilePostDataFetchEvent extends ProfilePostEvent{
-  final String id ;
-  ProfilePostDataFetchEvent({required this.id});
-}
+// class ProfilePostDataFetchEvent extends ProfilePostEvent{
+//   final String id ;
+//   ProfilePostDataFetchEvent({required this.id});
+// }

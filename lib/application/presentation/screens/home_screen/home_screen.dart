@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_options.dart';
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
 import 'package:flip/application/presentation/screens/message_screen/message_screen.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
@@ -23,8 +24,9 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context); 
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async {
+         Future.delayed(const Duration(seconds: 1));
         context.read<FetchBloc>().add(HomeFetchPostEvent());
       },
       child: Scaffold(

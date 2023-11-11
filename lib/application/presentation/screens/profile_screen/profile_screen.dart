@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_gradient/image_gradient.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/application/business_logic/bloc/profile/profile_post/profile_post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/profile/user_data/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
@@ -19,37 +18,27 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
-     {
-  final id = FirebaseAuth.instance.currentUser!.uid;
-  final email = FirebaseAuth.instance.currentUser!.email;
+    with AutomaticKeepAliveClientMixin {
   @override
-  void initState() {
-    context.read<ProfilePostBloc>().add(ProfilePostDataFetchEvent(id: id));
-    context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
-    super.initState();
-  }
+  bool get wantKeepAlive => true;
+  final id = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
-    // super.build(context); 
+    context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
+    super.build(context);
     return SafeArea(
       child: RefreshIndicator.adaptive(
         displacement: 20,
         onRefresh: () async {
           HapticFeedback.heavyImpact();
-          context
-              .read<ProfilePostBloc>()
-              .add(ProfilePostDataFetchEvent(id: id));
-          context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
+          context.read<ProfileBloc>().add(ProfilePostDataFetchEvent(id: id));
         },
         child: Scaffold(
           body: BlocBuilder<ProfileBloc, ProfileState>(
+            buildWhen: (pre, cur) => cur is UserDataFetchedState,
             builder: (context, state) {
-              if (state is UserDataFetchingState) {
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                );
-              } else if (state is UserDataFetchedState) {
+              if (state is UserDataFetchedState) {
                 return CustomScrollView(
                   slivers: [
                     SliverAppBar(
@@ -57,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       pinned: false,
                       centerTitle: false,
                       title: Text(
-                        email!,
+                        state.model.username,
                         style: const TextStyle(fontSize: 15),
                       ),
                       actions: [
@@ -192,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8, top: 10, bottom: 8),
+                                    left: 8, right: 8, top: 10, bottom: 8),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -227,9 +216,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ],
                                 ),
                               ),
-                              Padding(
+                              const Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
+                                    EdgeInsets.symmetric(horizontal: 8),
                                 child: PostSection(),
                               )
                             ],

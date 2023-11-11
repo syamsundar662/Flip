@@ -11,21 +11,24 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial()) {
     on<UserDataFetchEvent>(userDataFetchEvent);
+    on<ProfilePostDataFetchEvent>(profileDataFetchEvent);
   }
 
-  FutureOr<void> userDataFetchEvent(UserDataFetchEvent event, Emitter<ProfileState> emit) async{
+  FutureOr<void> userDataFetchEvent(
+      UserDataFetchEvent event, Emitter<ProfileState> emit) async {
     emit(UserDataFetchingState());
     final response = await Post().fetchDataByUser(event.id);
-    return emit(UserDataFetchedState(model: response!)); 
+    return emit(UserDataFetchedState(model: response!));
   }
 
-  // FutureOr<void> profileDataFetchEvent(ProfilePostDataFetchEvent event, Emitter<ProfilePostState> emit)async {
-  //   emit(ProfileFetchingState());
-  //   try{
-  //   final response = await Post().fetchPostDataByUser(event.id);
-  //   emit(ProfileFetchedState(model: response));
-  //   }catch (e){ 
-  //     emit(ProfileFetchingErrorState());
-  //   }
-  // }
+  FutureOr<void> profileDataFetchEvent(
+      ProfilePostDataFetchEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileFetchingState());
+    try {
+      final response = await Post().fetchPostDataByUser(event.id);
+      emit(ProfileFetchedState(model: response));
+    } catch (e) {
+      emit(ProfileFetchingErrorState());
+    }
+  }
 }

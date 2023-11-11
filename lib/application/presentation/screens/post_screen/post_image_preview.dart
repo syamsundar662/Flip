@@ -17,91 +17,93 @@ class PostImagePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final postBlocProvider = context.read<PostBloc>();
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.close,
-                  color: Theme.of(context).colorScheme.secondary,
-                )),
-            SizedBox(
-                height: screenFullHeight / 1.5,
-                width: double.infinity,
-                child: Image.file(
-                  (selecedImage[0]),
-                  fit: BoxFit.cover,
-                )),
-            kHeight10,
-            TextField(
-              maxLines: 1,
-              controller: context.read<PostBloc>().textContentController,
-              decoration: InputDecoration(
-                  hintText: 'type here....',
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  fillColor: Theme.of(context).colorScheme.primary,
-                  filled: true,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    color: Theme.of(context).colorScheme.secondary,
                   )),
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-              cursorColor: Theme.of(context).colorScheme.secondary,
-            ),
-            const Spacer(),
-            BlocConsumer<PostBloc, PostState>(
-              listener: (context, state) {
-                if (state is PostAdditionSuccessState) {
-                  AnimatedSnackBar.material(
-                    'success',
-                    type: AnimatedSnackBarType.success,
-                    mobileSnackBarPosition: MobileSnackBarPosition.top,
-                  ).show(context);
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RootScreen()),
-                      (route) => false);
-                }
-              },
-              builder: (context, state) {
-                return ElevatedButtonWidget(
-                    onEvent: () {
-                      if (selecedImage.isNotEmpty &&
-                          postBlocProvider
-                              .textContentController.text.isNotEmpty) {
-                        final post = PostModel(
-                            username:'',
-                            userId: FirebaseAuth.instance.currentUser!.uid,
-                            textContent:
-                                postBlocProvider.textContentController.text,
-                            imageUrls: selecedImage
-                                .map((image) => image.path)
-                                .toList(),
-                            timestamp: DateTime.now(),
-                            likes: [],
-                            comments: []);
-                        postBlocProvider.add(PostAddingEvent(model: post));
-                      }
-                    },
-                    buttonTitle: state is PostAdditionLoadingState
-                        ? const CircularProgressIndicator.adaptive()
-                        : const Text('Submit'),
-                    style: const TextStyle(),
-                    buttonStyles: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Colors.blueGrey)));
-              },
-            ),
-            kHeight40,
-          ],
+              SizedBox(
+                  height: screenFullHeight / 1.5,
+                  width: double.infinity,
+                  child: Image.file(
+                    (selecedImage[0]),
+                    fit: BoxFit.cover,
+                  )),
+              kHeight10,
+              TextField(
+                maxLines: 1,
+                controller: context.read<PostBloc>().textContentController,
+                decoration: InputDecoration(
+                    hintText: 'type here....',
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    fillColor: Theme.of(context).colorScheme.primary,
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    )),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                cursorColor: Theme.of(context).colorScheme.secondary,
+              ),
+              const Spacer(),
+              BlocConsumer<PostBloc, PostState>(
+                listener: (context, state) {
+                  if (state is PostAdditionSuccessState) {
+                    AnimatedSnackBar.material(
+                      'success',
+                      type: AnimatedSnackBarType.success,
+                      mobileSnackBarPosition: MobileSnackBarPosition.top,
+                    ).show(context);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RootScreen()),
+                        (route) => false);
+                  }
+                },
+                builder: (context, state) {
+                  return ElevatedButtonWidget(
+                      onEvent: () {
+                        if (selecedImage.isNotEmpty &&
+                            postBlocProvider
+                                .textContentController.text.isNotEmpty) {
+                          final post = PostModel(
+                              username:'',
+                              userId: FirebaseAuth.instance.currentUser!.uid,
+                              textContent:
+                                  postBlocProvider.textContentController.text,
+                              imageUrls: selecedImage
+                                  .map((image) => image.path)
+                                  .toList(),
+                              timestamp: DateTime.now(),
+                              likes: [],
+                              comments: []);
+                          postBlocProvider.add(PostAddingEvent(model: post));
+                        }
+                      },
+                      buttonTitle: state is PostAdditionLoadingState
+                          ? const CircularProgressIndicator.adaptive()
+                          : const Text('Submit'),
+                      style: const TextStyle(),
+                      buttonStyles: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.blueGrey)));
+                },
+              ),
+              kHeight40,
+            ],
+          ),
         ),
       ),
     );

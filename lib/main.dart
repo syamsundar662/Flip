@@ -33,8 +33,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthBloc>(create: (context) => AuthBloc(AuthServices())),
         BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
         BlocProvider<PostBloc>(create: (context)=>PostBloc()) ,
-        BlocProvider<FetchBloc>(create: (context)=>FetchBloc()), 
-        BlocProvider<ProfilePostBloc>(create: (context)=>ProfilePostBloc()),
+        BlocProvider<FetchBloc>(create: (context)=>FetchBloc()),  
         BlocProvider<ProfileBloc>(create: (context)=>ProfileBloc()),
       ],
       child: MaterialApp(

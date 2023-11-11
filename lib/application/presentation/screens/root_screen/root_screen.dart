@@ -7,20 +7,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RootScreen extends StatelessWidget {
   const RootScreen({super.key});
- 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     context.read<FetchBloc>().add(HomeFetchPostEvent());
     return ColorfulSafeArea(
-      color:Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.background,
       child: Scaffold(
         body: BlocBuilder<BottomNavBarBloc, BottomNavBarState>(
           builder: (context, state) {
             return BottomNavBarBloc().screens[state.index];
-          },  
+          },
         ),
-        bottomNavigationBar:  BottomNavBarWidget(),
+        bottomNavigationBar: BottomNavBarWidget(),
       ),
     );
-  } 
+  }
 }

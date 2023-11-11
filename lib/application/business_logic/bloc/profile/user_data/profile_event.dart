@@ -7,7 +7,8 @@ class UserDataFetchEvent extends ProfileEvent {
 
   UserDataFetchEvent({required this.id});
 }
-// class ProfilePostDataFetchEvent extends ProfilePostEvent{
-//   final String id ;
-//   ProfilePostDataFetchEvent({required this.id});
-// }
+
+class ProfilePostDataFetchEvent extends ProfileEvent {
+  final String id;
+  ProfilePostDataFetchEvent({required this.id});
+}
