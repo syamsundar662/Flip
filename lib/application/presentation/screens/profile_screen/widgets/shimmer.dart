@@ -121,7 +121,7 @@ class ProfileShimmerEffect extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 height: 300,
-                child: GridView.builder(
+                child: GridView.builder( 
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
@@ -133,8 +133,6 @@ class ProfileShimmerEffect extends StatelessWidget {
                         baseColor: Colors.grey[400]!,
                         highlightColor: Colors.grey[300]!,
                         child: Container(
-                          // height: screenFullHeight / 2.3,
-                          // width: screenFullWidth ,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(1),
                               color: Colors.green),

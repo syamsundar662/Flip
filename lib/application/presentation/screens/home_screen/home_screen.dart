@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
 import 'package:flip/application/presentation/screens/message_screen/message_screen.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
@@ -72,10 +72,9 @@ class _HomeScreenState extends State<HomeScreen>
                 );
                     } else if (state is HomeDataFechedState) {
                       return ListView.builder(
-                          padding: const EdgeInsets.all(8),
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: state.model.length,
+                         itemCount: state.model.length, 
                           itemBuilder: (context, index) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,18 +99,36 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                                 kHeight10,
                                 state.model[index].imageUrls.isNotEmpty
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Container(
-                                          constraints: BoxConstraints(
-                                              maxHeight:
-                                                  screenFullHeight / 1.8),
-                                          width: double.infinity,
-                                          child: Image.network(
-                                            state.model[index].imageUrls[0],
-                                            fit: BoxFit.cover,
+                                    ? CarouselSlider.builder(
+                                      options: CarouselOptions(
+                                        padEnds: true ,
+                                        autoPlay: true,
+                                        pauseAutoPlayOnTouch: true,
+                                        enlargeCenterPage: true,
+                                        height:screenFullHeight / 1.8 ,
+                                        viewportFraction: 1,
+                                        aspectRatio: 16/9 ,
+                                        enableInfiniteScroll: false
+                                      ),
+                                      itemCount: state.model[index].imageUrls.length,
+                                      itemBuilder: (context,inde,_){
+                                        return ClipRRect(
+                                          borderRadius: const BorderRadius.all( Radius.circular(10)),
+                                          child: Container(
+                                            // padding: EdgeInsets.all(8),
+                                            constraints: BoxConstraints(
+                                                maxHeight:
+                                                    screenFullHeight / 1.8),
+                                            width: double.infinity,
+                                            child: Image.network(
+                                              state.model[index].imageUrls[inde],
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ))
+                                        );
+                                      },
+                                     
+                                    )
                                     : Container(
                                         width: double.infinity,
                                         decoration: BoxDecoration(
@@ -224,22 +241,3 @@ class StorySection extends StatelessWidget {
     );
   }
 }
-
-
-
-//  index == 0
-                        // ? Container(
-                        //     width: double.infinity,
-                        //     decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(6),
-                        //       color: const Color.fromARGB(20, 159, 159, 159),
-                        //     ),
-                        //     child: const Padding(
-                        //       padding: EdgeInsets.all(12.0),
-                        //       child: Text(
-                        //         'All the dreams like twinkling stars,stars are like glowing gems...;',
-                        //         style: TextStyle(fontSize: 18),
-                        //       ),
-                        //     ),
-                        //   )
-//                         : 

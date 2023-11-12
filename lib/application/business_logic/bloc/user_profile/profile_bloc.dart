@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
@@ -12,6 +11,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial()) {
     on<UserDataFetchEvent>(userDataFetchEvent);
     on<ProfilePostDataFetchEvent>(profileDataFetchEvent);
+    on<ProfileThoughtFetchEvent>(profileThoughtFetchEvent);
   }
 
   FutureOr<void> userDataFetchEvent(
@@ -30,5 +30,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } catch (e) {
       emit(ProfileFetchingErrorState());
     }
+  }
+
+  FutureOr<void> profileThoughtFetchEvent(
+      ProfileThoughtFetchEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileThoughtFetchingState());
+    final response = await Post().fetchThoughtByUser(event.id);
+    emit(ProfileThoughtFetchedState(model: response));
   }
 }

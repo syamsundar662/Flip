@@ -7,16 +7,24 @@ class PostImageSelectionEvent extends PostEvent {}
 
 class PostThoughtsEvents extends PostEvent {
   final PostModel model;
-  PostThoughtsEvents({required this.model});
+  final String userId;
+  PostThoughtsEvents({required this.model, required this.userId});
 }
-class PostOpenCameraEvent extends PostEvent {
- 
-}
+
+class PostOpenCameraEvent extends PostEvent {}
 
 class PostAddingEvent extends PostEvent {
-   final PostModel model;
+  final PostModel model;
 
-  PostAddingEvent({required this.model});
+  final String userId;
+
+  PostAddingEvent({required this.model, required this.userId});
 }
 
 class PostScreenCloseEvent extends PostEvent {}
+
+class PostDeleteEvent extends PostEvent {
+  final String postId;
+
+  PostDeleteEvent({required this.postId});
+}

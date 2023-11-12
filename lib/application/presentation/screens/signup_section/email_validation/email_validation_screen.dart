@@ -54,6 +54,7 @@ class EmailValidationScreen extends StatelessWidget {
               ),
               kHeight10,
               TextFormFields(
+                padding: kPaddingForTextfield,
                 prefixIcons: const Icon(
                   Icons.mail,
                   color: Colors.grey,

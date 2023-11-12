@@ -16,43 +16,69 @@ class ForgotPasswordScreenStepOne extends StatelessWidget {
     final authBlocProvider = context.read<AuthBloc>();
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(gradient:  mainGradient),
+        decoration: const BoxDecoration(gradient: mainGradient),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,  
-            crossAxisAlignment: CrossAxisAlignment.start,  
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Padding(
-                padding: kPaddingForTextfield,  
-                child: Text('Forgot password?',style: GoogleFonts.baloo2(fontSize: 30 ,fontWeight: FontWeight.w600,color: Colors.white),textAlign: TextAlign.center  ,)),  
-               Padding(
-                padding: kPaddingForTextfield,  
-                child: Text('Please enter your email address to begin with password reset process',style: GoogleFonts.baloo2(fontSize: 15  ,fontWeight: FontWeight.w400,color: Colors.white),textAlign: TextAlign.left ,)),  
-                kHeight10,   
+              Padding(
+                  padding: kPaddingForTextfield,
+                  child: Text(
+                    'Forgot password?',
+                    style: GoogleFonts.baloo2(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                  )),
+              Padding(
+                  padding: kPaddingForTextfield,
+                  child: Text(
+                    'Please enter your email address to begin with password reset process',
+                    style: GoogleFonts.baloo2(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white),
+                    textAlign: TextAlign.left,
+                  )),
+              kHeight10,
               TextFormFields(
-                hintText: 'Email',  
+                padding: kPaddingForTextfield,
+                hintText: 'Email',
                 filledColor: const Color.fromARGB(50, 158, 158, 158),
-                obscure: false,  
+                obscure: false,
                 controller: authBlocProvider.passwordResetController,
               ),
-              kHeight10,  
+              kHeight10,
               Padding(
                 padding: kPaddingForTextfield,
                 child: ElevatedButtonWidget(
-                  onEvent: (){
-                    Navigator.push(context, CupertinoPageRoute(builder: (context)=>ForgotPasswordScreenStepTwo(emailFromController:authBlocProvider.passwordResetController.text ,)));
-                  },
-                    buttonTitle: const Text('Continue to reset',style: TextStyle(color: Colors.white),),
+                    onEvent: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ForgotPasswordScreenStepTwo(
+                                    emailFromController: authBlocProvider
+                                        .passwordResetController.text,
+                                  )));
+                    },
+                    buttonTitle: const Text(
+                      'Continue to reset',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: const TextStyle(),
-                    buttonStyles:  ButtonStyle( shape: MaterialStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                          borderRadius:BorderRadius.circular(15))),   backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 41, 87, 195)))), 
+                    buttonStyles: ButtonStyle(
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15))),
+                        backgroundColor: const MaterialStatePropertyAll(
+                            Color.fromARGB(255, 41, 87, 195)))),
               ),
-              kHeight60    
-            ],  
-          ),   
+              kHeight60
+            ],
+          ),
         ),
-      ), 
+      ),
     );
   }
 }

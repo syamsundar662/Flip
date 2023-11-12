@@ -1,3 +1,5 @@
+import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
+import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
@@ -6,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_gradient/image_gradient.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/application/business_logic/bloc/profile/user_data/profile_bloc.dart';
+import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 
@@ -37,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         child: Scaffold(
           body: BlocBuilder<ProfileBloc, ProfileState>(
             buildWhen: (pre, cur) => cur is UserDataFetchedState,
-            builder: (context, state) {
+            builder: (ctx, state) {
               if (state is UserDataFetchedState) {
                 return CustomScrollView(
                   slivers: [
@@ -53,10 +55,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                         IconButton(
                             onPressed: () {
                               SlideUpWidget().showSlidingBoxWidget(
-                                  context,
-                                  screenFullHeight / 2.4,
-                                  SlideUpWidget.optionsForProfileScreen,
-                                  SlideUpWidget.optionIconListForProfileScreen);
+                                  context: context,
+                                  height: screenFullHeight / 2.35,
+                                  buttonTitle:
+                                      SlideUpWidget.optionsForProfileScreen,
+                                  buttonIcons: SlideUpWidget
+                                      .optionIconListForProfileScreen);
                             },
                             icon: const Icon(Icons.menu_outlined)),
                       ],
@@ -118,7 +122,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                             BorderRadius
                                                                 .circular(
                                                                     10)))),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              // Navigator.push(context, CupertinoPageRoute(builder: (context)=> EditProfile(model: state.model,)));
+                                            },
                                             child: Text(
                                               'Edit profile',
                                               style: TextStyle(
@@ -138,6 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   children: [
                                     Text(
                                       state.model.username,
+                                      textAlign: TextAlign.center,
                                       style: GoogleFonts.baloo2(
                                           fontSize: 22,
                                           fontWeight: FontWeight.w500),
@@ -150,28 +157,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 thickness: .1,
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20, right: 20),
+                                padding: EdgeInsets.only(left: 20, right: 20),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      state.model.posts!.length.toString(),
-                                      style: const TextStyle(
+                                      "${state.model.posts!.length.toString()} posts",
+                                      style: TextStyle(
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    const Text(
+                                    Text(
                                       '2k followers',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    const Text(
+                                    Text(
                                       '538 followings',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    const Text(
+                                    Text(
                                       '59k likes',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500),
@@ -196,7 +202,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               .colorScheme
                                               .primary),
                                       child: IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            AuthServices().signOut();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        LoginScreen()));
+                                          },
                                           icon: const Icon(
                                               Icons.window_outlined)),
                                     ),
@@ -217,9 +230,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ),
                               ),
                               const Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: 8),
-                                child: PostSection(),
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                child: ThoughtsPostSection(),
                               )
                             ],
                           ),

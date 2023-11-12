@@ -16,7 +16,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<PostImageSelectionEvent>(postImageSelectionEvent);
     on<PostThoughtsEvents>(postThoughtsEvents);
     on<PostAddingEvent>(postAddingEvent);
-  }
+    on<PostDeleteEvent>(postDeleteEvent);
+  } 
 
   Future<void> postImageSelectionEvent(
       PostImageSelectionEvent event, Emitter<PostState> emit) async {
@@ -30,7 +31,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   FutureOr<void> postThoughtsEvents(
       PostThoughtsEvents event, Emitter<PostState> emit) async {
     emit(PostAdditionLoadingState());
-    await Post().createPost(event.model);
+    await Post().createPost(event.model,event.userId);
     return emit(PostThoughtsAdditionSuccessState());
   }
 
@@ -41,10 +42,17 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         await PickImage().uploadImages(event.model.imageUrls);
     final currentUser =
         await Post().fetchDataByUser(FirebaseAuth.instance.currentUser!.uid);
-        //user profile imageurl should be here
+    //user profile imageurl should be here
     event.model.username = currentUser == null ? '' : currentUser.username;
     event.model.imageUrls = selectdImagesUrls;
-    await Post().createPost(event.model); 
+    await Post().createPost(event.model,event.userId);
     emit(PostAdditionSuccessState());
+  }
+
+  FutureOr<void> postDeleteEvent(
+      PostDeleteEvent event, Emitter<PostState> emit) async {
+    await Post().deletePost(event.postId);
+    emit(PostDeletionState());
+    emit(PostDeleteSuccessState());
   }
 }

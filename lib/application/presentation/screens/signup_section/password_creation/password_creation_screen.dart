@@ -74,6 +74,7 @@ class PasswordConfirmationScreenState extends State<PasswordConfirmationScreen> 
                       ),
                       kHeight10,
                       TextFormFields(
+                        padding: kPaddingForTextfield,
                         prefixIcons: const Icon(
                           Icons.lock,
                           color: Colors.grey,
@@ -114,6 +115,7 @@ class PasswordConfirmationScreenState extends State<PasswordConfirmationScreen> 
                       ),
                       kHeight10,
                       TextFormFields(
+                        padding: kPaddingForTextfield,
                         prefixIcons: const Icon(
                           Icons.lock,
                           color: Colors.grey,

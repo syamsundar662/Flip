@@ -1,9 +1,15 @@
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
+import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
-import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_sliding_box/flutter_sliding_box.dart';
+import 'package:iconsax/iconsax.dart';
 
 class PostViewScreen extends StatelessWidget {
   const PostViewScreen({super.key, required this.model});
@@ -37,38 +43,12 @@ class PostViewScreen extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                         onPressed: () async {
-                          SlideUpWidget().showSlidingBoxWidget(
-                              context,
-                              screenFullHeight / 5,
-                              SlideUpWidget.optionsForProfilePostViewScreen,
-                              SlideUpWidget.optionIconListForProfilePostViewScreen);
-                          // showSlidingBox(
-                          //     context: context,
-                          //     box: SlidingBox(
-                          //       maxHeight: screenFullHeight / 5,
-                          //       color: Theme.of(context).colorScheme.onTertiary,
-                          //       style: BoxStyle.shadow,
-                          //       draggableIconBackColor:
-                          //           Theme.of(context).colorScheme.onTertiary,
-                          //       body: SizedBox(
-                          //         height: screenFullHeight / 5,
-                          //         child: ListView.builder(
-                          //           itemCount: 1,
-                          //           itemBuilder: (context, index) {
-                          //             return const ListTile(
-                          //               leading: Icon(Icons.delete),
-                          //               title: Text('delete'),
-                          //             );
-                          //           },
-                          //         ),
-                          //       ),
-                          //     ));
-
-                          // Navigator.pop(context);
-
-                          // context
-                          //     .read<ProfilePostBloc>()
-                          //     .add(ProfilePostDataFetchEvent(id: model.userId));
+                          showSlidingBoxWidget(
+                            context: context,
+                            height: screenFullHeight / 5,
+                            buttonTitle: optionsForProfilePostViewScreen,
+                            buttonIcons: optionIconListForProfilePostViewScreen,
+                          );
                         },
                         icon: const Icon(Icons.more_vert),
                       )
@@ -76,17 +56,36 @@ class PostViewScreen extends StatelessWidget {
                   ),
                   kHeight10,
                   model.imageUrls.isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            constraints: BoxConstraints(
-                                maxHeight: screenFullHeight / 1.8),
-                            width: double.infinity,
-                            child: Image.network(
-                              model.imageUrls[0],
-                              fit: BoxFit.cover,
-                            ),
-                          ))
+                      ? CarouselSlider.builder(
+                                      options: CarouselOptions(
+                                        padEnds: true ,
+                                        autoPlay: true,
+                                        pauseAutoPlayOnTouch: true,
+                                        enlargeCenterPage: true,
+                                        height:screenFullHeight / 1.8 ,
+                                        viewportFraction: 1,
+                                        aspectRatio: 16/9 ,
+                                        enableInfiniteScroll: false
+                                      ),
+                                      itemCount: model.imageUrls.length,
+                                      itemBuilder: (context,inde,_){
+                                        return ClipRRect(
+                                          borderRadius: const BorderRadius.all( Radius.circular(10)),
+                                          child: Container(
+                                            // padding: EdgeInsets.all(8),
+                                            constraints: BoxConstraints(
+                                                maxHeight:
+                                                    screenFullHeight / 1.8),
+                                            width: double.infinity,
+                                            child: Image.network(
+                                              model.imageUrls[inde],
+                                              fit: BoxFit.cover,
+                                             ),
+                                          ),
+                                        );
+                                      },
+                                     
+                                    )
                       : Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -143,4 +142,103 @@ class PostViewScreen extends StatelessWidget {
               );
             }));
   }
+
+  Future<dynamic> showSlidingBoxWidget(
+      {required BuildContext context,
+      required double height,
+      // PostModel? model,
+      required List<String> buttonTitle,
+      required List<Icon> buttonIcons}) {
+    return showSlidingBox(
+        barrierDismissible: true,
+        context: context,
+        box: SlidingBox(
+          collapsed: true,
+          draggable: true,
+          maxHeight: height,
+          color: Theme.of(context).colorScheme.onTertiary,
+          style: BoxStyle.shadow,
+          draggableIconBackColor: Theme.of(context).colorScheme.onTertiary,
+          body: _body(buttonTitle, buttonIcons, context),
+        ));
+  }
+
+  _body(
+    List<String> buttonTitle,
+    List<Icon> buttonIcons,
+    BuildContext context,
+  ) {
+    return BlocListener<PostBloc, PostState>(
+      listener: (context, state) {
+        if (state is PostDeleteSuccessState) {
+          Navigator.pop(context);
+          Navigator.pop(context);
+          context
+              .read<ProfileBloc>()
+              .add(ProfilePostDataFetchEvent(id: model.userId));
+        }
+      },
+      child: ListView.separated(
+          shrinkWrap: true,
+          separatorBuilder: (ctx, index) {
+            return const Divider(
+              thickness: .001,
+            );
+          },
+          itemCount: buttonIcons.length,
+          itemBuilder: (itemBuilder, index) {
+            return GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog.adaptive(
+                    title: const Text("Delete post"),
+                    content: const Text(
+                      "Are you sure you want to delete?",
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          if (index == 1) {
+                            context
+                                .read<PostBloc>()
+                                .add(PostDeleteEvent(postId: model.postId));
+                          }
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Delete',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.background),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: ListTile(
+                  leading: buttonIcons[index],
+                  title: Text(buttonTitle[index]),
+                ),
+              ),
+            );
+          }),
+    );
+  }
+
+  static List<String> optionsForProfilePostViewScreen = [
+    'Edit post',
+    'Delete',
+  ];
+  static List<Icon> optionIconListForProfilePostViewScreen = [
+    const Icon(
+      Iconsax.edit,
+    ),
+    const Icon(
+      Iconsax.profile_delete,
+    ),
+  ];
 }

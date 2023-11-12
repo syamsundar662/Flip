@@ -9,11 +9,15 @@ class PostImageSelectedState extends PostState {
   final List<File> selectedImageFile;
   PostImageSelectedState({required this.selectedImageFile});
 }
+
 class PostThoughtsAdditionSuccessState extends PostState {}
 
-class PostAdditionSuccessState extends PostState {
-}
+class PostAdditionSuccessState extends PostState {}
 
 class PostAdditionErrorState extends PostState {}
+
+class PostDeleteSuccessState extends PostState {}
+
+class PostDeletionState extends PostState {}
 
 class PostAdditionLoadingState extends PostState {}

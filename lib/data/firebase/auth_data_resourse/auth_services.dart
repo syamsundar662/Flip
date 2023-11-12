@@ -21,7 +21,7 @@ class AuthServices implements AuthRepository {
       );
       userCredential.user!.sendEmailVerification();
       final String uid = userCredential.user!.uid;
-      final userSignUpInformation = UserRepositoryModel(
+      final userSignUpInformation = UserRepositoryModel( 
           userId: uid, username: signUp.username, email: signUp.email);
       UserDataService().userAuthDataCollection(userSignUpInformation);
 

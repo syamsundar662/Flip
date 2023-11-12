@@ -1,46 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_box/flutter_sliding_box.dart';
-import 'package:iconsax/iconsax.dart';
 
 class SlideUpWidget {
-  Future<dynamic> showSlidingBoxWidget(BuildContext context, double height,
-      List<String> buttonTitle, List<IconButton> buttonIcons) {
+  Future<dynamic> showSlidingBoxWidget(
+      {required BuildContext context,
+      required double height,
+      required List<String> buttonTitle,
+      required List<IconButton> buttonIcons}) {
     return showSlidingBox(
         barrierDismissible: true,
         context: context,
         box: SlidingBox(
           collapsed: true,
-          draggable: true,
-          maxHeight: height,
+          draggable: true, 
+          maxHeight: height, 
           color: Theme.of(context).colorScheme.onTertiary,
           style: BoxStyle.shadow,
           draggableIconBackColor: Theme.of(context).colorScheme.onTertiary,
-          body: _body(buttonTitle, buttonIcons),
+          body: _body(buttonTitle, buttonIcons, context),
         ));
   }
 
-  _body(List<String> buttonTitle, List<IconButton> buttonIcons) {
+  _body(List<String> buttonTitle, List<IconButton> buttonIcons,
+      BuildContext context,) {
     return ListView.separated(
         shrinkWrap: true,
-        separatorBuilder: (context, index) {
+        separatorBuilder: (ctx, index) {
           return const Divider(
             thickness: .001,
           );
         },
         itemCount: buttonIcons.length,
         itemBuilder: (itemBuilder, index) {
-          return SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: ListTile(
-              leading: buttonIcons[index],
-              title: Text(buttonTitle[index]),
+          return GestureDetector(
+            onTap: () {
+            },
+            child: SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: ListTile(
+                leading: buttonIcons[index],
+                title: Text(buttonTitle[index]),
+              ),
             ),
           );
         });
   }
+  
 
-static List<IconButton> optionIconListForProfileScreen = [
+  static List<IconButton> optionIconListForProfileScreen = [
     IconButton(
       icon: const Icon(Icons.settings),
       onPressed: () {},
@@ -62,31 +70,18 @@ static List<IconButton> optionIconListForProfileScreen = [
       onPressed: () {},
     ),
   ];
-  
 
-//view post from userprofile
+//view post from userprofile 
 
-
- static List<String> optionsForProfileScreen = [
+  static List<String> optionsForProfileScreen = [
     'Settings',
     'Saves',
     'Privacy and Security',
     'Help',
     'Sign out',
   ];
- static List<String> optionsForProfilePostViewScreen = [
-    'Edit post',
-    'Delete',
-  ];
-   static List<IconButton> optionIconListForProfilePostViewScreen = [
-    IconButton(
-      icon: const Icon(Iconsax.edit),
-      onPressed: () {},
-    ),
-    IconButton(
-      icon: const Icon(Iconsax.profile_delete), 
-      onPressed: () {},
-    ),
-    
-  ];
+
+
+
+
 }

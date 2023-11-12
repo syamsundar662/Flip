@@ -17,7 +17,7 @@ class UserRepositoryModel {
     this.displayName,
     this.bio,
     this.saves,
-    this.posts ,
+    this.posts , 
     this.coverImageUrl = '',
     this.profileImageUrl = '',
     this.followers,

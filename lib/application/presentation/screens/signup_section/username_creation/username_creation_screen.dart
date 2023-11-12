@@ -44,6 +44,7 @@ class UsernameRegistration extends StatelessWidget {
               ),
               kHeight10,
               TextFormFields(
+                padding: kPaddingForTextfield,
                 controller: context.read<AuthBloc>().usernameController,
                 suffixIconWidget: const Icon(
                   Icons.done,

@@ -74,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   slideAnimationWidgetVariable: Column(
                     children: [
                       TextFormFields(
+                        padding: kPaddingForTextfield,
                         prefixIcons: const Icon(
                           Icons.email_rounded,
                           color: Colors.grey,
@@ -93,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       kHeight10,
                       TextFormFields(
+                        padding: kPaddingForTextfield,
                         prefixIcons: const Icon(
                           Icons.lock,
                           color: Colors.grey,

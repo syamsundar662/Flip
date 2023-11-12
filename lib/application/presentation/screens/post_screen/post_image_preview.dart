@@ -53,7 +53,8 @@ class PostImagePreview extends StatelessWidget {
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(10),
                     )),
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 cursorColor: Theme.of(context).colorScheme.secondary,
               ),
               const Spacer(),
@@ -79,7 +80,7 @@ class PostImagePreview extends StatelessWidget {
                             postBlocProvider
                                 .textContentController.text.isNotEmpty) {
                           final post = PostModel(
-                              username:'',
+                              username: '',
                               userId: FirebaseAuth.instance.currentUser!.uid,
                               textContent:
                                   postBlocProvider.textContentController.text,
@@ -89,7 +90,8 @@ class PostImagePreview extends StatelessWidget {
                               timestamp: DateTime.now(),
                               likes: [],
                               comments: []);
-                          postBlocProvider.add(PostAddingEvent(model: post));
+        
+                          postBlocProvider.add(PostAddingEvent(model: post,userId: FirebaseAuth.instance.currentUser!.uid ));
                         }
                       },
                       buttonTitle: state is PostAdditionLoadingState

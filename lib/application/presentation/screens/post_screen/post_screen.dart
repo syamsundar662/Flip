@@ -119,7 +119,7 @@ class PostScreen extends StatelessWidget {
                                   likes: [],
                                   comments: []);
                               postBlocProvider
-                                  .add(PostThoughtsEvents(model: model));
+                                  .add(PostThoughtsEvents(model: model,userId: FirebaseAuth.instance.currentUser!.uid));
                             },
                             icon: Icon(
                               Iconsax.send_24,
