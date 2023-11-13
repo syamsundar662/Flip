@@ -64,19 +64,25 @@ class UsernameRegistration extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.only(left: 33, right: 33, top: 15),
                   child: ElevatedButtonWidget(
+                      height: screenFullHeight * .07,
+                      width: screenFullWidth,
                       onEvent: () {
-                        _formkey.currentState!.validate(); 
-                        if(context.read<AuthBloc>().usernameController.text.isNotEmpty) {
+                        _formkey.currentState!.validate();
+                        if (context
+                            .read<AuthBloc>()
+                            .usernameController
+                            .text
+                            .isNotEmpty) {
                           Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    PasswordConfirmationScreen(
-                                      userName: context
-                                          .read<AuthBloc>()
-                                          .usernameController
-                                          .text,
-                                    )));
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      PasswordConfirmationScreen(
+                                        userName: context
+                                            .read<AuthBloc>()
+                                            .usernameController
+                                            .text,
+                                      )));
                         }
                       },
                       buttonTitle: const Text(

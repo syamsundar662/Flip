@@ -73,6 +73,8 @@ class ForgotPasswordScreenStepTwo extends StatelessWidget {
                   return Padding(
                     padding: kPaddingForTextfield,
                     child: ElevatedButtonWidget(
+                        height: screenFullHeight * .07,
+                        width: screenFullWidth,
                         onEvent: () async {
                           if (emailFromController.isNotEmpty) {
                             context.read<AuthBloc>().add(

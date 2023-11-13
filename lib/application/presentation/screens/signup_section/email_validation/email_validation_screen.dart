@@ -124,6 +124,8 @@ class EmailValidationScreen extends StatelessWidget {
                         );
                       }
                       return ElevatedButtonWidget(
+                        height: screenFullHeight * .07,
+                        width: screenFullWidth,
                         onEvent: () async {
                           _formkey.currentState!.validate();
                           if (authBlocProvider
@@ -131,8 +133,9 @@ class EmailValidationScreen extends StatelessWidget {
                               authBlocProvider
                                   .passwordController.text.isNotEmpty) {
                             final signUp = SignUpModel(
-                              username: authBlocProvider.usernameController.text,
-                                email: authBlocProvider.emailController.text, 
+                                username:
+                                    authBlocProvider.usernameController.text,
+                                email: authBlocProvider.emailController.text,
                                 password:
                                     authBlocProvider.passwordController.text);
                             authBlocProvider.add(SignUpEvent(signUp: signUp));

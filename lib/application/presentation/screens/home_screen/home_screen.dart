@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         return ClipRRect(
                                           borderRadius: const BorderRadius.all( Radius.circular(10)),
                                           child: Container(
-                                            // padding: EdgeInsets.all(8),
+                                            // padding: EdgeInsets.all(8), 
                                             constraints: BoxConstraints(
                                                 maxHeight:
                                                     screenFullHeight / 1.8),

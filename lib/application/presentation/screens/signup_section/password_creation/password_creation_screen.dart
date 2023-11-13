@@ -12,17 +12,19 @@ import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class  PasswordConfirmationScreen extends StatefulWidget {
-  const  PasswordConfirmationScreen({
+class PasswordConfirmationScreen extends StatefulWidget {
+  const PasswordConfirmationScreen({
     super.key,
     this.userName,
   });
   final String? userName;
-  @override 
-   PasswordConfirmationScreenState createState() => PasswordConfirmationScreenState();
+  @override
+  PasswordConfirmationScreenState createState() =>
+      PasswordConfirmationScreenState();
 }
 
-class PasswordConfirmationScreenState extends State<PasswordConfirmationScreen> {
+class PasswordConfirmationScreenState
+    extends State<PasswordConfirmationScreen> {
   final _formkey = GlobalKey<FormState>();
   bool isVisible = false;
   bool obscureTxt = true;
@@ -140,8 +142,10 @@ class PasswordConfirmationScreenState extends State<PasswordConfirmationScreen> 
               Padding(
                   padding: kPaddingForTextfield,
                   child: ElevatedButtonWidget(
+                    height: screenFullHeight * .07,
+                    width: screenFullWidth,
                     onEvent: () async {
-                     if(!_formkey.currentState!.validate()) return;
+                      if (!_formkey.currentState!.validate()) return;
                       if (authBlocProvider.passwordController.text.length < 6) {
                         // HapticFeedback.heavyImpact();
                         AnimatedSnackBar.material(
@@ -149,22 +153,20 @@ class PasswordConfirmationScreenState extends State<PasswordConfirmationScreen> 
                           type: AnimatedSnackBarType.error,
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
-                      } 
-                      else if (authBlocProvider.passwordController.text !=
+                      } else if (authBlocProvider.passwordController.text !=
                           authBlocProvider.confirmPasswordController.text) {
                         AnimatedSnackBar.material(
                           'Confirm password does not match',
                           type: AnimatedSnackBarType.error,
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
-                      } 
-                      else {
+                      } else {
                         // final confirmPassword = authBlocProvider.confirmPasswordController.text;
                         Navigator.push(
                             context,
-                            MaterialPageRoute(  
-                                builder: (context) => EmailValidationScreen())); 
-                      } 
+                            MaterialPageRoute(
+                                builder: (context) => EmailValidationScreen()));
+                      }
                     },
                     buttonTitle: const Text(
                       "Continue",

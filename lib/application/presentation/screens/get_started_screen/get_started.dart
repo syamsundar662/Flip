@@ -33,6 +33,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                     children: [
                       const FlipLogoText(logoSize: 50),
                       ElevatedButtonWidget(
+                        height: screenFullHeight * .07,
+                        width: screenFullWidth,
                         style: const TextStyle(
                             color: Color.fromARGB(255, 0, 0, 0)),
                         buttonStyles: ButtonStyle(
@@ -60,6 +62,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                       ),
                       kHeight10,
                       ElevatedButtonWidget(
+                        height: screenFullHeight * .07,
+                        width: screenFullWidth,
                         style: const TextStyle(
                             color: Color.fromARGB(255, 0, 0, 0)),
                         buttonStyles: ButtonStyle(

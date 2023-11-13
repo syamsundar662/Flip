@@ -54,6 +54,8 @@ class ForgotPasswordScreenStepOne extends StatelessWidget {
               Padding(
                 padding: kPaddingForTextfield,
                 child: ElevatedButtonWidget(
+                    height: screenFullHeight * .07,
+                    width: screenFullWidth,
                     onEvent: () {
                       Navigator.push(
                           context,

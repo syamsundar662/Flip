@@ -18,94 +18,105 @@ class PostImagePreview extends StatelessWidget {
     final postBlocProvider = context.read<PostBloc>();
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.close,
-                    color: Theme.of(context).colorScheme.secondary,
-                  )),
-              SizedBox(
-                  height: screenFullHeight / 1.5,
-                  width: double.infinity,
-                  child: Image.file(
-                    (selecedImage[0]),
-                    fit: BoxFit.cover,
-                  )),
-              kHeight10,
-              TextField(
-                maxLines: 1,
-                controller: context.read<PostBloc>().textContentController,
-                decoration: InputDecoration(
-                    hintText: 'type here....',
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    fillColor: Theme.of(context).colorScheme.primary,
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: Theme.of(context).colorScheme.secondary,
                     )),
-                style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                cursorColor: Theme.of(context).colorScheme.secondary,
-              ),
-              const Spacer(),
-              BlocConsumer<PostBloc, PostState>(
-                listener: (context, state) {
-                  if (state is PostAdditionSuccessState) {
-                    AnimatedSnackBar.material(
-                      'success',
-                      type: AnimatedSnackBarType.success,
-                      mobileSnackBarPosition: MobileSnackBarPosition.top,
-                    ).show(context);
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RootScreen()),
-                        (route) => false);
-                  }
-                },
-                builder: (context, state) {
-                  return ElevatedButtonWidget(
-                      onEvent: () {
-                        if (selecedImage.isNotEmpty &&
-                            postBlocProvider
-                                .textContentController.text.isNotEmpty) {
-                          final post = PostModel(
-                              username: '',
-                              userId: FirebaseAuth.instance.currentUser!.uid,
-                              textContent:
-                                  postBlocProvider.textContentController.text,
-                              imageUrls: selecedImage
-                                  .map((image) => image.path)
-                                  .toList(),
-                              timestamp: DateTime.now(),
-                              likes: [],
-                              comments: []);
-        
-                          postBlocProvider.add(PostAddingEvent(model: post,userId: FirebaseAuth.instance.currentUser!.uid ));
-                        }
-                      },
-                      buttonTitle: state is PostAdditionLoadingState
-                          ? const CircularProgressIndicator.adaptive()
-                          : const Text('Submit'),
-                      style: const TextStyle(),
-                      buttonStyles: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.blueGrey)));
-                },
-              ),
-              kHeight40,
-            ],
-          ),
+                BlocConsumer<PostBloc, PostState>(
+                  listener: (context, state) {
+                    if (state is PostAdditionSuccessState) {
+                      AnimatedSnackBar.material(
+                        'success',
+                        type: AnimatedSnackBarType.success,
+                        mobileSnackBarPosition: MobileSnackBarPosition.top,
+                      ).show(context);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RootScreen()),
+                          (route) => false);
+                    }
+                  },
+                  builder: (context, state) {
+                    return ElevatedButtonWidget(
+                        height: screenFullHeight * .05,
+                        width: screenFullWidth / 4.5,
+                        onEvent: () {
+                          if (selecedImage.isNotEmpty &&
+                              postBlocProvider
+                                  .textContentController.text.isNotEmpty) {
+                            final post = PostModel(
+                                username: '',
+                                userId: FirebaseAuth.instance.currentUser!.uid,
+                                textContent:
+                                    postBlocProvider.textContentController.text,
+                                imageUrls: selecedImage
+                                    .map((image) => image.path)
+                                    .toList(),
+                                timestamp: DateTime.now(),
+                                likes: [],
+                                comments: []);
+
+                            postBlocProvider.add(PostAddingEvent(
+                                model: post,
+                                userId:
+                                    FirebaseAuth.instance.currentUser!.uid));
+                          }
+                        },
+                        buttonTitle: state is PostAdditionLoadingState
+                            ? const CircularProgressIndicator.adaptive()
+                            : Text(
+                                'Share',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                        style: const TextStyle(),
+                        buttonStyles: ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.transparent)));
+                  },
+                ),
+              ],
+            ),
+            Container(
+                constraints: BoxConstraints(maxHeight: screenFullHeight / 1.8),
+                width: double.infinity,
+                child: Image.file(
+                  (selecedImage[0]),
+                  fit: BoxFit.cover,
+                )),
+            kHeight10,
+            TextField(
+              maxLines: 1,
+              controller: context.read<PostBloc>().textContentController,
+              decoration: InputDecoration(
+                  hintText: 'type here....',
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  fillColor: Theme.of(context).colorScheme.primary,
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(10),
+                  )),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+              cursorColor: Theme.of(context).colorScheme.secondary,
+            ),
+            const Spacer(),
+            kHeight40,
+          ],
         ),
       ),
     );

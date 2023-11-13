@@ -177,6 +177,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         }, builder: (context, state) {
                           return ElevatedButtonWidget(
+                            height: screenFullHeight * .07,
+                            width: screenFullWidth,
                             onEvent: () async {
                               if (_formkey.currentState!.validate() &&
                                       authBlocProvider

@@ -1,5 +1,7 @@
+import 'package:flip/application/presentation/screens/edit_profile/edit_profile.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
@@ -43,195 +45,23 @@ class _ProfileScreenState extends State<ProfileScreen>
               if (state is UserDataFetchedState) {
                 return CustomScrollView(
                   slivers: [
-                    SliverAppBar(
-                      floating: true,
-                      pinned: false,
-                      centerTitle: false,
-                      title: Text(
-                        state.model.username,
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      actions: [
-                        IconButton(
-                            onPressed: () {
-                              SlideUpWidget().showSlidingBoxWidget(
-                                  context: context,
-                                  height: screenFullHeight / 2.35,
-                                  buttonTitle:
-                                      SlideUpWidget.optionsForProfileScreen,
-                                  buttonIcons: SlideUpWidget
-                                      .optionIconListForProfileScreen);
-                            },
-                            icon: const Icon(Icons.menu_outlined)),
-                      ],
-                    ),
+                    _appBarSection(state, context),
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Stack(
-                                children: [
-                                  SizedBox(
-                                      height: screenFullHeight / 3.5,
-                                      width: double.infinity,
-                                      child: ImageGradient.linear(
-                                        image: Image.asset(
-                                          "assets/bearded-man-staying-nature.jpg",
-                                          fit: BoxFit.cover,
-                                        ),
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        colors: const [
-                                          Color.fromARGB(0, 149, 149, 149),
-                                          Colors.white,
-                                          Colors.white,
-                                          Colors.white,
-                                        ],
-                                      )),
-                                  const Positioned(
-                                      left: 20,
-                                      bottom: 0,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundImage: AssetImage(
-                                                'assets/testimage.jpeg'),
-                                            radius: 50,
-                                          )
-                                        ],
-                                      )),
-                                  Positioned(
-                                    right: 20,
-                                    bottom: 0,
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Iconsax.sms,
-                                        ),
-                                        kWIdth20,
-                                        TextButton(
-                                            style: ButtonStyle(
-                                                shape: MaterialStatePropertyAll<
-                                                        RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    10)))),
-                                            onPressed: () {
-                                              // Navigator.push(context, CupertinoPageRoute(builder: (context)=> EditProfile(model: state.model,)));
-                                            },
-                                            child: Text(
-                                              'Edit profile',
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary),
-                                            )),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      state.model.username,
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.baloo2(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    const Text('Out of mind,Out of sight🎭'),
-                                  ],
-                                ),
-                              ),
+                              _topPictureSection(context, state),
+                              _nameAndBio(state),
                               const Divider(
                                 thickness: .1,
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 20, right: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "${state.model.posts!.length.toString()} posts",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    Text(
-                                      '2k followers',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    Text(
-                                      '538 followings',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    Text(
-                                      '59k likes',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, top: 10, bottom: 8),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width: screenFullWidth / 2.1,
-                                      height: screenFullHeight * .06,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
-                                      child: IconButton(
-                                          onPressed: () {
-                                            AuthServices().signOut();
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        LoginScreen()));
-                                          },
-                                          icon: const Icon(
-                                              Icons.window_outlined)),
-                                    ),
-                                    Container(
-                                      width: screenFullWidth / 2.1,
-                                      height: screenFullHeight * .06,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
-                                      child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.notes)),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              _middleSection(state),
+                              _postAndThoughtsButton(context),
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 8),
-                                child: ThoughtsPostSection(),
+                                child: PostSection(),
                               )
                             ],
                           ),
@@ -246,6 +76,175 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
         ),
       ),
+    );
+  }
+
+  Padding _postAndThoughtsButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8, top: 10, bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: screenFullWidth / 2.1,
+            height: screenFullHeight * .06,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).colorScheme.primary),
+            child: IconButton(
+                onPressed: () {
+                  AuthServices().signOut();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()));
+                },
+                icon: const Icon(Icons.window_outlined)),
+          ),
+          Container(
+            width: screenFullWidth / 2.1,
+            height: screenFullHeight * .06,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).colorScheme.primary),
+            child: IconButton(onPressed: () {}, icon: const Icon(Icons.notes)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _middleSection(UserDataFetchedState state) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "${state.model.posts!.length.toString()} posts",
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+          const Text(
+            '2k followers',
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+          const Text(
+            '538 followings',
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+          const Text(
+            '59k likes',
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _nameAndBio(UserDataFetchedState state) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            state.model.username,
+            textAlign: TextAlign.center,
+            style:
+                GoogleFonts.baloo2(fontSize: 22, fontWeight: FontWeight.w500),
+          ),
+          const Text('Out of mind,Out of sight🎭'),
+        ],
+      ),
+    );
+  }
+
+  Stack _topPictureSection(BuildContext context, UserDataFetchedState state) {
+    return Stack(
+      children: [
+        SizedBox(
+            height: screenFullHeight / 3.5,
+            width: double.infinity,
+            child: ImageGradient.linear(
+              image: Image.asset(
+                "assets/bearded-man-staying-nature.jpg",
+                fit: BoxFit.cover,
+              ),
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: const [
+                Color.fromARGB(0, 149, 149, 149),
+                Colors.white,
+                Colors.white,
+                Colors.white,
+              ],
+            )),
+        const Positioned(
+            left: 20,
+            bottom: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                )
+              ],
+            )),
+        Positioned(
+          right: 20,
+          bottom: 0,
+          child: Row(
+            children: [
+              const Icon(
+                Iconsax.sms,
+              ),
+              kWIdth20,
+              TextButton(
+                  style: ButtonStyle(
+                      shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)))),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => EditProfile(
+                                  model: state.model,
+                                )));
+                  },
+                  child: Text(
+                    'Edit profile',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
+                  )),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  SliverAppBar _appBarSection(
+      UserDataFetchedState state, BuildContext context) {
+    return SliverAppBar(
+      floating: true,
+      pinned: false,
+      centerTitle: false,
+      title: Text(
+        state.model.username,
+        style: const TextStyle(fontSize: 15),
+      ),
+      actions: [
+        IconButton(
+            onPressed: () {
+              SlideUpWidget().showSlidingBoxWidget(
+                  context: context,
+                  height: screenFullHeight / 2.35,
+                  buttonTitle: SlideUpWidget.optionsForProfileScreen,
+                  buttonIcons: SlideUpWidget.optionIconListForProfileScreen);
+            },
+            icon: const Icon(Icons.menu_outlined)),
+      ],
     );
   }
 }
