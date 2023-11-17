@@ -20,8 +20,7 @@ class PostSection extends StatelessWidget {
       builder: (context, state) {
         if (state is ProfileFetchedState) {
           return GridView.builder(
-              // physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(0),
+              padding: EdgeInsets.zero,
               shrinkWrap: true,
               itemCount: state.model.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -88,6 +87,7 @@ class ThoughtsPostSection extends StatelessWidget {
       builder: (context, state) {
         if (state is ProfileThoughtFetchedState) {
           return ListView.builder(
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: state.model.length,
@@ -114,7 +114,6 @@ class ThoughtsPostSection extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
-                                  
                                   state.model[index].textContent,
                                   style: const TextStyle(fontSize: 18),
                                 ),
@@ -123,13 +122,15 @@ class ThoughtsPostSection extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                      
-                                      timeAgo(state.model[index].timestamp,),
-                                      style:  TextStyle(fontSize: 12,
-
-                                      color: Theme.of(context).colorScheme.secondary
-                                      ),
+                                    timeAgo(
+                                      state.model[index].timestamp,
                                     ),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
+                                  ),
                                 ],
                               ),
                             ],

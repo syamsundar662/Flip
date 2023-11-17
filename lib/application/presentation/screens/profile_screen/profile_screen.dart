@@ -338,7 +338,10 @@ class _ProfileScreenState extends State<ProfileScreen>
               builder: (ctx, state) {
                 if (state is UserDataFetchedState) {
                   return NestedScrollView(
-                      body: const TabBarView(children: [
+                      // physics: NeverScrollableScrollPhysics(),
+                      body: const TabBarView(
+                        // physics: NeverScrollableScrollPhysics(),
+                        children: [
                         PostSection(),
                         ThoughtsPostSection(),
                         Text('saves')
@@ -481,11 +484,9 @@ class _ProfileScreenState extends State<ProfileScreen>
   SliverAppBar _appBarSection(
       UserDataFetchedState state, BuildContext context) {
     return SliverAppBar(
-      expandedHeight: screenFullHeight / 2.3,
+      collapsedHeight: screenFullHeight / 2.6,
       flexibleSpace: ListView(
         physics: const NeverScrollableScrollPhysics(),
-        // shrinkWrap: true,
-        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _topPictureSection(context, state),
           _nameAndBio(state),
@@ -493,18 +494,17 @@ class _ProfileScreenState extends State<ProfileScreen>
             thickness: .1,
           ),
           _middleSection(state),
-          // kHeight20
         ],
       ),
       primary: true,
       floating: true,
       snap: false,
       pinned: false,
-      centerTitle: false,
-      title: Text(
-        state.model.username,
-        style: const TextStyle(fontSize: 15),
-      ),
+      // centerTitle: false,
+      // title: Text(
+      //   state.model.username,
+      //   style: const TextStyle(fontSize: 15),
+      // ),
       actions: [
         IconButton(
             onPressed: () {
@@ -516,43 +516,19 @@ class _ProfileScreenState extends State<ProfileScreen>
             },
             icon: const Icon(Icons.menu_outlined)),
       ],
-      bottom:  TabBar(
-          physics: NeverScrollableScrollPhysics(),
-          labelColor: Colors.amber,
-          tabs: [
-            Tab(
-              child: Text('Posts'),
-            ),
-            Tab(
-              child: Text('Thoughts'),
-            ),
-            Tab(
-              child: Text('Saves'),
-            ),
-          ]),
+      bottom: const TabBar(
+        physics: NeverScrollableScrollPhysics(),
+        labelColor: Colors.amber, tabs: [
+        Tab(
+          child: Text('Posts'),
+        ),
+        Tab(
+          child: Text('Thoughts'),
+        ),
+        Tab(
+          child: Text('Saves'),
+        ),
+      ]),
     );
   }
-}
-
-class UserProfileTabBar extends StatelessWidget implements PreferredSizeWidget {
-  const UserProfileTabBar({
-    super.key,
-    required this.tabs,
-  });
-  final List<Widget> tabs;
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).colorScheme.background,
-      child: TabBar(
-          indicatorSize: TabBarIndicatorSize.label,
-          labelColor: Colors.amber,
-          isScrollable: true,
-          tabs: tabs),
-    );
-  }
-
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(screenFullHeight / 2.4);
 }
