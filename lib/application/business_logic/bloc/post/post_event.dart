@@ -25,6 +25,7 @@ class PostScreenCloseEvent extends PostEvent {}
 
 class PostDeleteEvent extends PostEvent {
   final String postId;
+  final String userId;
 
-  PostDeleteEvent({required this.postId});
+  PostDeleteEvent(this.userId, {required this.postId});
 }

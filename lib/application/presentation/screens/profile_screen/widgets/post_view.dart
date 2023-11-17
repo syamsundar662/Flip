@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
@@ -21,7 +20,6 @@ class PostViewScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(),
         body: ListView.builder(
-            padding: const EdgeInsets.all(8),
             shrinkWrap: true,
             itemCount: 1,
             itemBuilder: (context, index) {
@@ -30,6 +28,7 @@ class PostViewScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
+                      kWidth10,
                       const CircleAvatar(
                         backgroundImage: AssetImage('assets/IMG_2468.JPG'),
                         radius: 18,
@@ -41,6 +40,11 @@ class PostViewScreen extends StatelessWidget {
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
+                      Text(
+                        timeAgo(model.timestamp),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
                       IconButton(
                         onPressed: () async {
                           showSlidingBoxWidget(
@@ -57,35 +61,33 @@ class PostViewScreen extends StatelessWidget {
                   kHeight10,
                   model.imageUrls.isNotEmpty
                       ? CarouselSlider.builder(
-                                      options: CarouselOptions(
-                                        padEnds: true ,
-                                        autoPlay: true,
-                                        pauseAutoPlayOnTouch: true,
-                                        enlargeCenterPage: true,
-                                        height:screenFullHeight / 1.8 ,
-                                        viewportFraction: 1,
-                                        aspectRatio: 16/9 ,
-                                        enableInfiniteScroll: false
-                                      ),
-                                      itemCount: model.imageUrls.length,
-                                      itemBuilder: (context,inde,_){
-                                        return ClipRRect(
-                                          borderRadius: const BorderRadius.all( Radius.circular(10)),
-                                          child: Container(
-                                            // padding: EdgeInsets.all(8),
-                                            constraints: BoxConstraints(
-                                                maxHeight:
-                                                    screenFullHeight / 1.8),
-                                            width: double.infinity,
-                                            child: Image.network(
-                                              model.imageUrls[inde],
-                                              fit: BoxFit.cover,
-                                             ),
-                                          ),
-                                        );
-                                      },
-                                     
-                                    )
+                          options: CarouselOptions(
+                              padEnds: true,
+                              autoPlay: true,
+                              pauseAutoPlayOnTouch: true,
+                              enlargeCenterPage: true,
+                              height: screenFullHeight / 1.8,
+                              viewportFraction: 1 / 1.06,
+                              aspectRatio: 16 / 9,
+                              enableInfiniteScroll: false),
+                          itemCount: model.imageUrls.length,
+                          itemBuilder: (context, inde, _) {
+                            return ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              child: Container(
+                                // padding: EdgeInsets.all(8),
+                                constraints: BoxConstraints(
+                                    maxHeight: screenFullHeight / 1.8),
+                                width: double.infinity,
+                                child: Image.network(
+                                  model.imageUrls[inde],
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          },
+                        )
                       : Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -100,26 +102,10 @@ class PostViewScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                  const PostMainCommonButtons(),
-                  const Row(
-                    children: [
-                      kWidth10,
-                      Text(
-                        '324 likes and ',
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                      // kWidth10,
-                      Text(
-                        '56 comments',
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
+                  PostMainCommonButtons(post: model),
                   model.imageUrls.isNotEmpty
                       ? Padding(
-                          padding: const EdgeInsets.only(left: 10.5, right: 10),
+                          padding: const EdgeInsets.only(left: 17.5, right: 10),
                           child: Text(
                             model.textContent,
                             style: const TextStyle(
@@ -128,13 +114,6 @@ class PostViewScreen extends StatelessWidget {
                           ),
                         )
                       : const SizedBox(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.5),
-                    child: Text(
-                      timeAgo(model.timestamp),
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ),
                   const Divider(
                     thickness: .1,
                   )
@@ -176,6 +155,10 @@ class PostViewScreen extends StatelessWidget {
           context
               .read<ProfileBloc>()
               .add(ProfilePostDataFetchEvent(id: model.userId));
+          context
+              .read<ProfileBloc>()
+              .add(UserDataFetchEvent(id: model.userId)); 
+
         }
       },
       child: ListView.separated(
@@ -202,7 +185,7 @@ class PostViewScreen extends StatelessWidget {
                           if (index == 1) {
                             context
                                 .read<PostBloc>()
-                                .add(PostDeleteEvent(postId: model.postId));
+                                .add(PostDeleteEvent(model.userId, postId: model.postId));
                           }
                           Navigator.pop(context);
                         },

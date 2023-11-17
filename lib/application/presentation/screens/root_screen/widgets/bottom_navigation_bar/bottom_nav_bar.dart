@@ -14,6 +14,7 @@ class BottomNavBarWidget extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: PageView(
+            physics: NeverScrollableScrollPhysics(),
               controller: _pageController,
               onPageChanged: (index) {
                 context

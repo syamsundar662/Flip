@@ -1,31 +1,34 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
+import 'package:flip/domain/repositories/post_repository/post_repository.dart';
+import 'package:flip/domain/repositories/user_repository/user_repository.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc() : super(ProfileInitial()) {
+  UserRepository userRepository;
+  PostRepository postRepository;
+  ProfileBloc(this.postRepository, this.userRepository)
+      : super(ProfileInitial()) {
     on<UserDataFetchEvent>(userDataFetchEvent);
-    on<ProfilePostDataFetchEvent>(profileDataFetchEvent);
+    on<ProfilePostDataFetchEvent>(profilePostFetchEvent);
     on<ProfileThoughtFetchEvent>(profileThoughtFetchEvent);
   }
-
   FutureOr<void> userDataFetchEvent(
       UserDataFetchEvent event, Emitter<ProfileState> emit) async {
     emit(UserDataFetchingState());
-    final response = await Post().fetchDataByUser(event.id);
+    final response = await userRepository.fetchDataByUser(event.id);
     return emit(UserDataFetchedState(model: response!));
   }
 
-  FutureOr<void> profileDataFetchEvent(
+  FutureOr<void> profilePostFetchEvent(
       ProfilePostDataFetchEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileFetchingState());
     try {
-      final response = await Post().fetchPostDataByUser(event.id);
+      final response = await postRepository.fetchPostDataByUser(event.id);
       emit(ProfileFetchedState(model: response));
     } catch (e) {
       emit(ProfileFetchingErrorState());
@@ -35,7 +38,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   FutureOr<void> profileThoughtFetchEvent(
       ProfileThoughtFetchEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileThoughtFetchingState());
-    final response = await Post().fetchThoughtByUser(event.id);
+    final response = await postRepository.fetchThoughtByUser(event.id);
     emit(ProfileThoughtFetchedState(model: response));
   }
 }

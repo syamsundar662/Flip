@@ -1,4 +1,4 @@
-class UserRepositoryModel {
+class UserModel {
   final String? postId;
   final String userId;
   final String username;
@@ -12,7 +12,7 @@ class UserRepositoryModel {
   final List<String>? following;
   final List<String>? posts;
 
-  UserRepositoryModel({
+  UserModel({
     this.postId,
     this.displayName,
     this.bio,
@@ -26,8 +26,8 @@ class UserRepositoryModel {
     required this.username,
     required this.email,
   });
-  factory UserRepositoryModel.fromJson(Map<String, dynamic> json) {
-    return UserRepositoryModel(
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
         userId: json['userId'],
         bio: json['bio'] ?? '', 
         email: json['email'],

@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 const Gradient mainGradient =  LinearGradient(
             transform: GradientRotation(4.7),
             colors: [Color.fromARGB(255, 30, 1, 1),Color.fromARGB(255, 1, 21, 37)]);
-// const Gradient mainGradient =  LinearGradient(
-//             transform: GradientRotation(4.7),
-//             colors: [Color.fromARGB(255, 30, 1, 1),Color.fromARGB(255, 1, 21, 37)]);
  
  late double screenFullWidth ;
  late double screenFullHeight;
@@ -14,7 +11,7 @@ const Gradient mainGradient =  LinearGradient(
  screenFullHeight = MediaQuery.of(context).size.height;  
  }
 
- const kHeight10 = SizedBox(height: 10,);
+ const kHeight10 = SizedBox(height: 10,); 
  const kHeight20 = SizedBox(height: 20,);
  const kHeight30 = SizedBox(height: 30,);
  const kHeight40 = SizedBox(height: 40,);
@@ -49,6 +46,5 @@ googleSignInFailed,
 googleSignInVerified,
 newUser,
 passwordResetSuccess
-
  }
  

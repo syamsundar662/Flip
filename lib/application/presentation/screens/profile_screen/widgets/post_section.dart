@@ -20,7 +20,7 @@ class PostSection extends StatelessWidget {
       builder: (context, state) {
         if (state is ProfileFetchedState) {
           return GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
+              // physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.all(0),
               shrinkWrap: true,
               itemCount: state.model.length,

@@ -12,18 +12,21 @@ import 'package:image_gradient/image_gradient.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatelessWidget {
-  const EditProfile({super.key, required this.model});
-  final UserRepositoryModel model;
+   const EditProfile({super.key, required this.model});
+  final UserModel model;
 
   @override
   Widget build(BuildContext context) {
     final postBlocProvider = context.read<PostBloc>();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+        centerTitle: true,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _topImageSection(context),
+          _topImageSection(context), 
           kHeight20,
           TextFormFields(
               padding: const EdgeInsets.all(8),
@@ -60,12 +63,12 @@ class EditProfile extends StatelessWidget {
   Stack _topImageSection(BuildContext context) {
     return Stack(
           children: [
-            SizedBox(
+            SizedBox( 
                 height: screenFullHeight / 3.5,
                 width: double.infinity,
                 child: ImageGradient.linear(
                   image: Image.asset(
-                    "assets/bearded-man-staying-nature.jpg",
+                    'assets/IMG_2468.JPG',
                     fit: BoxFit.cover,
                   ),
                   begin: Alignment.bottomCenter,
@@ -94,8 +97,7 @@ class EditProfile extends StatelessWidget {
                             ],
                             buttonIcons: [
                               IconButton(
-                                  onPressed: () {
-                                    PickImage()
+                                  onPressed: () {PickImage()
                                         .imagePicker(ImageSource.gallery);
                                   },
                                   icon: const Icon(Iconsax.gallery)),

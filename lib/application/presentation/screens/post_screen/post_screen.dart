@@ -2,6 +2,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_image_preview.dart';
+import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -99,7 +100,12 @@ class PostScreen extends StatelessWidget {
                           'success',
                           type: AnimatedSnackBarType.success,
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
-                        ).show(context);
+                        ).show(context); 
+                       Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RootScreen()),
+                          (route) => false);
                       },
                       builder: (context, state) {
                         if (state is PostAdditionLoadingState) {

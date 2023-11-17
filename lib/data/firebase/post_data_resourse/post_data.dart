@@ -1,14 +1,21 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
-import 'package:flip/domain/models/user_model/user_model.dart';
+import 'package:flip/domain/repositories/post_repository/post_repository.dart';
 
-class Post {
+class PostServices extends PostRepository {
   final FirebaseFirestore instance = FirebaseFirestore.instance;
+
+  @override
   Future<void> createPost(PostModel post, String userId) async {
+
     final CollectionReference postData = instance.collection('PostCollection');
+
+
     final DocumentReference documentReference = postData.doc();
+
     final String postId = documentReference.id;
+    
     final Map<String, dynamic> postCollectionData = {
       'username': post.username,
       'postId': postId,
@@ -19,7 +26,9 @@ class Post {
       'likes': post.likes,
       'comments': post.comments
     };
+
     await documentReference.set(postCollectionData);
+    
     await FirebaseFirestore.instance
         .collection('UserCollection')
         .doc(userId)
@@ -28,6 +37,7 @@ class Post {
     });
   }
 
+  @override
   Future<List<PostModel>> getAllPosts() async {
     final CollectionReference postData = instance.collection('PostCollection');
     final fetchedData = await postData.get();
@@ -38,6 +48,7 @@ class Post {
     }).toList();
   }
 
+  @override
   Future<List<PostModel>> fetchPostDataByUser(String uid) async {
     try {
       final postData =
@@ -54,6 +65,7 @@ class Post {
     }
   }
 
+  @override
   Future<List<PostModel>> fetchThoughtByUser(String uid) async {
     final thoughtData =
         instance.collection('PostCollection').where('userId', isEqualTo: uid);
@@ -65,23 +77,33 @@ class Post {
     return sortedData.where((element) => element.imageUrls.isEmpty).toList();
   }
 
-  Future<UserRepositoryModel?> fetchDataByUser(String uid) async {
-    final userData = await instance
-        .collection('UserCollection')
-        .where('userId', isEqualTo: uid)
-        .get();
-    if (userData.docs.isNotEmpty) {
-      final response = userData.docs.first.data();
-      return UserRepositoryModel.fromJson(response);
-    }
-    return null;
-  }
-
-  Future<void> deletePost(String postId) async {
+  @override
+  Future<void> deletePost(String postId, String userId) async {
     try {
       await instance.collection('PostCollection').doc(postId).delete();
+      await instance.collection('UserCollection').doc(userId).update({
+        'posts': FieldValue.arrayRemove([postId]) 
+      });
     } catch (e) {
       log(e.toString());
     }
   }
+
+  @override
+  Future<PostModel> toggleLike(
+      {required PostModel post, required String userId}) async {
+    if (post.likes.contains(userId)) {
+      post.likes.remove(userId);
+    } else {
+      post.likes.add(userId);
+    }
+    await FirebaseFirestore.instance
+        .collection('PostCollection')
+        .doc(post.postId)
+        .update({'likes': post.likes});
+    return post;
+  }
+
+  Future<void> addComment() async {}
+  Future<void> savePosts() async {}
 }

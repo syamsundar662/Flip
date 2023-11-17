@@ -12,10 +12,14 @@ class ProfilePostDataFetchEvent extends ProfileEvent {
   ProfilePostDataFetchEvent({required this.id});
 }
 
-class SwitchBetweenPostsButtonEvent extends ProfileEvent{}
-
-class ProfileThoughtFetchEvent extends ProfileEvent{
+class ProfileThoughtFetchEvent extends ProfileEvent {
   final String id;
 
   ProfileThoughtFetchEvent({required this.id});
 }
+
+// class UserProfileInitialEvent extends ProfileEvent { 
+//   final int tap;
+
+//   SwitchBetweenPostAndThoughts({required this.tap});
+// }

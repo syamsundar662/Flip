@@ -12,8 +12,8 @@ class SlideUpWidget {
         context: context,
         box: SlidingBox(
           collapsed: true,
-          draggable: true, 
-          maxHeight: height, 
+          draggable: true,
+          maxHeight: height,
           color: Theme.of(context).colorScheme.onTertiary,
           style: BoxStyle.shadow,
           draggableIconBackColor: Theme.of(context).colorScheme.onTertiary,
@@ -21,8 +21,11 @@ class SlideUpWidget {
         ));
   }
 
-  _body(List<String> buttonTitle, List<IconButton> buttonIcons,
-      BuildContext context,) {
+  _body(
+    List<String> buttonTitle,
+    List<IconButton> buttonIcons,
+    BuildContext context,
+  ) {
     return ListView.separated(
         shrinkWrap: true,
         separatorBuilder: (ctx, index) {
@@ -33,8 +36,7 @@ class SlideUpWidget {
         itemCount: buttonIcons.length,
         itemBuilder: (itemBuilder, index) {
           return GestureDetector(
-            onTap: () {
-            },
+            onTap: () {},
             child: SizedBox(
               height: 50,
               width: double.infinity,
@@ -46,7 +48,6 @@ class SlideUpWidget {
           );
         });
   }
-  
 
   static List<IconButton> optionIconListForProfileScreen = [
     IconButton(
@@ -71,7 +72,7 @@ class SlideUpWidget {
     ),
   ];
 
-//view post from userprofile 
+//view post from userprofile
 
   static List<String> optionsForProfileScreen = [
     'Settings',
@@ -80,8 +81,4 @@ class SlideUpWidget {
     'Help',
     'Sign out',
   ];
-
-
-
-
 }

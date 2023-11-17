@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
-import 'package:flip/domain/models/login_in_model/login_model.dart';
+import 'package:flip/domain/models/login_model/login_model.dart';
 import 'package:flip/domain/models/sign_up_model/sign_up_model.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,9 +21,9 @@ class AuthServices implements AuthRepository {
       );
       userCredential.user!.sendEmailVerification();
       final String uid = userCredential.user!.uid;
-      final userSignUpInformation = UserRepositoryModel( 
+      final userSignUpInformation = UserModel(
           userId: uid, username: signUp.username, email: signUp.email);
-      UserDataService().userAuthDataCollection(userSignUpInformation);
+      UserService().userAuthDataCollection(userSignUpInformation);
 
       return AuthenticationResults.signUpSuccess;
     } on FirebaseAuthException catch (e) {
@@ -87,6 +87,7 @@ class AuthServices implements AuthRepository {
     }
   }
 
+  @override
   void deleteUserFromFirebase() {
     FirebaseAuth.instance.currentUser!.uid;
   }
@@ -126,7 +127,6 @@ class AuthServices implements AuthRepository {
       return 'passwordResetSuccess';
     } catch (e) {
       return 'Error sending password reseting email $e';
-      // return AuthenticationResults.somethingWentWrong ;
     }
   }
 }

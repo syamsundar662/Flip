@@ -6,31 +6,29 @@ class NearByFlips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold( 
+    return Scaffold(
       body: GoogleMap(
-                      trafficEnabled: false,
-                      tiltGesturesEnabled: false,
-                      buildingsEnabled: false,
-                      scrollGesturesEnabled: true,
-                      mapType: MapType.normal , 
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                      zoomControlsEnabled: true,
-                      zoomGesturesEnabled: true,
-                      
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(10.005999, 76.342802),
-                        zoom: 14,
-                      ),
-                      //                   markers: {
-                      //                      Marker(
-                      //                       markerId: const MarkerId('marker_id'),
-                      //                       position:
-                      //                           LatLng(
-                      // 10.005999,76.342802),
-                      //                     ),
-                      // },
-                    ),
+        
+        trafficEnabled: true,
+        tiltGesturesEnabled: true,
+        buildingsEnabled: true,
+        scrollGesturesEnabled: true,
+        mapType: MapType.normal,
+        myLocationButtonEnabled: true,
+        myLocationEnabled: true,
+        zoomControlsEnabled: true,
+        zoomGesturesEnabled: true,
+        initialCameraPosition: const CameraPosition(
+          target: LatLng(10.005999, 76.342802),
+          zoom: 14,
+        ),
+        markers: {
+          const Marker(
+            markerId: MarkerId('marker_id'),
+            position: LatLng(10.005999, 76.342802),
+          ),
+        },
+      ),
     );
   }
 }

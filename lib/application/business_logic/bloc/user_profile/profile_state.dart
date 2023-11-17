@@ -4,10 +4,17 @@ class ProfileState {}
 
 class ProfileInitial extends ProfileState {}
 
+class UserProfileInitialState extends ProfileState {
+  final int value;
+
+  UserProfileInitialState({this.value = 0});
+}
+
 class UserDataFetchingState extends ProfileState {}
 
 class UserDataFetchedState extends ProfileState {
-  final UserRepositoryModel model;
+  final UserModel model;
+
   UserDataFetchedState({required this.model});
 }
 
@@ -17,12 +24,11 @@ class ProfileFetchingState extends ProfileState {}
 
 class ProfileFetchedState extends ProfileState {
   final List<PostModel> model;
+
   ProfileFetchedState({required this.model});
 }
 
 class ProfileFetchingErrorState extends ProfileState {}
-
-class SwitchBetweenPostesDoneState extends ProfileState {}
 
 class ProfileThoughtFetchingState extends ProfileState {}
 

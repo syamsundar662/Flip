@@ -3,6 +3,7 @@ import 'package:flip/application/presentation/widgets/animations/animated_opacti
 import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
@@ -147,7 +148,7 @@ class PasswordConfirmationScreenState
                     onEvent: () async {
                       if (!_formkey.currentState!.validate()) return;
                       if (authBlocProvider.passwordController.text.length < 6) {
-                        // HapticFeedback.heavyImpact();
+                        HapticFeedback.heavyImpact();
                         AnimatedSnackBar.material(
                           'Weak password',
                           type: AnimatedSnackBarType.error,
@@ -161,8 +162,7 @@ class PasswordConfirmationScreenState
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
                       } else {
-                        // final confirmPassword = authBlocProvider.confirmPasswordController.text;
-                        Navigator.push(
+                         await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => EmailValidationScreen()));

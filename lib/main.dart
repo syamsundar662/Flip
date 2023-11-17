@@ -2,6 +2,8 @@ import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
+import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
+import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,18 +24,18 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
-  
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider( 
+    return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc(AuthServices())),
         BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
-        BlocProvider<PostBloc>(create: (context)=>PostBloc()) ,
-        BlocProvider<FetchBloc>(create: (context)=>FetchBloc()),  
-        BlocProvider<ProfileBloc>(create: (context)=>ProfileBloc()),
+        BlocProvider<PostBloc>(create: (context) => PostBloc(PostServices(), UserService())),
+        BlocProvider<FetchBloc>(create: (context) => FetchBloc(PostServices())),
+        BlocProvider<ProfileBloc>(create: (context) => ProfileBloc(PostServices(), UserService())),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
