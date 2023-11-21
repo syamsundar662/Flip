@@ -45,7 +45,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
     final AuthenticationResults logInResponse =
         await authRepository.signIn(event.logIn);
-
     logInResponse == AuthenticationResults.logInSuccess
         ? emit(AuthSuccessState(authResponse: logInResponse))
         : emit(AuthErrorState(authResponse: logInResponse));

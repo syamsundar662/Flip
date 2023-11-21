@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
@@ -63,16 +64,20 @@ class AuthServices implements AuthRepository {
   }
 
   @override
-  Future<AuthenticationResults> verifyEmail() async {
-    await FirebaseAuth.instance.currentUser!.reload();
+ Future<AuthenticationResults> verifyEmail() async {
+  try {
+    await FirebaseAuth.instance.currentUser!.reload();  
     final isEmailVerified =
         FirebaseAuth.instance.currentUser?.emailVerified ?? false;
+
     if (isEmailVerified) {
       return AuthenticationResults.verificationSuccess;
     } else {
       Completer<AuthenticationResults> completer =
           Completer<AuthenticationResults>();
-      Timer.periodic(const Duration(seconds: 5), (timer) async {
+      Timer? timer;
+
+      timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
         if (FirebaseAuth.instance.currentUser == null) {
           timer.cancel();
           completer.complete(AuthenticationResults.errorOccurs);
@@ -83,9 +88,22 @@ class AuthServices implements AuthRepository {
           completer.complete(AuthenticationResults.verificationSuccess);
         }
       });
+      // A timeout mechanism to handle long waits
+      await Future.delayed(const Duration(seconds: 60), () {
+        if (!completer.isCompleted) {
+          timer?.cancel();
+          completer.complete(AuthenticationResults.timeout);
+        }
+      });
+
       return completer.future;
     }
+  } catch (e) {
+    log('Exception occurred: $e');
+    return AuthenticationResults.errorOccurs;
   }
+}
+
 
   @override
   void deleteUserFromFirebase() {

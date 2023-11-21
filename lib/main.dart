@@ -1,3 +1,4 @@
+import 'package:flip/application/business_logic/bloc/bloc/comments_bloc.dart';
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
@@ -32,10 +33,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc(AuthServices())),
-        BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
         BlocProvider<PostBloc>(create: (context) => PostBloc(PostServices(), UserService())),
         BlocProvider<FetchBloc>(create: (context) => FetchBloc(PostServices())),
         BlocProvider<ProfileBloc>(create: (context) => ProfileBloc(PostServices(), UserService())),
+        BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
+        BlocProvider<CommentsBloc>(create: (context) => CommentsBloc(PostServices())),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -45,7 +47,6 @@ class MyApp extends StatelessWidget {
           home: splash()),
     );
   }
-
   StreamBuilder<User?> splash() {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),

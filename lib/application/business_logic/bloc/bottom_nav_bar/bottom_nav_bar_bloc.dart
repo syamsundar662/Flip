@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flip/application/presentation/screens/home_screen/home_screen.dart';
-import 'package:flip/application/presentation/screens/nearby_screen/nearby.dart';
 import 'package:flip/application/presentation/screens/notification_screen/notification_screen.dart';
 import 'package:flip/application/presentation/screens/profile_screen/profile_screen.dart';
 import 'package:flip/application/presentation/screens/search_screen/search_screen.dart';
@@ -21,7 +20,6 @@ class BottomNavBarBloc extends Bloc<BottomNavBarEvent, BottomNavBarState> {
   final screens = [
     const HomeScreen(),
     const SearchScreen(),
-    const NearByFlips(),
     const NotificationScreen(),
     const ProfileScreen()
   ];

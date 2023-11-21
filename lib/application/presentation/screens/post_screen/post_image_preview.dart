@@ -17,9 +17,7 @@ class PostImagePreview extends StatelessWidget {
     final postBlocProvider = context.read<PostBloc>();
     return Scaffold(
       body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-
-
+        physics: const AlwaysScrollableScrollPhysics(),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -71,9 +69,10 @@ class PostImagePreview extends StatelessWidget {
                                     .textContentController.text.isNotEmpty) {
                               final post = PostModel(
                                   username: '',
-                                  userId: FirebaseAuth.instance.currentUser!.uid,
-                                  textContent:
-                                      postBlocProvider.textContentController.text,
+                                  userId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                  textContent: postBlocProvider
+                                      .textContentController.text,
                                   imageUrls: selecedImage
                                       .map((image) => image.path)
                                       .toList(),
@@ -114,8 +113,8 @@ class PostImagePreview extends StatelessWidget {
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10),
                       )),
-                  style:
-                      const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w400),
                   cursorColor: Theme.of(context).colorScheme.secondary,
                 ),
               ],

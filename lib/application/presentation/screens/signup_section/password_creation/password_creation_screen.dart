@@ -145,7 +145,7 @@ class PasswordConfirmationScreenState
                   child: ElevatedButtonWidget(
                     height: screenFullHeight * .07,
                     width: screenFullWidth,
-                    onEvent: () async {
+                    onEvent: ()  {
                       if (!_formkey.currentState!.validate()) return;
                       if (authBlocProvider.passwordController.text.length < 6) {
                         HapticFeedback.heavyImpact();
@@ -162,7 +162,7 @@ class PasswordConfirmationScreenState
                           mobileSnackBarPosition: MobileSnackBarPosition.top,
                         ).show(context);
                       } else {
-                         await Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => EmailValidationScreen()));

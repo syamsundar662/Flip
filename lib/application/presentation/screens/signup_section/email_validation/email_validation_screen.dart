@@ -139,6 +139,8 @@ class EmailValidationScreen extends StatelessWidget {
                                 password:
                                     authBlocProvider.passwordController.text);
                             authBlocProvider.add(SignUpEvent(signUp: signUp));
+                          } else {
+                            return Exception('something went wrong');
                           }
                         },
                         buttonTitle: const Text(

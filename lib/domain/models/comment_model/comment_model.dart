@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flip/domain/models/user_model/user_model.dart';
 
 class Comments {
   final String? commentId;
@@ -38,3 +39,9 @@ class Comments {
     );
   }
 }
+class CommentWithUserProfile {
+  final Comments comment;
+  final UserModel user;
+  CommentWithUserProfile({required this.comment, required this.user});
+}
+

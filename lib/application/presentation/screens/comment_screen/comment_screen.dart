@@ -1,33 +1,10 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-
-// class CommentScreen extends StatelessWidget {
-//   const CommentScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return  Scaffold(
-//       appBar: AppBar(centerTitle: true,title: Text('Comments'), actions: [IconButton(onPressed: (){}, icon: Icon(Icons.done))],),
-//       body: ListView.builder(
-//         itemCount: 10,
-//         itemBuilder: (context,index){
-
-//         return ListTile(
-//           leading: CircleAvatar(),
-//           title: Text('Username'),
-//           subtitle:Text('Comment will be here!!') ,
-//         );
-//       }),
-//       bottomNavigationBar: CupertinoSearchTextField() ,
-
-//     );
-//   }
-// }
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
+import 'package:flip/application/business_logic/bloc/bloc/comments_bloc.dart';
 import 'package:flip/domain/models/comment_model/comment_model.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 class CommentScreen extends StatefulWidget {
@@ -39,55 +16,73 @@ class CommentScreen extends StatefulWidget {
 }
 
 class CommentScreenState extends State<CommentScreen> {
-  final TextEditingController commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final commentBlocProvider = context.read<CommentsBloc>();
+    commentBlocProvider
+        .add(CommentsFetchEvent(postId: widget.postModel.postId));
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comments'),
+        title: const Text('Comments'),
       ),
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder(
-              stream: UserService().fetchComments(widget.postModel.postId),
-              builder: (context, snapshot) {
-                if(!snapshot.hasData){
-                  return Center(child: CircularProgressIndicator.adaptive());
-                }
-                List<Comments> comments = snapshot.data!;
-                return ListView.builder(
-                  itemCount: comments.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: CircleAvatar(),
-                      title: Text(comments[index].userId),
-                      subtitle: Text(comments[index].comment),
+            child: BlocBuilder<CommentsBloc, CommentsState>(
+              builder: (context, state) {
+                if (state is CommentsFetchingState) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is CommentsFetchedState ||
+                    state is CommentsAddSuccessState) {
+                  if (state.comments.isEmpty) {
+                    return const Center(
+                      child: Text('No comments'),
                     );
-                  },
-                );
+                  }
+                  final data = state.comments;
+                  return ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: state.comments[index].user.profileImageUrl!
+                                .isNotEmpty
+                            ? CircleAvatar(
+                                backgroundImage: CachedNetworkImageProvider(
+                                    state
+                                        .comments[index].user.profileImageUrl!),
+                              )
+                            : const CircleAvatar(
+                                backgroundColor: Colors.grey,
+                              ),
+                        title: Text(data[index].user.username),
+                        subtitle: Text(data[index].comment.comment),
+                      );
+                    },
+                  );
+                }
+                return const SizedBox();
               },
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              controller: commentController,
+              controller: commentBlocProvider.commentController,
               decoration: InputDecoration(
                 hintText: 'Add a comment...',
                 suffixIcon: IconButton(
-                  icon: Icon(Iconsax.send_1),
+                  icon: const Icon(Iconsax.send_1),
                   onPressed: () async {
                     final commentData = Comments(
                         commentId: '',
                         postId: widget.postModel.postId,
-                        comment: commentController.text,
+                        comment: commentBlocProvider.commentController.text,
                         timeStamp: DateTime.now(),
                         likes: [],
                         userId: FirebaseAuth.instance.currentUser!.uid);
-                    await UserService()
-                        .addComments(commentData, widget.postModel.postId);
-                    print(commentData);
+                    commentBlocProvider
+                        .add(CommentsAddButtonEvent(model: commentData));
+                    commentBlocProvider.commentController.clear();
                   },
                 ),
               ),

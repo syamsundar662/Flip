@@ -47,17 +47,14 @@ class EmailVerificaitonScreen extends StatelessWidget {
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is EmailVerifiedSuccessState) {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => const RootScreen()));
+                   Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context)=>const RootScreen()), (route) => false);
                   }
                 }, 
                 child: TextButton(
                   child: const Text('Please wait'),
                   onPressed: () {
                     if (FirebaseAuth.instance.currentUser!.emailVerified) {
-                      Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context)=>RootScreen()), (route) => false);
+                      Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context)=>const RootScreen()), (route) => false);
                     }
                   },
                 ),

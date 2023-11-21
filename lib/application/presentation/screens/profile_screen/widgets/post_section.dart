@@ -19,23 +19,25 @@ class PostSection extends StatelessWidget {
           cur is ProfileFetchingState || cur is ProfileFetchedState,
       builder: (context, state) {
         if (state is ProfileFetchedState) {
+
+        
           return GridView.builder(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
               itemCount: state.model.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, mainAxisSpacing: 2, crossAxisSpacing: 2),
               itemBuilder: (context, index) {
-                return state.model[index].imageUrls[0].isNotEmpty
-                    ? GestureDetector(
+                 if (state.model.isEmpty) {
+                    return Text('No comments',style: TextStyle(color: Colors.amber),);
+                  }
+                return GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.push( 
                               context,
                               MaterialPageRoute(
                                   builder: (context) => PostViewScreen(
                                       model: state.model[index])));
                         },
-                        child: Container(
+                        child:  Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: NetworkImage(
@@ -43,9 +45,8 @@ class PostSection extends StatelessWidget {
                                   fit: BoxFit.cover),
                               color: Theme.of(context).colorScheme.primary,
                               borderRadius: BorderRadius.circular(1)),
-                        ),
-                      )
-                    : const SizedBox();
+                        )
+                      );
               });
         }
 
@@ -138,11 +139,11 @@ class ThoughtsPostSection extends StatelessWidget {
                         ),
                       ),
                     )
-                  : SizedBox();
+                  : const SizedBox();
             },
           );
         }
-        return SizedBox();
+        return const SizedBox();
       },
     );
   }

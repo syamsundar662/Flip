@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flip/application/business_logic/bloc/bloc/comments_bloc.dart';
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
@@ -27,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    context.read<CommentsBloc>();
     return RefreshIndicator.adaptive(
       onRefresh: () async {
         Future.delayed(const Duration(seconds: 1));
@@ -52,172 +56,190 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+
+
+
+
+
   BlocBuilder<FetchBloc, FetchState> _homeFeedSection() {
     return BlocBuilder<FetchBloc, FetchState>(
-                builder: (context, state) {
-                  if (state is HomeDataFetchingState) {
-                    return const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    );
-                  } else if (state is HomeDataFechedState) {
-                    return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.model.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  kWidth10, 
-                                  const CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('assets/IMG_2468.JPG'),
-                                    radius: 18,
-                                  ),
-                                  kWidth10,
-                                  Text(
-                                    state.model[index].username,
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                  timeAgo(state.model[index].timestamp),
-                                  style: const TextStyle(
-                                      fontSize: 12, color: Colors.grey),
-                                ),
-                                  const Icon(Icons.more_vert)
-                                ],
+      builder: (context, state) {
+        if (state is HomeDataFetchingState) {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
+        } else if (state is HomeDataFechedState) {
+          return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: state.model.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        kWidth10,
+                        const InkWell(
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage('assets/IMG_2468.JPG'),
+                            radius: 18,
+                          ),
+                        ),
+                        kWidth10,
+                        Text(
+                          state.model[index].username,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        const Spacer(),
+                        Text(
+                          timeAgo(state.model[index].timestamp),
+                          style:
+                              const TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                        const Icon(Icons.more_vert)
+                      ],
+                    ),
+                    kHeight10,
+                    state.model[index].imageUrls.isNotEmpty
+                        ? _mainFeedCard(state, index)
+                        : _mainThoughtsCard(state, index),
+                    PostMainCommonButtons(post: state.model[index]),
+                    state.model[index].imageUrls.isNotEmpty
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.only(left: 17.5, right: 10),
+                            child: Text(
+                              state.model[index].textContent,
+                              style: const TextStyle(
+                                fontSize: 15,
                               ),
-                              kHeight10,
-                              state.model[index].imageUrls.isNotEmpty
-                                  ? _mainFeedCard(state, index)
-                                  : _mainThoughtsCard(state, index),
-                               PostMainCommonButtons(post: state.model[index]),
-                              state.model[index].imageUrls.isNotEmpty
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 17.5, right: 10),
-                                      child: Text(
-                                        state.model[index].textContent,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 17.5),
-                              //   child: Text(
-                              //     timeAgo(state.model[index].timestamp),
-                              //     style: const TextStyle(
-                              //         fontSize: 12, color: Colors.grey),
-                              //   ),
-                              // ),
-                              const Divider(
-                                thickness: .1,
-                              )
-                            ],
-                          );
-                        });
-                  } else {
-                    return Container();
-                  }
-                },
-              );
+                            ),
+                          )
+                        : const SizedBox(),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 17.5),
+                    //   child: Text(
+                    //     timeAgo(state.model[index].timestamp),
+                    //     style: const TextStyle(
+                    //         fontSize: 12, color: Colors.grey),
+                    //   ),
+                    // ),
+                    const Divider(
+                      thickness: .1,
+                    )
+                  ],
+                );
+              });
+        } else {
+          return Container();
+        }
+      },
+    );
   }
+
   Container _mainThoughtsCard(HomeDataFechedState state, int index) {
     return Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(6),
-                                      color: const Color.fromARGB(
-                                          20, 159, 159, 159),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Text(
-                                        state.model[index].textContent,
-                                        style:
-                                            const TextStyle(fontSize: 18),
-                                      ),
-                                    ),
-                                  );
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        color: const Color.fromARGB(20, 159, 159, 159),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Text(
+          state.model[index].textContent,
+          style: const TextStyle(fontSize: 18),
+        ),
+      ),
+    );
   }
-  CarouselSlider _mainFeedCard(HomeDataFechedState state, int index) {
-    return CarouselSlider.builder(
-                                    options: CarouselOptions(
-                                        padEnds: true,
-                                        autoPlay: true,
-                                        pauseAutoPlayOnTouch: true,
-                                        enlargeCenterPage: true,
-                                        height: screenFullHeight / 1.8,
-                                        viewportFraction: 1/1.05,
-                                        aspectRatio: 16 / 9,  
-                                        enableInfiniteScroll: false),
-                                    itemCount:
-                                        state.model[index].imageUrls.length,
-                                    itemBuilder: (context, inde, _) {
-                                      return ClipRRect(
-                                        borderRadius:
-                                            const BorderRadius.all(
-                                                 Radius.circular(10)),
-                                        child: Container(
-                                          // padding: EdgeInsets.all(8),
-                                           constraints: BoxConstraints(
-                                              maxHeight:
-                                                  screenFullHeight / 1.8),
-                                          width: double.infinity,
-                                          child: Image.network(
-                                            state.model[index]
-                                                .imageUrls[inde],
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
+
+  Widget _mainFeedCard(HomeDataFechedState state, int index) {
+    return Stack(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              child: Container(
+                // padding: EdgeInsets.all(8),
+                constraints: BoxConstraints(maxHeight: screenFullHeight / 1.8),
+                width: double.infinity,
+                child: CachedNetworkImage(
+                  
+                  imageUrl: 
+                  state.model[index].imageUrls[0],
+                  fit: BoxFit.cover,  
+                ),
+              ),
+            ),
+          ],
+        );
+    // return CarouselSlider.builder(
+    //   options: CarouselOptions(
+    //       padEnds: true,
+    //       autoPlay: true,
+    //       pauseAutoPlayOnTouch: true,
+    //       enlargeCenterPage: true,
+    //       height: screenFullHeight / 1.8,
+    //       viewportFraction: 1 / 1.05,
+    //       aspectRatio: 16 / 9,
+    //       enableInfiniteScroll: false),
+    //   itemCount: state.model[index].imageUrls.length,
+    //   itemBuilder: (context, index, _) {
+    //     return Stack(
+    //       children: [
+    //         ClipRRect(
+    //           borderRadius: const BorderRadius.all(Radius.circular(10)),
+    //           child: Container(
+    //             // padding: EdgeInsets.all(8),
+    //             constraints: BoxConstraints(maxHeight: screenFullHeight / 1.8),
+    //             width: double.infinity,
+    //             child: Image.network(
+    //               state.model[index].imageUrls[index],
+    //               fit: BoxFit.cover,
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     );
+    //   },
+    // );
   }
+
   SliverAppBar _appBar(BuildContext context) {
     return SliverAppBar(
-        floating: true,
-        centerTitle: false,
-        title: const FlipLogoText(
-          logoSize: 35,
-        ),
-        actions: [
-          InkWell(
-            onLongPress: (){
-               AuthServices().signOut();
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => const LoginScreen()));
-
-            },
-            child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => const PostScreen()));
-                },
-                icon: const Icon(Iconsax.add_square)),
-          ),
-          IconButton(
+      floating: true,
+      centerTitle: false,
+      title: const FlipLogoText(
+        logoSize: 35,
+      ),
+      actions: [
+        InkWell(
+          onLongPress: () {
+            AuthServices().signOut();
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (context) => const LoginScreen()));
+          },
+          child: IconButton(
               onPressed: () {
                 Navigator.push(
                     context,
                     CupertinoPageRoute(
-                        builder: (context) => const MessageScreen()));
+                        builder: (context) => const PostScreen()));
               },
-              icon: const Icon(Iconsax.sms_notification)),
-        ],
-      );
+              icon: const Icon(Iconsax.add_square)),
+        ),
+        IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => const MessageScreen()));
+            },
+            icon: const Icon(Iconsax.sms_notification)),
+      ],
+    );
   }
 }
 

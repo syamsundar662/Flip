@@ -12,8 +12,9 @@ class BottomNavBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBarBloc, BottomNavBarState>(
       builder: (context, state) {
-        return Scaffold(
+        return Scaffold( 
           body: PageView(
+            // ignore: prefer_const_constructors
             physics: NeverScrollableScrollPhysics(),
               controller: _pageController,
               onPageChanged: (index) {
@@ -39,8 +40,8 @@ class BottomNavBarWidget extends StatelessWidget {
               BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home'),
               BottomNavigationBarItem(
                   icon: Icon(Iconsax.discover), label: 'Explore'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.location), label: 'Flip'),
+              // BottomNavigationBarItem(
+              //     icon: Icon(Iconsax.location), label: 'Flip'),
               BottomNavigationBarItem(
                   icon: Icon(Iconsax.notification_status),
                   label: 'Notification'),

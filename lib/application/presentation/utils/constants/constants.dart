@@ -45,6 +45,7 @@ googleSignInSuccess,
 googleSignInFailed,
 googleSignInVerified,
 newUser,
-passwordResetSuccess
+passwordResetSuccess,
+timeout
  }
  

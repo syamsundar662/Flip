@@ -60,19 +60,7 @@ class PostViewScreen extends StatelessWidget {
                   ),
                   kHeight10,
                   model.imageUrls.isNotEmpty
-                      ? CarouselSlider.builder(
-                          options: CarouselOptions(
-                              padEnds: true,
-                              autoPlay: true,
-                              pauseAutoPlayOnTouch: true,
-                              enlargeCenterPage: true,
-                              height: screenFullHeight / 1.8,
-                              viewportFraction: 1 / 1.06,
-                              aspectRatio: 16 / 9,
-                              enableInfiniteScroll: false),
-                          itemCount: model.imageUrls.length,
-                          itemBuilder: (context, inde, _) {
-                            return ClipRRect(
+                      ?  ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10)),
                               child: Container(
@@ -80,14 +68,12 @@ class PostViewScreen extends StatelessWidget {
                                 constraints: BoxConstraints(
                                     maxHeight: screenFullHeight / 1.8),
                                 width: double.infinity,
-                                child: Image.network(
-                                  model.imageUrls[inde],
+                                child: Image.network( 
+                                  model.imageUrls[0],
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                            );
-                          },
-                        )
+                            )
                       : Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
