@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/screens/comment_screen/comment_screen.dart';
-import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,6 +42,7 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconButton(
               onPressed: () {
@@ -71,22 +71,24 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
               },
               icon: const Icon(Iconsax.note),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Iconsax.share),
-            ),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: const Icon(Iconsax.share),
+            // ),
             IconButton(
               onPressed: () {},
               icon: const Icon(Iconsax.save_2),
             ),
           ],
         ),
-        Row(
-          children: [
-            kWidth10,
-            Text('  ${widget.post.likes.length.toString()} likes '),
-            Text('${widget.post.comments.length.toString()} comments'),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Row(
+            children: [
+              Text('${widget.post.likes.length.toString()} likes '),
+              Text('${widget.post.comments.length.toString()} comments'),
+            ],
+          ),
         ),
       ],
     );

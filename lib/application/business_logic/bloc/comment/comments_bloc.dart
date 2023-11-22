@@ -20,6 +20,9 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   FutureOr<void> commentsAddButtonEvent(
       CommentsAddButtonEvent event, Emitter<CommentsState> emit) async {
     await postRepository.addComments(event.model, event.model.postId);
+
+
+    
     final comments = await postRepository.fetchComments(event.model.postId);
     await postRepository.fetchUser(comments).then((commentsData) =>
         emit(CommentsAddSuccessState(comments: commentsData)));

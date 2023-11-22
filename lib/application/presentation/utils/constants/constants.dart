@@ -48,4 +48,8 @@ newUser,
 passwordResetSuccess,
 timeout
  }
- 
+ enum Friend{
+  follower,
+  following
+
+ }

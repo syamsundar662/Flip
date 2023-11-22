@@ -1,4 +1,4 @@
-import 'package:flip/application/business_logic/bloc/bloc/comments_bloc.dart';
+import 'package:flip/application/business_logic/bloc/comment/comments_bloc.dart';
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';

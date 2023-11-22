@@ -1,15 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flip/application/business_logic/bloc/bloc/comments_bloc.dart';
+import 'package:flip/application/business_logic/bloc/comment/comments_bloc.dart';
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/application/presentation/screens/message_screen/message_screen.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
+import 'package:flip/application/presentation/screens/user_profile/user_profile.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
+import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -56,11 +58,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-
-
-
-
-
   BlocBuilder<FetchBloc, FetchState> _homeFeedSection() {
     return BlocBuilder<FetchBloc, FetchState>(
       builder: (context, state) {
@@ -84,20 +81,29 @@ class _HomeScreenState extends State<HomeScreen>
                           child: CircleAvatar(
                             backgroundImage: AssetImage('assets/IMG_2468.JPG'),
                             radius: 18,
-                          ),
+                          ),    
                         ),
                         kWidth10,
-                        Text(
-                          state.model[index].username,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
+                        InkWell(
+                          onTap: () async {
+                            final user = await UserService()
+                                .fetchDataByUser(state.model[index].userId);
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserProfileScreen(
+                                          userModel: user!,
+                                          postModel: state.model,
+                                        )));
+                          },
+                          child: Text(
+                            state.model[index].username,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
                         ),
                         const Spacer(),
-                        Text(
-                          timeAgo(state.model[index].timestamp),
-                          style:
-                              const TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
                         const Icon(Icons.more_vert)
                       ],
                     ),
@@ -108,8 +114,7 @@ class _HomeScreenState extends State<HomeScreen>
                     PostMainCommonButtons(post: state.model[index]),
                     state.model[index].imageUrls.isNotEmpty
                         ? Padding(
-                            padding:
-                                const EdgeInsets.only(left: 17.5, right: 10),
+                            padding: const EdgeInsets.only(left: 14, right: 10),
                             child: Text(
                               state.model[index].textContent,
                               style: const TextStyle(
@@ -118,14 +123,14 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           )
                         : const SizedBox(),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 17.5),
-                    //   child: Text(
-                    //     timeAgo(state.model[index].timestamp),
-                    //     style: const TextStyle(
-                    //         fontSize: 12, color: Colors.grey),
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 14),
+                      child: Text(
+                        timeAgo(state.model[index].timestamp),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ),
                     const Divider(
                       thickness: .1,
                     )
@@ -158,23 +163,23 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget _mainFeedCard(HomeDataFechedState state, int index) {
     return Stack(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: Container(
-                // padding: EdgeInsets.all(8),
-                constraints: BoxConstraints(maxHeight: screenFullHeight / 1.8),
-                width: double.infinity,
-                child: CachedNetworkImage(
-                  
-                  imageUrl: 
-                  state.model[index].imageUrls[0],
-                  fit: BoxFit.cover,  
-                ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            child: Container(
+              constraints: BoxConstraints(maxHeight: screenFullHeight / 1.8),
+              width: double.infinity,
+              child: CachedNetworkImage(
+                imageUrl: state.model[index].imageUrls[0],
+                fit: BoxFit.cover,
               ),
             ),
-          ],
-        );
+          ),
+        ),
+      ],
+    );
     // return CarouselSlider.builder(
     //   options: CarouselOptions(
     //       padEnds: true,

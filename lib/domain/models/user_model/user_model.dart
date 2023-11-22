@@ -8,8 +8,8 @@ class UserModel {
   final String? saves;
   final String? profileImageUrl;
   final String ?coverImageUrl;
-  final List<String>?followers;
-  final List<String>? following;
+  final List followers;
+  final List following;
   final List<String>? posts;
 
   UserModel({
@@ -20,8 +20,8 @@ class UserModel {
     this.posts , 
     this.coverImageUrl = '',
     this.profileImageUrl = '',
-    this.followers,
-    this.following,
+    required this.followers,
+    required this.following,
     required this.userId,
     required this.username,
     required this.email,

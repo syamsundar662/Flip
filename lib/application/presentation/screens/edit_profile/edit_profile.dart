@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/image/image_picker.dart';
@@ -7,6 +8,7 @@ import 'package:flip/application/presentation/widgets/text_form_fields/textformf
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_gradient/image_gradient.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,6 +44,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
           'Edit Profile',
@@ -85,7 +88,7 @@ class _EditProfileState extends State<EditProfile> {
                 style:
                     TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
               ),
-              onPressed: () async {
+              onPressed: ()  {
                 final details = UserModel(
                     userId: widget.model.userId,
                     username: userNameController.text,
@@ -94,11 +97,15 @@ class _EditProfileState extends State<EditProfile> {
                     coverImageUrl: downloadedCoverUrl,
                     displayName: displayNameController.text,
                     profileImageUrl: downloadedProfileUrl,
-                    posts: widget.model.posts);
+                    posts: widget.model.posts,
+                    followers: widget.model.followers,
+                    following: widget.model.following,
+                    );
 
-                await UserService()
+                 UserService()
                     .editUserDetails(details, widget.model.userId);
-                print(details);
+                context.read<ProfileBloc>().add(UserDataFetchEvent(id: widget.model.userId));
+                // print(details);
               },
             ),
           ),

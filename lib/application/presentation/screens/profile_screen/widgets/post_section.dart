@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_view.dart';
@@ -19,37 +20,36 @@ class PostSection extends StatelessWidget {
           cur is ProfileFetchingState || cur is ProfileFetchedState,
       builder: (context, state) {
         if (state is ProfileFetchedState) {
-
-        
+          if (state.model.isEmpty) {
+            return const Text(
+              'No posts',
+              style: TextStyle(color: Colors.amber),
+            );
+          }
           return GridView.builder(
               itemCount: state.model.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, mainAxisSpacing: 2, crossAxisSpacing: 2),
               itemBuilder: (context, index) {
-                 if (state.model.isEmpty) {
-                    return Text('No comments',style: TextStyle(color: Colors.amber),);
-                  }
                 return GestureDetector(
-                        onTap: () {
-                          Navigator.push( 
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PostViewScreen(
-                                      model: state.model[index])));
-                        },
-                        child:  Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      state.model[index].imageUrls[0]),
-                                  fit: BoxFit.cover),
-                              color: Theme.of(context).colorScheme.primary,
-                              borderRadius: BorderRadius.circular(1)),
-                        )
-                      );
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PostViewScreen(model: state.model[index])));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  state.model[index].imageUrls[0]),
+                              fit: BoxFit.cover),
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(1)),
+                    ));
               });
         }
-
         return SizedBox(
           height: screenFullHeight / 2,
           child: GridView.builder(
@@ -73,7 +73,6 @@ class PostSection extends StatelessWidget {
     );
   }
 }
-
 class ThoughtsPostSection extends StatelessWidget {
   const ThoughtsPostSection({super.key});
 
@@ -87,6 +86,7 @@ class ThoughtsPostSection extends StatelessWidget {
           cur is ProfileThoughtFetchedState,
       builder: (context, state) {
         if (state is ProfileThoughtFetchedState) {
+          
           return ListView.builder(
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
@@ -139,7 +139,7 @@ class ThoughtsPostSection extends StatelessWidget {
                         ),
                       ),
                     )
-                  : const SizedBox();
+                :const SizedBox();
             },
           );
         }

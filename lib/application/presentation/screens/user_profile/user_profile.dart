@@ -1,85 +1,65 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flip/application/presentation/screens/edit_profile/edit_profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/screens/followers_list/followers.dart';
 import 'package:flip/application/presentation/screens/following_list/following.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flip/application/presentation/screens/user_profile/user_posts.dart';
+import 'package:flip/data/firebase/follow_data_resource/follow_data_resourse.dart';
+import 'package:flip/domain/models/post_model/post_model.dart';
+import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_gradient/image_gradient.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
-import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen(
+      {Key? key, required this.userModel, required this.postModel})
+      : super(key: key);
+
+  final UserModel userModel;
+  final List<PostModel> postModel;
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  final id = FirebaseAuth.instance.currentUser!.uid;
-  @override
-  void initState() {
-    context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
-    context.read<ProfileBloc>().add(ProfilePostDataFetchEvent(id: id));
-    super.initState();
-  }
-
+class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     return SafeArea(
       child: RefreshIndicator.adaptive(
         displacement: 20,
         onRefresh: () async {
           HapticFeedback.heavyImpact();
-          context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
-          context.read<ProfileBloc>().add(ProfilePostDataFetchEvent(id: id));
         },
         child: Scaffold(
           body: DefaultTabController(
             length: 2,
-            child: BlocBuilder<ProfileBloc, ProfileState>(
-              buildWhen: (pre, cur) => cur is UserDataFetchedState,
-              builder: (ctx, state) {
-                if (state is UserDataFetchedState) {
-                  return CustomScrollView(
-                    slivers: [
-                      _appBarSection(state, context),
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _topPictureSection(context, state),
-                                _nameAndBioSection(state),
-                                const Divider(
-                                  thickness: .1,
-                                ),
-                                _middleSection(state),
-                                postTabBarSection(context),
+            child: CustomScrollView(
+              slivers: [
+                _appBarSection(context),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _topPictureSection(context),
+                          _nameAndBioSection(),
+                          const Divider(
+                            thickness: .1,
+                          ),
+                          _middleSection(),
+                          postTabBarSection(context),
 
-                                // Wrap TabBar and TabBarView in Expanded
-                              ],
-                            ),
-                          ],
-                        ),
+                          // Wrap TabBar and TabBarView in Expanded
+                        ],
                       ),
                     ],
-                  );
-                }
-                return const SizedBox();
-              },
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -100,10 +80,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
         SizedBox(
           height: screenFullHeight / 1.27,
-          child: const TabBarView(
+          child: TabBarView(
             children: [
-              PostSection(),
-              ThoughtsPostSection(),
+              UserPostSection(userData: widget.userModel),
+              const ThoughtsPostSection(),
             ],
           ),
         ),
@@ -111,47 +91,43 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  SliverAppBar _appBarSection(
-      UserDataFetchedState state, BuildContext context) {
+  SliverAppBar _appBarSection(BuildContext context) {
     return SliverAppBar(
       floating: true,
       pinned: false,
       centerTitle: false,
       title: Text(
-        '@${state.model.username}',
+        '@${widget.userModel.username}',
         style: const TextStyle(fontSize: 15),
       ),
       actions: [
         IconButton(
             onPressed: () {
-              SlideUpWidget().showSlidingBoxWidget(
-                  context: context,
-                  height: screenFullHeight / 2.35,
-                  buttonTitle: SlideUpWidget.optionsForProfileScreen,
-                  buttonIcons: SlideUpWidget.optionIconListForProfileScreen);
+              // SlideUpWidget().showSlidingBoxWidget(
+              //     context: context,
+              //     height: screenFullHeight / 2.35,
+              //     buttonTitle: SlideUpWidget.optionsForProfileScreen,
+              //     buttonIcons: SlideUpWidget.optionIconListForProfileScreen);
             },
             icon: const Icon(Icons.menu_outlined)),
       ],
     );
   }
 
-  Stack _topPictureSection(BuildContext context, UserDataFetchedState state) {
+  Stack _topPictureSection(BuildContext context) {
     return Stack(
       children: [
         SizedBox(
             height: screenFullHeight / 3.2,
             width: double.infinity,
             child: ImageGradient.linear(
-              image: state.model.coverImageUrl!.isEmpty
-                  ? Image.asset(
-                      "assets/default-fallback-image.png",
-                      opacity: const AlwaysStoppedAnimation(.1),
+              image: widget.userModel.coverImageUrl!.isNotEmpty &&
+                      widget.userModel.coverImageUrl != null
+                  ? Image.network(
+                      widget.userModel.coverImageUrl!,
                       fit: BoxFit.cover,
                     )
-                  : Image.network(
-                      state.model.coverImageUrl!,
-                      fit: BoxFit.cover,
-                    ),
+                  : Image.asset('assets/default-fallback-image.png'),
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
               colors: const [
@@ -168,12 +144,12 @@ class _ProfileScreenState extends State<ProfileScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                  child: state.model.profileImageUrl != null &&
-                          state.model.profileImageUrl!.isNotEmpty
+                  child: widget.userModel.profileImageUrl!.isNotEmpty &&
+                          widget.userModel.profileImageUrl != null
                       ? CircleAvatar(
                           radius: 50,
                           backgroundImage: CachedNetworkImageProvider(
-                              state.model.profileImageUrl!))
+                              widget.userModel.profileImageUrl!))
                       : const CircleAvatar(
                           radius: 50,
                           backgroundImage:
@@ -184,47 +160,13 @@ class _ProfileScreenState extends State<ProfileScreen>
         Positioned(
           right: 10,
           bottom: 0,
-          child: Row(
-            children: [
-              // InkWell(
-              //   onTap: () {
-              //     AuthServices().signOut();
-              //     Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //             builder: (context) => const LoginScreen()));
-              //   },
-              //   child: const Icon(
-              //     Iconsax.sms,
-              //   ),
-              // ),
-              // kWIdth20,
-              TextButton(
-                  style: ButtonStyle(
-                      shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)))),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => EditProfile(
-                                  model: state.model,
-                                )));
-                  },
-                  child: Text(
-                    'Edit profile',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
-                  )),
-            ],
-          ),
+          child: FollowButtonWidget(user: widget.userModel),
         )
       ],
     );
   }
 
-  Padding _nameAndBioSection(UserDataFetchedState state) {
+  Padding _nameAndBioSection() {
     return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: Column(
@@ -232,23 +174,23 @@ class _ProfileScreenState extends State<ProfileScreen>
         children: [
           kHeight10,
           Text(
-            state.model.displayName!,
+            widget.userModel.username,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
           ),
-          Text(state.model.bio!),
+          Text(widget.userModel.bio!),
         ],
       ),
     );
   }
 
-  Padding _middleSection(UserDataFetchedState state) {
+  Padding _middleSection() {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "${state.model.posts!.length.toString()} posts",
+            "${widget.userModel.posts!.length.toString()} posts",
             style: const TextStyle(fontWeight: FontWeight.w500),
           ),
           InkWell(
@@ -256,12 +198,10 @@ class _ProfileScreenState extends State<ProfileScreen>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FollowersScreen(
-                            user: state.model,
-                          )));
+                      builder: (context) =>  FollowersScreen(user: widget.userModel,)));
             },
-            child: Text(
-              '${state.model.followers.length.toString()} followers',
+            child:  Text(
+            '${ widget.userModel.followers.length.toString()} followers', 
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
@@ -272,8 +212,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                   MaterialPageRoute(
                       builder: (context) => const FollowingScreen()));
             },
-            child: Text(
-              '${state.model.followers.length.toString()} followings',
+            child:  Text(
+            '${ widget.userModel.following.length.toString()} following', 
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
@@ -284,6 +224,49 @@ class _ProfileScreenState extends State<ProfileScreen>
         ],
       ),
     );
+  }
+}
+
+class FollowButtonWidget extends StatefulWidget {
+  const FollowButtonWidget({super.key, required this.user});
+  final UserModel user;
+
+  @override
+  State<FollowButtonWidget> createState() => _FollowButtonWidgetState();
+}
+
+class _FollowButtonWidgetState extends State<FollowButtonWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        style: ButtonStyle(
+            shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)))),
+        onPressed: () {
+          final userId = FirebaseAuth.instance.currentUser!.uid;
+          if (widget.user.followers.contains(userId)) {
+            widget.user.followers.remove(userId);
+            FollowDataSources()
+                .unfollowUser(uid: userId, followId: widget.user.userId);
+          } else {
+            widget.user.followers.add(userId);
+            FollowDataSources()
+                .followUser(uid: userId, followId: widget.user.userId);
+          }
+          setState(() {});
+        }, 
+        child: Text(
+            widget.user.followers
+                    .contains(FirebaseAuth.instance.currentUser!.uid)
+                ? 'Following'
+                : 'Follow',
+            style: TextStyle(
+              color: widget.user.followers
+                      .contains(FirebaseAuth.instance.currentUser!.uid)
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.secondary,
+            )));
   }
 }
 

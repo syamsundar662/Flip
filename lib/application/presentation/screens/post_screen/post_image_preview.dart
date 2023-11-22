@@ -72,7 +72,7 @@ class PostImagePreview extends StatelessWidget {
                                   userId:
                                       FirebaseAuth.instance.currentUser!.uid,
                                   textContent: postBlocProvider
-                                      .textContentController.text,
+                                      .textContentController.text.trim(),
                                   imageUrls: selecedImage
                                       .map((image) => image.path)
                                       .toList(),

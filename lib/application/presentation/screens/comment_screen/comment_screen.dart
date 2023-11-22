@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flip/application/business_logic/bloc/bloc/comments_bloc.dart';
+import 'package:flip/application/business_logic/bloc/comment/comments_bloc.dart';
 import 'package:flip/domain/models/comment_model/comment_model.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';

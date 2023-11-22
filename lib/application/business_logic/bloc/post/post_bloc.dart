@@ -57,8 +57,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> postDeleteEvent(
       PostDeleteEvent event, Emitter<PostState> emit) async {
-    await postRepository.deletePost(event.postId,event.userId);
     emit(PostDeletionState());
+    await postRepository.deletePost(event.postId,event.userId);
     emit(PostDeleteSuccessState());
   }
 }

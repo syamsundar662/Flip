@@ -23,7 +23,7 @@ class AuthServices implements AuthRepository {
       userCredential.user!.sendEmailVerification();
       final String uid = userCredential.user!.uid;
       final userSignUpInformation = UserModel(
-          userId: uid, username: signUp.username, email: signUp.email);
+          userId: uid, username: signUp.username, email: signUp.email,followers: [],following: []);
       UserService().userAuthDataCollection(userSignUpInformation);
 
       return AuthenticationResults.signUpSuccess;
@@ -89,7 +89,7 @@ class AuthServices implements AuthRepository {
         }
       });
       // A timeout mechanism to handle long waits
-      await Future.delayed(const Duration(seconds: 60), () {
+      await Future.delayed(const Duration(seconds: 5), () {
         if (!completer.isCompleted) {
           timer?.cancel();
           completer.complete(AuthenticationResults.timeout);

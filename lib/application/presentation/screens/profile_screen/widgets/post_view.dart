@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
@@ -39,41 +39,28 @@ class PostViewScreen extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
-                      const Spacer(),
-                      Text(
-                        timeAgo(model.timestamp),
-                        style:
-                            const TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          showSlidingBoxWidget(
-                            context: context,
-                            height: screenFullHeight / 5,
-                            buttonTitle: optionsForProfilePostViewScreen,
-                            buttonIcons: optionIconListForProfilePostViewScreen,
-                          );
-                        },
-                        icon: const Icon(Icons.more_vert),
-                      )
-                    ],
+                     
+                    ],    
                   ),
                   kHeight10,
                   model.imageUrls.isNotEmpty
-                      ?  ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              child: Container(
-                                // padding: EdgeInsets.all(8),
-                                constraints: BoxConstraints(
-                                    maxHeight: screenFullHeight / 1.8),
-                                width: double.infinity,
-                                child: Image.network( 
-                                  model.imageUrls[0],
-                                  fit: BoxFit.cover,
-                                ),
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            child: Container(
+                              // padding: EdgeInsets.all(8),
+                              constraints: BoxConstraints(
+                                  maxHeight: screenFullHeight / 1.8),
+                              width: double.infinity,
+                              child: CachedNetworkImage(
+                                imageUrl: model.imageUrls[0],
+                                fit: BoxFit.cover,
                               ),
-                            )
+                            ),
+                          ),
+                        )
                       : Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -91,7 +78,7 @@ class PostViewScreen extends StatelessWidget {
                   PostMainCommonButtons(post: model),
                   model.imageUrls.isNotEmpty
                       ? Padding(
-                          padding: const EdgeInsets.only(left: 17.5, right: 10),
+                          padding: const EdgeInsets.only(left: 14, right: 10),
                           child: Text(
                             model.textContent,
                             style: const TextStyle(
@@ -100,6 +87,15 @@ class PostViewScreen extends StatelessWidget {
                           ),
                         )
                       : const SizedBox(),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 14,
+                    ),
+                    child: Text(
+                      timeAgo(model.timestamp),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ),
                   const Divider(
                     thickness: .1,
                   )
@@ -141,10 +137,7 @@ class PostViewScreen extends StatelessWidget {
           context
               .read<ProfileBloc>()
               .add(ProfilePostDataFetchEvent(id: model.userId));
-          context
-              .read<ProfileBloc>()
-              .add(UserDataFetchEvent(id: model.userId)); 
-
+          context.read<ProfileBloc>().add(UserDataFetchEvent(id: model.userId));
         }
       },
       child: ListView.separated(
@@ -166,20 +159,36 @@ class PostViewScreen extends StatelessWidget {
                       "Are you sure you want to delete?",
                     ),
                     actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          if (index == 1) {
-                            context
-                                .read<PostBloc>()
-                                .add(PostDeleteEvent(model.userId, postId: model.postId));
+                      BlocConsumer<PostBloc, PostState>(
+                        listener: (context, state) {
+                          if (state is PostDeleteSuccessState) {
+                            Navigator.pop(context);
                           }
-                          Navigator.pop(context);
                         },
-                        child: Text(
-                          'Delete',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.background),
-                        ),
+                        builder: (context, state) {
+                          return TextButton(
+                            onPressed: () {
+                              if (index == 1) {
+                                context.read<PostBloc>().add(PostDeleteEvent(
+                                    model.userId,
+                                    postId: model.postId));
+                              }
+                            },
+                            child: state is PostDeletionState
+                                ? CircularProgressIndicator.adaptive(
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                  )
+                                : Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .background),
+                                  ),
+                          );
+                        },
                       ),
                     ],
                   ),

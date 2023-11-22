@@ -21,8 +21,8 @@ class UserService implements UserRepository {
       'saves': user.saves,
       'profileImageUrl': user.profileImageUrl,
       'coverImageUrl': user.coverImageUrl,
-      'followers': user.followers,
-      'following': user.following,
+      'followers': [],
+      'following': [],
       'posts': user.posts
     };
     userDataDoc.set(userDatas);
