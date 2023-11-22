@@ -5,9 +5,9 @@ class UserModel {
   final String email;
   final String? displayName;
   final String? bio;
-  final String? saves;
+  final List saves;
   final String? profileImageUrl;
-  final String ?coverImageUrl;
+  final String? coverImageUrl;
   final List followers;
   final List following;
   final List<String>? posts;
@@ -16,8 +16,8 @@ class UserModel {
     this.postId,
     this.displayName,
     this.bio,
-    this.saves,
-    this.posts , 
+    required this.saves,
+    this.posts,
     this.coverImageUrl = '',
     this.profileImageUrl = '',
     required this.followers,
@@ -29,16 +29,16 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
         userId: json['userId'],
-        bio: json['bio'] ?? '', 
+        bio: json['bio'] ?? '',
         email: json['email'],
-        saves: json['saves'] ?? '',
-        postId: json['postId']??'',
+        saves: List.from(json['saves'] ?? []),
+        postId: json['postId'] ?? '',
         username: json['username'] ?? '',
         displayName: json['displayName'] ?? '',
         coverImageUrl: json['coverImageUrl'] ?? '',
         profileImageUrl: json['profileImageUrl'] ?? '',
-        followers: List.from(json['followers']??[]),
-        following: List.from(json['following']??[]),
-        posts: List.from(json['posts']??[]));
+        followers: List.from(json['followers'] ?? []),
+        following: List.from(json['following'] ?? []),
+        posts: List.from(json['posts'] ?? []));
   }
 }

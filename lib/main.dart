@@ -3,6 +3,7 @@ import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
+import 'package:flip/data/firebase/comment_data_service/comment_darta.dart';
 import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<FetchBloc>(create: (context) => FetchBloc(PostServices())),
         BlocProvider<ProfileBloc>(create: (context) => ProfileBloc(PostServices(), UserService())),
         BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
-        BlocProvider<CommentsBloc>(create: (context) => CommentsBloc(PostServices())),
+        BlocProvider<CommentsBloc>(create: (context) => CommentsBloc(CommentServises())),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

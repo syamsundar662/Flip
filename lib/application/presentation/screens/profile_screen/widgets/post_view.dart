@@ -36,9 +36,13 @@ class PostViewScreen extends StatelessWidget {
                       kWidth10,
                       Text(
                         model.username,
-                        style: const TextStyle(
+                        style: const TextStyle( 
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
+                      Spacer(),
+                      IconButton(onPressed: (){
+                        
+                      }, icon: Icon(Icons.more_vert_outlined))
                      
                     ],    
                   ),

@@ -90,6 +90,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
               onPressed: ()  {
                 final details = UserModel(
+                  saves: widget.model.saves,
                     userId: widget.model.userId,
                     username: userNameController.text,
                     email: widget.model.email,
