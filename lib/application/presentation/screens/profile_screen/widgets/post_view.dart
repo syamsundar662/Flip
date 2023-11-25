@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
@@ -17,6 +18,7 @@ class PostViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
         appBar: AppBar(),
         body: ListView.builder(
@@ -36,15 +38,24 @@ class PostViewScreen extends StatelessWidget {
                       kWidth10,
                       Text(
                         model.username,
-                        style: const TextStyle( 
+                        style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                       Spacer(),
-                      IconButton(onPressed: (){
-                        
-                      }, icon: Icon(Icons.more_vert_outlined))
-                     
-                    ],    
+                      model.userId ==
+                                    FirebaseAuth.instance.currentUser!.uid
+                                ?  IconButton(
+                          onPressed: () {
+                           showSlidingBoxWidget(
+                                    context: context,
+                                    height: screenFullHeight / 4.7,
+                                    buttonTitle:
+                                        optionsForProfilePostViewScreen,
+                                    buttonIcons:
+                                        optionIconListForProfilePostViewScreen);
+                          },
+                          icon: Icon(Icons.more_vert_outlined)):SizedBox()
+                    ],
                   ),
                   kHeight10,
                   model.imageUrls.isNotEmpty

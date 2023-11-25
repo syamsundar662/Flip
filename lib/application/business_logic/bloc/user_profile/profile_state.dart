@@ -37,3 +37,11 @@ class ProfileThoughtFetchedState extends ProfileState {
 
   ProfileThoughtFetchedState({required this.model});
 }
+
+class ProfileSavedPostFetchedState extends ProfileState {
+  final List<PostModel> postModel;
+
+  ProfileSavedPostFetchedState({required this.postModel});
+}
+
+class ProfileSavedPostFetchingState extends ProfileState {}

@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:flip/domain/repositories/post_repository/post_repository.dart';
+import 'package:flip/domain/repositories/save_post_repository/save_post_repository.dart';
 import 'package:flip/domain/repositories/user_repository/user_repository.dart';
 
 part 'profile_event.dart';
@@ -11,11 +12,13 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   UserRepository userRepository;
   PostRepository postRepository;
-  ProfileBloc(this.postRepository, this.userRepository)
+  SavePostRepository savePostRepository;
+  ProfileBloc(this.postRepository, this.userRepository, this.savePostRepository)
       : super(ProfileInitial()) {
     on<UserDataFetchEvent>(userDataFetchEvent);
     on<ProfilePostDataFetchEvent>(profilePostFetchEvent);
     on<ProfileThoughtFetchEvent>(profileThoughtFetchEvent);
+    on<ProfileSavedPostFetchEvent>(profileSavedPostFetchEvent);
   }
   FutureOr<void> userDataFetchEvent(
       UserDataFetchEvent event, Emitter<ProfileState> emit) async {
@@ -40,5 +43,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileThoughtFetchingState());
     final response = await postRepository.fetchThoughtByUser(event.id);
     emit(ProfileThoughtFetchedState(model: response));
+  }
+
+  FutureOr<void> profileSavedPostFetchEvent(
+      ProfileSavedPostFetchEvent event, Emitter<ProfileState> emit) async {
+    final savesPostsResponse =
+        await savePostRepository.fetchSavedPosts(event.id);
+        print(savesPostsResponse);
+    emit(ProfileSavedPostFetchedState(postModel: savesPostsResponse));
   }
 }

@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:flip/domain/repositories/follow_repository/follow_repository.dart';
-
 part 'follow_event.dart';
 part 'follow_state.dart';
 
@@ -37,6 +35,8 @@ class FollowBloc extends Bloc<FollowEvent, FollowState> {
         uid: FirebaseAuth.instance.currentUser!.uid);
     emit(FriendsListFetchSuccess(freinds: friends, isRemoved: true));
   }
+
+
 
 
   

@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/presentation/screens/edit_profile/edit_profile.dart';
 import 'package:flip/application/presentation/screens/followers_list/followers.dart';
-import 'package:flip/application/presentation/screens/following_list/following.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
+import 'package:flip/data/firebase/save_post_data_service/save_post_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,12 +22,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin {
-  @override
+  @override 
   bool get wantKeepAlive => true;
 
   final id = FirebaseAuth.instance.currentUser!.uid;
   @override
   void initState() {
+    SavePostDataService().fetchSavedPosts(id);
     context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
     context.read<ProfileBloc>().add(ProfilePostDataFetchEvent(id: id));
     super.initState();
@@ -47,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         },
         child: Scaffold(
           body: DefaultTabController(
-            length: 2,
+            length: 3,
             child: BlocBuilder<ProfileBloc, ProfileState>(
               buildWhen: (pre, cur) => cur is UserDataFetchedState,
               builder: (ctx, state) {
@@ -96,6 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           tabs: const [
             Tab(text: 'Posts'),
             Tab(text: 'Thoughts'),
+            Tab(text: 'Saves'),
           ],
         ),
         SizedBox(
@@ -104,6 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             children: [
               PostSection(),
               ThoughtsPostSection(),
+              SavedPostSection(),
             ],
           ),
         ),
@@ -118,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       pinned: false,
       centerTitle: false,
       title: Text(
-        '@${state.model.username}',
+        '@${state.model.email}',
         style: const TextStyle(fontSize: 15),
       ),
       actions: [
@@ -257,7 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   context,
                   MaterialPageRoute(
                       builder: (context) => FollowersScreen(
-                            user: state.model,
+                            userId: state.model.userId,type: Friend.follower,
                           )));
             },
             child: Text(
@@ -270,10 +273,10 @@ class _ProfileScreenState extends State<ProfileScreen>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FollowingScreen()));
+                      builder: (context) =>  FollowersScreen(type: Friend.following,userId: state.model.userId,)));
             },
             child: Text(
-              '${state.model.followers.length.toString()} followings',
+              '${state.model.following.length.toString()} followings',
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),

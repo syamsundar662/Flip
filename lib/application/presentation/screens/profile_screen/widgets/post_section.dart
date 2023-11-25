@@ -73,6 +73,72 @@ class PostSection extends StatelessWidget {
     );
   }
 }
+
+class SavedPostSection extends StatelessWidget {
+  const SavedPostSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final id = FirebaseAuth.instance.currentUser!.uid;
+    context.read<ProfileBloc>().add(ProfileSavedPostFetchEvent(id: id));
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      buildWhen: (pre, cur) =>
+          cur is ProfileSavedPostFetchingState || cur is ProfileSavedPostFetchedState,
+      builder: (context, state) {
+        if (state is ProfileSavedPostFetchedState) {
+          if (state.postModel.isEmpty) {
+            return const Text(
+              'No posts',
+              style: TextStyle(color: Colors.amber),
+            );
+          }
+          return GridView.builder(
+              itemCount: state.postModel.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, mainAxisSpacing: 2, crossAxisSpacing: 2),
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PostViewScreen(model: state.postModel[index])));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  state.postModel[index].imageUrls[0]),
+                              fit: BoxFit.cover),
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(1)),
+                    ));
+              });
+        }
+        return SizedBox(
+          height: screenFullHeight / 2,
+          child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, crossAxisSpacing: 2, mainAxisSpacing: 2),
+              itemCount: 9,
+              itemBuilder: (context, index) {
+                return Shimmer.fromColors(
+                  baseColor: Theme.of(context).colorScheme.primary,
+                  highlightColor: Theme.of(context).colorScheme.background,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(1),
+                        color: Colors.grey),
+                  ),
+                );
+              }),
+        );
+      },
+    );
+  }
+}
 class ThoughtsPostSection extends StatelessWidget {
   const ThoughtsPostSection({super.key});
 

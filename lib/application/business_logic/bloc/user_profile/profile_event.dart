@@ -17,6 +17,11 @@ class ProfileThoughtFetchEvent extends ProfileEvent {
 
   ProfileThoughtFetchEvent({required this.id});
 }
+class ProfileSavedPostFetchEvent extends ProfileEvent {
+  final String id;
+
+  ProfileSavedPostFetchEvent({required this.id});
+}
 
 // class UserProfileInitialEvent extends ProfileEvent { 
 //   final int tap;

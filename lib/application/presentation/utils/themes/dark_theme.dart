@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class DarkThemeClass {
-  
   ThemeData darkTheme = ThemeData(
       textButtonTheme: const TextButtonThemeData(
         style: ButtonStyle(

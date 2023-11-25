@@ -41,7 +41,7 @@ class PostServices extends PostRepository {
       final post = data.data() as Map<String, dynamic>;
       return PostModel.fromJson(post);
     }).toList();
-  }
+  } 
 
   @override
   Future<List<PostModel>> fetchPostDataByUser(String uid) async {

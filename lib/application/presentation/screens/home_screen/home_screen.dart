@@ -74,38 +74,37 @@ class _HomeScreenState extends State<HomeScreen>
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        kWidth10,
-                        const InkWell(
-                          child: CircleAvatar(
-                            backgroundImage: AssetImage('assets/IMG_2468.JPG'),
+                    InkWell(
+                      onTap: () async {
+                        final user = await UserService()
+                            .fetchDataByUser(state.model[index].userId);
+                        // ignore: use_build_context_synchronously
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserProfileScreen(
+                                      userModel: user!,
+                                      postModel: state.model,
+                                    )));
+                      },
+                      child: Row(
+                        children: [
+                          kWidth10,
+                          const CircleAvatar(
+                            backgroundImage:
+                                AssetImage('assets/IMG_2468.JPG'),
                             radius: 18,
-                          ),    
-                        ),
-                        kWidth10,
-                        InkWell(
-                          onTap: () async {
-                            final user = await UserService()
-                                .fetchDataByUser(state.model[index].userId);
-                            // ignore: use_build_context_synchronously
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserProfileScreen(
-                                          userModel: user!,
-                                          postModel: state.model,
-                                        )));
-                          },
-                          child: Text(
+                          ),
+                          kWidth10,
+                          Text(
                             state.model[index].username,
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500),
                           ),
-                        ),
-                        const Spacer(),
-                        const Icon(Icons.more_vert)
-                      ],
+                          const Spacer(),
+                          const Icon(Icons.more_vert)
+                        ],
+                      ),
                     ),
                     kHeight10,
                     state.model[index].imageUrls.isNotEmpty

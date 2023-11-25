@@ -1,10 +1,13 @@
 import 'package:flip/application/business_logic/bloc/comment/comments_bloc.dart';
+import 'package:flip/application/business_logic/bloc/follow/follow_bloc.dart';
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flip/data/firebase/comment_data_service/comment_darta.dart';
+import 'package:flip/data/firebase/follow_data_resource/follow_data_resourse.dart';
 import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
+import 'package:flip/data/firebase/save_post_data_service/save_post_service.dart';
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/firebase_options.dart';
@@ -33,12 +36,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(create: (context) => AuthBloc(AuthServices())),
-        BlocProvider<PostBloc>(create: (context) => PostBloc(PostServices(), UserService())),
-        BlocProvider<FetchBloc>(create: (context) => FetchBloc(PostServices())),
-        BlocProvider<ProfileBloc>(create: (context) => ProfileBloc(PostServices(), UserService())),
-        BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
-        BlocProvider<CommentsBloc>(create: (context) => CommentsBloc(CommentServises())),
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(AuthServices())),
+        BlocProvider<PostBloc>(
+            create: (context) => PostBloc(PostServices(), UserService())),
+        BlocProvider<FetchBloc>(
+          create: (context) => FetchBloc(PostServices())),
+        BlocProvider<ProfileBloc>(
+            create: (context) => ProfileBloc(PostServices(),UserService(), SavePostDataService())),
+        BlocProvider<BottomNavBarBloc>(
+          create: (context) => BottomNavBarBloc()),
+        BlocProvider<CommentsBloc>(
+            create: (context) => CommentsBloc(CommentServises())),
+        BlocProvider<FollowBloc>(
+            create: (context) => FollowBloc(FollowDataSources())),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
