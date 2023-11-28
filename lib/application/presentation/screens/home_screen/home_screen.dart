@@ -5,16 +5,23 @@ import 'package:flip/application/presentation/screens/home_screen/widgets/main_c
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';
 import 'package:flip/application/presentation/screens/message_screen/message_screen.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
+import 'package:flip/application/presentation/screens/story_screen/add_story.dart';
+import 'package:flip/application/presentation/screens/story_screen/story_view.dart';
 import 'package:flip/application/presentation/screens/user_profile/user_profile.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
+import 'package:flip/data/firebase/story_data_resourse/story_data.dart';
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
+import 'package:flip/domain/models/story_model/story_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:story_view/story_view.dart';
+
+List<StoryWithUser> storiesIn = [];
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -91,8 +98,7 @@ class _HomeScreenState extends State<HomeScreen>
                         children: [
                           kWidth10,
                           const CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/IMG_2468.JPG'),
+                            backgroundImage: AssetImage('assets/IMG_2468.JPG'),
                             radius: 18,
                           ),
                           kWidth10,
@@ -256,30 +262,67 @@ class StorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 90,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Padding(
-                padding: const EdgeInsets.only(left: 7),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: index == 0
-                          ? const AssetImage('assets/IMG_2468.JPG')
-                          : const AssetImage(
-                              'assets/brunette-girl-walking-through-park-during-autumn.jpg'),
-                      radius: 35,
-                    ),
-                    index == 0
-                        ? const Text('Faizy', style: TextStyle(fontSize: 12))
-                        : const Text(
-                            'Jasmy jain',
-                            style: TextStyle(fontSize: 12),
-                          )
-                  ],
-                ));
+      child: FutureBuilder(
+          future: StoryDataSource().fetchStories(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<StoryWithUser> stories =
+                  snapshot.data as List<StoryWithUser>;
+              storiesIn.addAll(stories);
+
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                        padding: const EdgeInsets.only(left: 7),
+                        child: StoryIconWidget(
+                          storyWithUser: stories[index],
+                          index: index,
+                        ));
+                  });
+            } else {
+              return const CircularProgressIndicator.adaptive();
+            }
           }),
+    );
+  }
+}
+
+class StoryIconWidget extends StatelessWidget {
+  const StoryIconWidget({
+    super.key,
+    required this.index,
+    required this.storyWithUser,
+  });
+  final int index;
+  final StoryWithUser storyWithUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            if (index == 0) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AddStoryScreen()));
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ScreenStoryView(
+                            storyWithUser: storyWithUser,
+                          )));
+            }
+          },
+          child: const CircleAvatar(
+            radius: 35,
+          ),
+        ),
+      ],
     );
   }
 }

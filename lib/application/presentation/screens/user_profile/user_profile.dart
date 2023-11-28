@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flip/application/presentation/screens/chat_screen/chat.dart';
 import 'package:flip/application/presentation/screens/followers_list/followers.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
 import 'package:flip/application/presentation/screens/user_profile/user_posts.dart';
@@ -9,6 +10,7 @@ import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_gradient/image_gradient.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 
@@ -67,6 +69,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
   }
+
   Column postTabBarSection(BuildContext context) {
     return Column(
       children: [
@@ -199,7 +202,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => FollowersScreen(
-                            userId: widget.userModel.userId,type: Friend.follower,
+                            userId: widget.userModel.userId,
+                            type: Friend.follower,
                           )));
             },
             child: Text(
@@ -208,13 +212,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ),
           ),
           InkWell(
-            onTap: () { 
+            onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>  FollowersScreen(
-                        type: Friend.following,userId: widget.userModel.userId,
-                      )));
+                      builder: (context) => FollowersScreen(
+                            type: Friend.following,
+                            userId: widget.userModel.userId,
+                          )));
             },
             child: Text(
               '${widget.userModel.following.length.toString()} following',
@@ -244,36 +249,49 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
   Widget build(BuildContext context) {
     return FirebaseAuth.instance.currentUser!.uid != widget.user.userId
         ? SizedBox(
-            width: screenFullWidth * 0.23,
-            child: TextButton(
-                style: ButtonStyle(
-                    shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)))),
-                onPressed: () {
-                  final userId = FirebaseAuth.instance.currentUser!.uid;
-                  if (widget.user.followers.contains(userId)) {
-                    widget.user.followers.remove(userId);
-                    FollowDataSources().unfollowUser(
-                        uid: userId, followId: widget.user.userId);
-                  } else {
-                    widget.user.followers.add(userId);
-                    FollowDataSources()
-                        .followUser(uid: userId, followId: widget.user.userId);
-                  }
-                  setState(() {});
-                },
-                child: Text(
-                    widget.user.followers
-                            .contains(FirebaseAuth.instance.currentUser!.uid)
-                        ? 'Following'
-                        : 'Follow',
-                    style: TextStyle(
-                      color: widget.user.followers
-                              .contains(FirebaseAuth.instance.currentUser!.uid)
-                          ? Theme.of(context).colorScheme.background
-                          : Theme.of(context).colorScheme.background,
-                    ))),
+            // width: screenFullWidth * 0.23,
+            child: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatScreen(chatUser: widget.user)));
+                    },
+                    icon: const Icon(Iconsax.message)),
+                TextButton(
+                    style: ButtonStyle(
+                        shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)))),
+                    onPressed: () {
+                      final userId = FirebaseAuth.instance.currentUser!.uid;
+                      if (widget.user.followers.contains(userId)) {
+                        widget.user.followers.remove(userId);
+                        FollowDataSources().unfollowUser(
+                            uid: userId, followId: widget.user.userId);
+                      } else {
+                        widget.user.followers.add(userId);
+                        FollowDataSources().followUser(
+                            uid: userId, followId: widget.user.userId);
+                      }
+                      setState(() {});
+                    },
+                    child: Text(
+                        widget.user.followers.contains(
+                                FirebaseAuth.instance.currentUser!.uid)
+                            ? 'Following'
+                            : 'Follow',
+                        style: TextStyle(
+                          color: widget.user.followers.contains(
+                                  FirebaseAuth.instance.currentUser!.uid)
+                              ? Theme.of(context).colorScheme.background
+                              : Theme.of(context).colorScheme.background,
+                        ))),
+              ],
+            ),
           )
         : const SizedBox();
   }
