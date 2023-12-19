@@ -49,7 +49,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       ProfileSavedPostFetchEvent event, Emitter<ProfileState> emit) async {
     final savesPostsResponse =
         await savePostRepository.fetchSavedPosts(event.id);
-        print(savesPostsResponse);
     emit(ProfileSavedPostFetchedState(postModel: savesPostsResponse));
   }
 }

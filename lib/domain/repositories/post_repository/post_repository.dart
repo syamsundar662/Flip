@@ -6,4 +6,5 @@ abstract class PostRepository {
   Future<List<PostModel>> fetchPostDataByUser(String uid);
   Future<List<PostModel>> fetchThoughtByUser(String uid);
   Future<void> deletePost(String postId, String userId);
+  Future<List<PostModel>> fetchAllImagePosts();
 }

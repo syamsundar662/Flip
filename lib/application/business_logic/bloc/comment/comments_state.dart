@@ -1,9 +1,13 @@
-part of 'comments_bloc.dart';
+import 'package:flip/domain/models/comment_model/comment_model.dart';
 
 class CommentsState {
-  final List<CommentWithUserProfile> comments;
+  final List<CommentWithUserProfile>? comments;
+  final bool? isAdding;
 
-  CommentsState({required this.comments});
+  CommentsState({
+    required this.comments,
+    this.isAdding,
+  });
 }
 
 final class CommentsInitial extends CommentsState {
@@ -28,4 +32,7 @@ final class CommentsFetchingState extends CommentsState {
 
 final class CommentsFetchedState extends CommentsState {
   CommentsFetchedState({required super.comments});
+}
+final class CommentDeleteState extends CommentsState {
+  CommentDeleteState({required super.comments});
 }

@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/comment/comments_bloc.dart';
+import 'package:flip/application/business_logic/bloc/comment/comments_state.dart';
+import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
+import 'package:flip/data/firebase/comment_data_service/comment_darta.dart';
 import 'package:flip/domain/models/comment_model/comment_model.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
+import 'package:flip/domain/repositories/comment_repository/comment_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
-
 class CommentScreen extends StatefulWidget {
   const CommentScreen({Key? key, required this.postModel}) : super(key: key);
   final PostModel postModel;
@@ -19,8 +23,8 @@ class CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     final commentBlocProvider = context.read<CommentsBloc>();
-    commentBlocProvider
-        .add(CommentsFetchEvent(postId: widget.postModel.postId));
+    commentBlocProvider.add(CommentsFetchEvent(postId: widget.postModel.postId));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Comments'),
@@ -34,28 +38,33 @@ class CommentScreenState extends State<CommentScreen> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is CommentsFetchedState ||
                     state is CommentsAddSuccessState) {
-                  if (state.comments.isEmpty) {
+                  if (state.comments!.isEmpty) {
                     return const Center(
                       child: Text('No comments'),
                     );
                   }
                   final data = state.comments;
                   return ListView.builder(
-                    itemCount: data.length,
+                    itemCount: data!.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: state.comments[index].user.profileImageUrl!
-                                .isNotEmpty
-                            ? CircleAvatar(
-                                backgroundImage: CachedNetworkImageProvider(
-                                    state
-                                        .comments[index].user.profileImageUrl!),
-                              )
-                            : const CircleAvatar(
-                                backgroundColor: Colors.grey,
-                              ),
-                        title: Text(data[index].user.username),
-                        subtitle: Text(data[index].comment.comment),
+                      return GestureDetector(
+                        onLongPress: () {
+                          showDeleteDialog(state.comments![index].comment);
+                        },
+                        child: ListTile(
+                          leading: state.comments![index].user.profileImageUrl!
+                              .isNotEmpty
+                              ? CircleAvatar(
+                                  backgroundImage: CachedNetworkImageProvider(
+                                      state.comments![index].user.profileImageUrl!),
+                                )
+                              : const CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                ),
+                          title: Text(data[index].user.username),
+                          subtitle: Text(data[index].comment.comment,),
+                          trailing: Text(timeAgo(data[index].comment.timeStamp)),
+                        ),
                       );
                     },
                   );
@@ -65,30 +74,87 @@ class CommentScreenState extends State<CommentScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: commentBlocProvider.commentController,
-              decoration: InputDecoration(
-                hintText: 'Add a comment...',
-                suffixIcon: IconButton(
-                  icon: const Icon(Iconsax.send_1),
-                  onPressed: () async {
-                    final commentData = Comments(
-                        commentId: '',
-                        postId: widget.postModel.postId,
-                        comment: commentBlocProvider.commentController.text,
-                        timeStamp: DateTime.now(),
-                        likes: [],
-                        userId: FirebaseAuth.instance.currentUser!.uid);
-                    commentBlocProvider
-                        .add(CommentsAddButtonEvent(model: commentData));
-                    commentBlocProvider.commentController.clear();
-                  },
-                ),
-              ),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: CommentAddField(
+              commentBlocProvider: commentBlocProvider,
+              postModel: widget.postModel,
             ),
           ),
+          const SizedBox(height: 10),
         ],
+      ),
+    );
+  }
+
+  void showDeleteDialog(Comments comment) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Comment?'),
+          content: const Text('Are you sure you want to delete this comment?'),
+          actions: <Widget>[
+            TextButton( 
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('CANCEL'),
+            ),
+            TextButton( 
+              onPressed: () {
+                context.read<CommentsBloc>().add(CommentsDeleteEvent(comment: comment));
+                Navigator.of(context).pop();
+              },
+              child: const Text('DELETE'),
+            ), 
+          ],
+        );
+      },
+    ); 
+  }
+}
+
+class CommentAddField extends StatelessWidget {
+  const CommentAddField({
+    Key? key,
+    required this.commentBlocProvider,
+    required this.postModel,
+  }) : super(key: key);
+
+  final CommentsBloc commentBlocProvider;
+  final PostModel postModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: screenFullHeight * .07,
+      child: TextField(
+        controller: commentBlocProvider.commentController,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          fillColor: Theme.of(context).colorScheme.primary,
+          filled: true,
+          hintText: 'Add a comment...',
+          suffixIcon: GestureDetector(
+            onTap: () async {
+              if (commentBlocProvider.commentController.text.isNotEmpty) {
+                final commentData = Comments(
+                  commentId: '',
+                  postId: postModel.postId,
+                  comment: commentBlocProvider.commentController.text.trim(),
+                  timeStamp: DateTime.now(),
+                  likes: [],
+                  userId: FirebaseAuth.instance.currentUser!.uid,
+                );
+                commentBlocProvider.add(CommentsAddButtonEvent(model: commentData));
+              }
+            },
+            child: const Icon(Iconsax.send_1),
+          ),
+        ),
       ),
     );
   }

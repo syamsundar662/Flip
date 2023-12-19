@@ -13,14 +13,13 @@ class UserPostSection extends StatelessWidget {
   final UserModel userData;
 
   @override   
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
 
     context.read<ProfileBloc>().add(ProfilePostDataFetchEvent(id: userData.userId));
     return BlocBuilder<ProfileBloc, ProfileState>(
       buildWhen: (pre, cur) =>
           cur is ProfileFetchingState || cur is ProfileFetchedState,
       builder: (context, state) {
-        print(state);
         if (state is ProfileFetchedState) {
           if (state.model.isEmpty) {
             return const Text(

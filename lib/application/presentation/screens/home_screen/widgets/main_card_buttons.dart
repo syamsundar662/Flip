@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/screens/comment_screen/comment_screen.dart';
 import 'package:flip/data/firebase/like_data_reposotory/like_data_repository.dart';
 import 'package:flip/data/firebase/save_post_data_service/save_post_service.dart';
+import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,11 +76,7 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
               },
               icon: const Icon(Iconsax.note),
             ),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const Icon(Iconsax.share),
-            // ),
-            PostSaveButtonWidget(widget: widget),
+            PostSaveButtonWidget(post: widget),
           ],
         ),
         Padding(
@@ -94,60 +91,60 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
       ],
     );
   }
-
-  // Future<void> savePost(String userId, PostModel postModel) async {
-  //   final collection = FirebaseFirestore.instance.collection('UserCollection');
-  //   collection.doc(FirebaseAuth.instance.currentUser!.uid).update({
-  //     'saves': FieldValue.arrayUnion([postModel.postId])
-  //   });
-  // }
 }
 
 class PostSaveButtonWidget extends StatefulWidget {
   const PostSaveButtonWidget({
-    super.key,
-    required this.widget,
-  });
+    Key? key,
+    required this.post,
+  }) : super(key: key);
 
-  final LikeButtonWidget widget;
+  final LikeButtonWidget post;
 
   @override
   State<PostSaveButtonWidget> createState() => _PostSaveButtonWidgetState();
 }
 
 class _PostSaveButtonWidgetState extends State<PostSaveButtonWidget> {
+  late Future<bool> isPostSaved;
+
+  @override
+  void initState() {
+    super.initState();
+    isPostSaved = _checkIfPostSaved();
+  }
+
+  Future<bool> _checkIfPostSaved() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final user = await UserService().fetchDataByUser(currentUser.uid);
+      if (user != null) {
+        return user.saves.contains(widget.post.post.postId);
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
-        
-        SavePostDataService().savePost(
-            FirebaseAuth.instance.currentUser!.uid, widget.widget.post.postId);
+    return FutureBuilder<bool>(
+      future: isPostSaved,
+      builder: (context, snapshot) {
+          final isSaved = snapshot.data ?? false;
+          return IconButton(
+            onPressed: () async {
+              await SavePostDataService()
+                  .toggleSavedPost(postId: widget.post.post.postId);
+              setState(() {
+                isPostSaved = _checkIfPostSaved();
+              });
+            },
+            icon: isSaved
+                ? const Icon(Icons.bookmark)
+                : const Icon(Icons.bookmark_add_outlined),
+          );
+       
       },
-      icon: const Icon(Iconsax.save_2),
     );
   }
 }
-
-// class CommentButtonWidget extends StatefulWidget {
-//   const CommentButtonWidget({
-//     super.key,
-//     required this.post,
-//   });
-//   final PostModel post;
-
-//   @override
-//   State<CommentButtonWidget> createState() => _CommentButtonWidgetState();
-// }
-
-// class _CommentButtonWidgetState extends State<CommentButtonWidget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         IconButton(onPressed: () {}, icon: const Icon(Iconsax.note)),
-//         Text('${widget.post.comments.length.toString()} comments'),
-//       ],
-//     );
-//   }
-// }

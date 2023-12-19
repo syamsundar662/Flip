@@ -105,4 +105,20 @@ class MessageService {
       }
     });
   }
+   Future deleteMessage(
+      {required String messageId, required String toId}) async { 
+    final chatId = getChatId(toId: toId);
+    try {
+      await _firestore
+          .collection('MessageCollection')
+          .doc(chatId)
+          .collection('Messages')
+          .doc(messageId)
+          .delete();
+          print('object');
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
 }

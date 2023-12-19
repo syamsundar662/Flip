@@ -2,6 +2,7 @@ import 'package:flip/application/business_logic/bloc/comment/comments_bloc.dart'
 import 'package:flip/application/business_logic/bloc/follow/follow_bloc.dart';
 import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
+import 'package:flip/application/business_logic/bloc/search/search_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
 import 'package:flip/data/firebase/comment_data_service/comment_darta.dart';
@@ -36,20 +37,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(AuthServices())),
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc(AuthServices())),
         BlocProvider<PostBloc>(
             create: (context) => PostBloc(PostServices(), UserService())),
-        BlocProvider<FetchBloc>(
-          create: (context) => FetchBloc(PostServices())),
+        BlocProvider<FetchBloc>(create: (context) => FetchBloc(PostServices())),
         BlocProvider<ProfileBloc>(
-            create: (context) => ProfileBloc(PostServices(),UserService(), SavePostDataService())),
-        BlocProvider<BottomNavBarBloc>(
-          create: (context) => BottomNavBarBloc()),
+            create: (context) => ProfileBloc(
+                PostServices(), UserService(), SavePostDataService())),
+        BlocProvider<BottomNavBarBloc>(create: (context) => BottomNavBarBloc()),
         BlocProvider<CommentsBloc>(
             create: (context) => CommentsBloc(CommentServises())),
         BlocProvider<FollowBloc>(
             create: (context) => FollowBloc(FollowDataSources())),
+        BlocProvider<SearchBloc>(
+            create: (context) => SearchBloc(PostServices())),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
           home: splash()),
     );
   }
+
   StreamBuilder<User?> splash() {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),

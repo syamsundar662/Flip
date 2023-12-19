@@ -14,9 +14,9 @@ import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.d
 import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
-  @override
+  @override 
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 

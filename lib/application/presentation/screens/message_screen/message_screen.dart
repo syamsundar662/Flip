@@ -1,8 +1,8 @@
 import 'package:flip/application/presentation/screens/chat_screen/chat.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
 import 'package:flip/data/firebase/message_data_resourse/message_data.dart';
 import 'package:flip/domain/models/message_model/message.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -106,7 +106,19 @@ class MessageTileWidget extends StatelessWidget {
                                     }
                                   }),
                             ],
-                          )
+                          ),
+                          Spacer(),
+                          StreamBuilder<Message?>(
+                              stream: MessageService()
+                                  .getLastMessage(data.userProfile.userId),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  final lastMessage = snapshot.data!;
+                                  return Text(timeAgo(lastMessage.sentTime));
+                                } else {
+                                  return SizedBox();
+                                }
+                              }),
                         ],
                       ),
                     ),

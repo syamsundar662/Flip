@@ -50,25 +50,7 @@ class PostSection extends StatelessWidget {
                     ));
               });
         }
-        return SizedBox(
-          height: screenFullHeight / 2,
-          child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, crossAxisSpacing: 2, mainAxisSpacing: 2),
-              itemCount: 9,
-              itemBuilder: (context, index) {
-                return Shimmer.fromColors(
-                  baseColor: Theme.of(context).colorScheme.primary,
-                  highlightColor: Theme.of(context).colorScheme.background,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(1),
-                        color: Colors.grey),
-                  ),
-                );
-              }),
-        );
+        return const PostViewShimmer();
       },
     );
   }
@@ -83,7 +65,8 @@ class SavedPostSection extends StatelessWidget {
     context.read<ProfileBloc>().add(ProfileSavedPostFetchEvent(id: id));
     return BlocBuilder<ProfileBloc, ProfileState>(
       buildWhen: (pre, cur) =>
-          cur is ProfileSavedPostFetchingState || cur is ProfileSavedPostFetchedState,
+          cur is ProfileSavedPostFetchingState ||
+          cur is ProfileSavedPostFetchedState,
       builder: (context, state) {
         if (state is ProfileSavedPostFetchedState) {
           if (state.postModel.isEmpty) {
@@ -102,8 +85,8 @@ class SavedPostSection extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  PostViewScreen(model: state.postModel[index])));
+                              builder: (context) => PostViewScreen(
+                                  model: state.postModel[index])));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -116,29 +99,12 @@ class SavedPostSection extends StatelessWidget {
                     ));
               });
         }
-        return SizedBox(
-          height: screenFullHeight / 2,
-          child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, crossAxisSpacing: 2, mainAxisSpacing: 2),
-              itemCount: 9,
-              itemBuilder: (context, index) {
-                return Shimmer.fromColors(
-                  baseColor: Theme.of(context).colorScheme.primary,
-                  highlightColor: Theme.of(context).colorScheme.background,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(1),
-                        color: Colors.grey),
-                  ),
-                );
-              }),
-        );
+        return const PostViewShimmer();
       },
     );
   }
 }
+
 class ThoughtsPostSection extends StatelessWidget {
   const ThoughtsPostSection({super.key});
 
@@ -152,7 +118,6 @@ class ThoughtsPostSection extends StatelessWidget {
           cur is ProfileThoughtFetchedState,
       builder: (context, state) {
         if (state is ProfileThoughtFetchedState) {
-          
           return ListView.builder(
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
@@ -173,11 +138,11 @@ class ThoughtsPostSection extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // CircleAvatar(
-                              //   radius: 10,
-                              //   backgroundImage: AssetImage(
-                              //       "assets/bearded-man-staying-nature.jpg"),
-                              // ),
+                              CircleAvatar(
+                                radius: 10,
+                                backgroundImage: AssetImage(
+                                    "assets/bearded-man-staying-nature.jpg"),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
@@ -205,12 +170,40 @@ class ThoughtsPostSection extends StatelessWidget {
                         ),
                       ),
                     )
-                :const SizedBox();
+                  : const SizedBox();
             },
           );
         }
         return const SizedBox();
       },
+    );
+  }
+}
+
+class PostViewShimmer extends StatelessWidget {
+  const PostViewShimmer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: screenFullHeight / 2,
+      child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, crossAxisSpacing: 2, mainAxisSpacing: 2),
+          itemCount: 9,
+          itemBuilder: (context, index) {
+            return Shimmer.fromColors(
+              baseColor: Theme.of(context).colorScheme.primary,
+              highlightColor: Theme.of(context).colorScheme.background,
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(1), color: Colors.grey),
+              ),
+            );
+          }),
     );
   }
 }

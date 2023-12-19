@@ -5,8 +5,8 @@ import 'package:flip/application/presentation/screens/login_screen/login_screen.
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+class HomeShimmer extends StatelessWidget {
+  HomeShimmer({Key? key}) : super(key: key);
 
   final List<Widget> wid = List.generate(
     10,

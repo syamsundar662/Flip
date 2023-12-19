@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/follow/follow_bloc.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/data/firebase/follow_data_resource/follow_data_resourse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,7 +44,10 @@ class FollowersScreen extends StatelessWidget {
                     ),
                     title: Text(state.freinds[index].username),
                     trailing: TextButton(
-                        onPressed: () {}, child: const Text('remove')),
+                        onPressed: () async{
+                          FollowDataSources().removeFollower(uid: FirebaseAuth.instance.currentUser!.uid  , followerId: state.freinds[index].userId);
+                          
+                        }, child: const Text('remove')),
                   );
                 });
           } else {

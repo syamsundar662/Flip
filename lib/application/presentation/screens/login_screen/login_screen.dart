@@ -8,7 +8,7 @@ import 'package:flip/application/presentation/utils/validations/snackbars/snackb
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/screens/signup_section/username_creation/username_creation_screen.dart';
-import 'package:flip/application/presentation/screens/forgot_password_sections/forgot_password_step_one/forgot_password_screen_step_one.dart';
+import 'package:flip/application/presentation/screens/forgot_password/forgot_password_step_one/forgot_password_screen_step_one.dart';
 import 'package:flip/application/presentation/widgets/animations/slide_animation.dart';
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flip/domain/models/comment_model/comment_model.dart';
 import 'package:flip/domain/repositories/comment_repository/comment_repository.dart';
@@ -53,5 +54,15 @@ class CommentServises extends CommentRepository {
       }
     }
     return commentsDataWithUserData;
+  }
+
+  @override
+  Future<void> deleteComment(Comments comments) async {
+    instance
+        .collection('PostCollection')
+        .doc(comments.postId)
+        .collection('Comments')
+        .doc(comments.commentId)
+        .delete();
   }
 }

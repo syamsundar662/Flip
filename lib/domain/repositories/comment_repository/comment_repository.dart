@@ -7,4 +7,5 @@ abstract class CommentRepository{
   Future<List<CommentWithUserProfile>> fetchUser(
     List<Comments> comments,
   );
+  Future<void> deleteComment(Comments comments);
 }

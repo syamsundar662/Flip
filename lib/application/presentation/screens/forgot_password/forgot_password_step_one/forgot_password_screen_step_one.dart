@@ -1,5 +1,5 @@
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/application/presentation/screens/forgot_password_sections/forgot_password_step_two/forgot_password.dart';
+import 'package:flip/application/presentation/screens/forgot_password/forgot_password_step_two/forgot_password.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';

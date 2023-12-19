@@ -41,7 +41,18 @@ class PostServices extends PostRepository {
       final post = data.data() as Map<String, dynamic>;
       return PostModel.fromJson(post);
     }).toList();
-  } 
+  }
+
+  @override
+  Future<List<PostModel>> fetchAllImagePosts() async {
+    final  postData = instance.collection('PostCollection');
+    final fetchedData = await postData.get();
+    final sortedData = fetchedData.docs.map((data) {
+      final post = data.data();
+      return PostModel.fromJson(post);
+    }).toList();
+    return sortedData.where((element) => element.imageUrls.isNotEmpty).toList();
+  }
 
   @override
   Future<List<PostModel>> fetchPostDataByUser(String uid) async {

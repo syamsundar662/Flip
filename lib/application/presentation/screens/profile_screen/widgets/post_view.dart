@@ -41,7 +41,7 @@ class PostViewScreen extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       model.userId ==
                                     FirebaseAuth.instance.currentUser!.uid
                                 ?  IconButton(
@@ -54,7 +54,7 @@ class PostViewScreen extends StatelessWidget {
                                     buttonIcons:
                                         optionIconListForProfilePostViewScreen);
                           },
-                          icon: Icon(Icons.more_vert_outlined)):SizedBox()
+                          icon: const Icon(Icons.more_vert_outlined)):const SizedBox()
                     ],
                   ),
                   kHeight10,
