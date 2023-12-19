@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
 import 'package:flip/domain/repositories/post_repository/post_repository.dart';
 
@@ -22,7 +23,7 @@ class PostServices extends PostRepository {
       'imageUrls': post.imageUrls,
       'timestamp': post.timestamp,
       'likes': post.likes,
-      'comments': post.comments
+      'comments': post.comments,
     };
     await documentReference.set(postCollectionData);
     await FirebaseFirestore.instance
@@ -45,7 +46,7 @@ class PostServices extends PostRepository {
 
   @override
   Future<List<PostModel>> fetchAllImagePosts() async {
-    final  postData = instance.collection('PostCollection');
+    final postData = instance.collection('PostCollection');
     final fetchedData = await postData.get();
     final sortedData = fetchedData.docs.map((data) {
       final post = data.data();
@@ -93,5 +94,28 @@ class PostServices extends PostRepository {
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  @override
+  Future<List<FetchPostWithUserProfile>> getPostsWithUserData() async {
+    final List<FetchPostWithUserProfile> fetchPostWithUserProfile = [];
+
+    try {
+      final postData = await instance.collection('PostCollection').get();
+      final posts =
+          postData.docs.map((doc) => PostModel.fromJson(doc.data())).toList();
+
+
+
+      for (var post in posts) {
+        final user = await UserService().fetchDataByUser(post.userId);
+        fetchPostWithUserProfile
+            .add(FetchPostWithUserProfile(postModel: posts, userModel: user!));
+      }
+    } catch (e) {
+      log('Error fetching posts with user data: $e');
+    }
+    print(fetchPostWithUserProfile.length);
+    return fetchPostWithUserProfile;
   }
 }

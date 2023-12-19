@@ -5,6 +5,8 @@ import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/search/search_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/root_screen/widgets/bottom_navigation_bar/bottom_nav_bar.dart';
+import 'package:flip/data/firebase/notification_data_service/notification_service.dart';
+import 'package:flip/data/firebase/save_post_data_service/save_post_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +19,9 @@ class RootScreen extends StatelessWidget {
     context.read<ProfileBloc>().add(ProfilePostDataFetchEvent(id: id));
     context.read<FetchBloc>().add(HomeFetchPostEvent());
     context.read<SearchBloc>().add(SearchPageInitalFeedsFetchEvent()); 
+    NotificationDataSource().getUserNotifications();
+
+    SavePostDataService().fetchSavedPosts(id);
 
     return ColorfulSafeArea(
       color: Theme.of(context).colorScheme.background,

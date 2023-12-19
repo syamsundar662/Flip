@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flip/domain/models/comment_model/comment_model.dart';
+import 'package:flip/domain/models/user_model/user_model.dart';
 
 class PostModel {
   String postId;
@@ -22,14 +24,15 @@ class PostModel {
   });
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-        userId: json['userId'],
-        postId: json['postId'] ?? '',
-        username: json['username'] ?? '',
-        textContent: json['textContent'] ?? '',
-        imageUrls: List.from(json['imageUrls'] ?? ''),
-        timestamp: (json['timestamp'] as Timestamp).toDate(),
-        likes: json['likes'] ?? [],
-        comments: json['comments'] ?? []);
+      userId: json['userId'],
+      postId: json['postId'] ?? '',
+      username: json['username'] ?? '',
+      textContent: json['textContent'] ?? '',
+      imageUrls: List.from(json['imageUrls'] ?? ''),
+      timestamp: (json['timestamp'] as Timestamp).toDate(),
+      likes: json['likes'] ?? [],
+      comments: json['comments'] ?? [],
+    );
   }
   Map<String, dynamic> toJson() {
     return {
@@ -43,4 +46,11 @@ class PostModel {
       'comments': comments,
     };
   }
+}
+
+class FetchPostWithUserProfile {
+  final List< PostModel> postModel;
+  final UserModel userModel;
+
+  FetchPostWithUserProfile({required this.postModel, required this.userModel});
 }

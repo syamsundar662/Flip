@@ -15,7 +15,7 @@ class FetchBloc extends Bloc<FetchEvent, FetchState> {
       HomeFetchPostEvent event, Emitter<FetchState> emit) async {
     emit(HomeDataFetchingState());
     try {
-      final response = await postRepository.getAllPosts();
+      final response = await postRepository.getPostsWithUserData();
       return emit(HomeDataFechedState(model: response));
     } catch (e) {
       emit(ErrorFetchingHomeData());

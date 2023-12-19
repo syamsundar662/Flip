@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -36,16 +37,16 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  _saveScrollPosition() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble('lastScrollOffset', _scrollController.position.pixels);
-  }
+  // _saveScrollPosition() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setDouble('lastScrollOffset', _scrollController.position.pixels);
+  // }
 
-  @override
-  void dispose() {
-    _saveScrollPosition(); // Save scroll position on dispose
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _saveScrollPosition(); // Save scroll position on dispose
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,20 @@ class _ChatScreenState extends State<ChatScreen> {
       color: Theme.of(context).colorScheme.background,
       child: Scaffold(
         appBar: AppBar(
-          //... (your existing app bar)
+          flexibleSpace: Row(
+            children: [
+              kWIdth40,
+              Padding(
+                padding: const EdgeInsets.all(7.0),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: CachedNetworkImageProvider(widget.chatUser.profileImageUrl!),
+                ),
+              ),
+            ],
+          ),
+          title: Text(widget.chatUser.username),
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -93,42 +107,39 @@ class _ChatScreenState extends State<ChatScreen> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: 60,
-                        child: TextField(
-                          controller: messageController,
-                          decoration: InputDecoration(
-                            fillColor: Theme.of(context).colorScheme.primary,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            hintText: 'Type here...',
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 60,
+                      child: TextField(
+                        controller: messageController,
+                        decoration: InputDecoration(
+                          fillColor: Theme.of(context).colorScheme.primary,
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(20),
                           ),
+                          hintText: 'Type here...',
                         ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () async {
-                        if (messageController.text.isNotEmpty) {
-                          await MessageService().sentMessage(
-                            toId: widget.chatUser.userId,
-                            type: MessageType.text,
-                            content: messageController.text,
-                          );
-                          messageController.clear();
-                        }
-                      },
-                      icon: const Icon(Iconsax.send_1),
-                    ),
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      if (messageController.text.isNotEmpty) {
+                        await MessageService().sentMessage(
+                          toId: widget.chatUser.userId,
+                          type: MessageType.text,
+                          content: messageController.text,
+                        );
+                        messageController.clear();
+                      }
+                    },
+                    icon: const Icon(Iconsax.send_1),
+                  ),
+                ],
               ),
             ],
           ),

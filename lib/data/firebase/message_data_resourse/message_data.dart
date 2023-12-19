@@ -115,7 +115,6 @@ class MessageService {
           .collection('Messages')
           .doc(messageId)
           .delete();
-          print('object');
     } catch (e) {
       log(e.toString());
       return false;

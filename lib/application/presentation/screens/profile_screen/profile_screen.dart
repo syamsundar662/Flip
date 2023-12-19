@@ -16,13 +16,13 @@ import 'package:flip/application/presentation/screens/profile_screen/widgets/sho
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
-  @override 
+  @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin {
-  @override 
+  @override
   bool get wantKeepAlive => true;
 
   final id = FirebaseAuth.instance.currentUser!.uid;
@@ -40,7 +40,6 @@ class _ProfileScreenState extends State<ProfileScreen>
 
     return SafeArea(
       child: RefreshIndicator.adaptive(
-        displacement: 20,
         onRefresh: () async {
           HapticFeedback.heavyImpact();
           context.read<ProfileBloc>().add(UserDataFetchEvent(id: id));
@@ -121,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       pinned: false,
       centerTitle: false,
       title: Text(
-        '@${state.model.email}',
+        '@${state.model.username}',
         style: const TextStyle(fontSize: 15),
       ),
       actions: [
@@ -174,13 +173,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                   child: state.model.profileImageUrl != null &&
                           state.model.profileImageUrl!.isNotEmpty
                       ? CircleAvatar(
+                          backgroundColor: Colors.grey[900],
                           radius: 50,
                           backgroundImage: CachedNetworkImageProvider(
                               state.model.profileImageUrl!))
-                      : const CircleAvatar(
+                      : CircleAvatar(
+                          backgroundColor: Colors.grey[900],
                           radius: 50,
-                          backgroundImage:
-                              AssetImage('assets/default-fallback-image.png')),
+                          backgroundImage: const AssetImage(
+                              'assets/default-fallback-image.png')),
                 )
               ],
             )),
@@ -248,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
             "${state.model.posts!.length.toString()} posts",
@@ -260,7 +261,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                   context,
                   MaterialPageRoute(
                       builder: (context) => FollowersScreen(
-                            userId: state.model.userId,type: Friend.follower,
+                            userId: state.model.userId,
+                            type: Friend.follower,
                           )));
             },
             child: Text(
@@ -273,17 +275,20 @@ class _ProfileScreenState extends State<ProfileScreen>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>  FollowersScreen(type: Friend.following,userId: state.model.userId,)));
+                      builder: (context) => FollowersScreen(
+                            type: Friend.following,
+                            userId: state.model.userId,
+                          )));
             },
             child: Text(
               '${state.model.following.length.toString()} followings',
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
-          const Text(
-            '0 likes',
-            style: TextStyle(fontWeight: FontWeight.w500),
-          ),
+          // const Text(
+          //   '0 likes',
+          //   style: TextStyle(fontWeight: FontWeight.w500),
+          // ),
         ],
       ),
     );

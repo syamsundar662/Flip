@@ -9,6 +9,7 @@ class CommentServises extends CommentRepository {
   @override
   Future<void> addComments(Comments comments, String postId) async {
     // final postId = _firestore.collection('PostCollection').doc().id;
+
     final commentCollection = instance
         .collection('PostCollection')
         .doc(postId)

@@ -4,15 +4,19 @@ import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/presentation/screens/post_screen/post_image_preview.dart';
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
+import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
+import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
+
 class PostScreen extends StatelessWidget {
   const PostScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +127,7 @@ class PostScreen extends StatelessWidget {
                                   imageUrls: [],
                                   timestamp: DateTime.now(),
                                   likes: [],
-                                  comments: []);
+                                  comments: [],);
                               postBlocProvider
                                   .add(PostThoughtsEvents(model: model,userId: FirebaseAuth.instance.currentUser!.uid));
                             },

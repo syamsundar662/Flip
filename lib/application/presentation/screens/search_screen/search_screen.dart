@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/business_logic/bloc/search/search_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<SearchBloc>().add(SearchPageInitalFeedsFetchEvent());
+    // context.read<SearchBloc>().add(SearchPageInitalFeedsFetchEvent());
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -30,13 +31,7 @@ class SearchScreen extends StatelessWidget {
                 itemCount: state.postDatas.length,
                 itemBuilder: (BuildContext context, int index) {
                   print(state.postDatas.length);
-                  return Container(
-                      // color: const Color.fromARGB(48, 93, 93, 93),
-                      child: Image.network(state.postDatas[index].imageUrls[0],fit: BoxFit.cover,)
-
-                      // state.postDatas[index].imageUrls.isNotEmpty?
-
-                      );
+                  return CachedNetworkImage(imageUrl: state.postDatas[index].imageUrls[0],);
                 });
           } else {
             return GridView.builder(

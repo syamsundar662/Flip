@@ -4,15 +4,13 @@ import 'package:flip/application/business_logic/bloc/comment/comments_bloc.dart'
 import 'package:flip/application/business_logic/bloc/comment/comments_state.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
-import 'package:flip/data/firebase/comment_data_service/comment_darta.dart';
 import 'package:flip/domain/models/comment_model/comment_model.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
-import 'package:flip/domain/repositories/comment_repository/comment_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 class CommentScreen extends StatefulWidget {
-  const CommentScreen({Key? key, required this.postModel}) : super(key: key);
+  const CommentScreen({super.key, required this.postModel});
   final PostModel postModel;
 
   @override
@@ -55,11 +53,14 @@ class CommentScreenState extends State<CommentScreen> {
                           leading: state.comments![index].user.profileImageUrl!
                               .isNotEmpty
                               ? CircleAvatar(
+
+                              backgroundColor: Colors.grey[900],
                                   backgroundImage: CachedNetworkImageProvider(
                                       state.comments![index].user.profileImageUrl!),
                                 )
-                              : const CircleAvatar(
-                                  backgroundColor: Colors.grey,
+                              :  CircleAvatar(
+
+                              backgroundColor: Colors.grey[900],
                                 ),
                           title: Text(data[index].user.username),
                           subtitle: Text(data[index].comment.comment,),
@@ -116,10 +117,10 @@ class CommentScreenState extends State<CommentScreen> {
 
 class CommentAddField extends StatelessWidget {
   const CommentAddField({
-    Key? key,
+    super.key,
     required this.commentBlocProvider,
     required this.postModel,
-  }) : super(key: key);
+  });
 
   final CommentsBloc commentBlocProvider;
   final PostModel postModel;

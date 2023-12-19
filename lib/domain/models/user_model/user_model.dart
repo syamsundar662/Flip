@@ -12,7 +12,7 @@ class UserModel {
   final List following;
   final List<String>? posts;
 
-  UserModel({
+  UserModel({ 
     this.postId,
     this.displayName,
     this.bio,

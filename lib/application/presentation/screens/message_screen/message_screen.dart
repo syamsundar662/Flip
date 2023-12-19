@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/presentation/screens/chat_screen/chat.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
@@ -13,7 +14,7 @@ class MessageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Messages'),
+          title: const Text('Messages'),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Iconsax.more_circle))
           ],
@@ -44,7 +45,7 @@ class MessageTileWidget extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No chats'),
             );
           }
@@ -83,7 +84,8 @@ class MessageTileWidget extends StatelessWidget {
                                           )));
                             },
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(
+                              backgroundColor: Colors.grey[900],
+                              backgroundImage: CachedNetworkImageProvider(
                                   data.userProfile.profileImageUrl!),
                               radius: 30,
                             ),
@@ -102,12 +104,12 @@ class MessageTileWidget extends StatelessWidget {
                                       final lastMessage = snapshot.data!;
                                       return Text(lastMessage.content);
                                     } else {
-                                      return SizedBox();
+                                      return const SizedBox();
                                     }
                                   }),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                           StreamBuilder<Message?>(
                               stream: MessageService()
                                   .getLastMessage(data.userProfile.userId),
@@ -116,7 +118,7 @@ class MessageTileWidget extends StatelessWidget {
                                   final lastMessage = snapshot.data!;
                                   return Text(timeAgo(lastMessage.sentTime));
                                 } else {
-                                  return SizedBox();
+                                  return const SizedBox();
                                 }
                               }),
                         ],
@@ -126,7 +128,7 @@ class MessageTileWidget extends StatelessWidget {
                 );
               });
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator.adaptive(),
           );
         }

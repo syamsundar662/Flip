@@ -7,7 +7,7 @@ class FetchInitial extends FetchState {}
 class HomeDataFetchingState extends FetchState {}
 
 class HomeDataFechedState extends FetchState {
-  final List<PostModel> model;
+  final List<FetchPostWithUserProfile> model;
   HomeDataFechedState({required this.model});
 }
 class ErrorFetchingHomeData extends FetchState {}

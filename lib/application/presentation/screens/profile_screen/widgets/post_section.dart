@@ -140,7 +140,8 @@ class ThoughtsPostSection extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 10,
-                                backgroundImage: AssetImage(
+                                backgroundColor: Colors.grey[900],
+                                backgroundImage: const AssetImage(
                                     "assets/bearded-man-staying-nature.jpg"),
                               ),
                               Padding(

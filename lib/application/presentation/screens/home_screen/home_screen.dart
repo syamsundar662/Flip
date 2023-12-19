@@ -11,6 +11,7 @@ import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
+import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flip/domain/models/story_model/story_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    PostServices().getPostsWithUserData();
     super.build(context);
     UserService().fetchDataByUser(FirebaseAuth.instance.currentUser!.uid);
     context.read<CommentsBloc>();
@@ -80,15 +82,15 @@ class _HomeScreenState extends State<HomeScreen>
                   children: [
                     _mainCardTopSection(state, index, context),
                     kHeight10,
-                    state.model[index].imageUrls.isNotEmpty
+                    state.model[index].postModel[index].imageUrls.isNotEmpty
                         ? _mainFeedCard(state, index)
                         : _mainThoughtsCard(state, index),
-                    PostMainCommonButtons(post: state.model[index]),
-                    state.model[index].imageUrls.isNotEmpty
+                    PostMainCommonButtons(post: state.model[index].postModel[index]),
+                    state.model[index].postModel[index].imageUrls.isNotEmpty
                         ? Padding(
                             padding: const EdgeInsets.only(left: 14, right: 10),
                             child: Text(
-                              state.model[index].textContent,
+                              state.model[index].postModel[index].textContent,
                               style: const TextStyle(
                                 fontSize: 15,
                               ),
@@ -98,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen>
                     Padding(
                       padding: const EdgeInsets.only(left: 14),
                       child: Text(
-                        timeAgo(state.model[index].timestamp),
+                        timeAgo(state.model[index].postModel[index].timestamp),
                         style:
                             const TextStyle(fontSize: 12, color: Colors.grey),
                       ),
@@ -120,27 +122,28 @@ class _HomeScreenState extends State<HomeScreen>
       HomeDataFechedState state, int index, BuildContext context) {
     return InkWell(
       onTap: () async {
-        final user =
-            await UserService().fetchDataByUser(state.model[index].userId);
+        final user = 
+            await UserService().fetchDataByUser(state.model[index].postModel[index].userId);
         // ignore: use_build_context_synchronously
         Navigator.push(
-            context,
+            context, 
             MaterialPageRoute(
                 builder: (context) => UserProfileScreen(
                       userModel: user!,
-                      postModel: state.model,
+                      postModel: state.model[index].postModel,
                     )));
       },
       child: Row(
         children: [
-          kWidth10,
-          const CircleAvatar(
-            backgroundImage: AssetImage('assets/IMG_2468.JPG'),
+          kWidth10, 
+           CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(state.model[index].userModel.profileImageUrl!),
+            backgroundColor: Colors.grey[900],
             radius: 18,
           ),
-          kWidth10,
+          kWidth10, 
           Text(
-            state.model[index].username,
+            state.model[index].postModel[index].username,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
         ],
@@ -158,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen>
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Text(
-          state.model[index].textContent,
+          state.model[index].postModel[index].textContent,
           style: const TextStyle(fontSize: 18),
         ),
       ),
@@ -176,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen>
               constraints: BoxConstraints(maxHeight: screenFullHeight / 1.8),
               width: double.infinity,
               child: CachedNetworkImage(
-                imageUrl: state.model[index].imageUrls[0],
+                imageUrl: state.model[index].postModel[index].imageUrls[0],
                 fit: BoxFit.cover,
               ),
             ),

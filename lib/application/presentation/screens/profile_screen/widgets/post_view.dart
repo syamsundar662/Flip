@@ -18,7 +18,6 @@ class PostViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
         appBar: AppBar(),
         body: ListView.builder(
@@ -31,8 +30,9 @@ class PostViewScreen extends StatelessWidget {
                   Row(
                     children: [
                       kWidth10,
-                      const CircleAvatar(
-                        backgroundImage: AssetImage('assets/IMG_2468.JPG'),
+                       CircleAvatar(
+                        backgroundColor: Colors.grey[900],
+                        backgroundImage: const AssetImage('assets/IMG_2468.JPG'),
                         radius: 18,
                       ),
                       kWidth10,
@@ -42,19 +42,19 @@ class PostViewScreen extends StatelessWidget {
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      model.userId ==
-                                    FirebaseAuth.instance.currentUser!.uid
-                                ?  IconButton(
-                          onPressed: () {
-                           showSlidingBoxWidget(
+                      model.userId == FirebaseAuth.instance.currentUser!.uid
+                          ? IconButton(
+                              onPressed: () {
+                                showSlidingBoxWidget(
                                     context: context,
                                     height: screenFullHeight / 4.7,
                                     buttonTitle:
                                         optionsForProfilePostViewScreen,
                                     buttonIcons:
                                         optionIconListForProfilePostViewScreen);
-                          },
-                          icon: const Icon(Icons.more_vert_outlined)):const SizedBox()
+                              },
+                              icon: const Icon(Icons.more_vert_outlined))
+                          : const SizedBox()
                     ],
                   ),
                   kHeight10,
