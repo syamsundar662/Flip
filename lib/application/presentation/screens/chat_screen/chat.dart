@@ -1,12 +1,13 @@
-import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase/message_data_resourse/message_data.dart';
 import 'package:flip/domain/models/message_model/message.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.chatUser});
@@ -18,29 +19,41 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final TextEditingController messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  double _lastScrollOffset = 0.0; // Store last scroll position
+
+  @override
+  void initState() {
+    super.initState();
+    _loadScrollPosition(); // Load scroll position on init
+  }
+
+  _loadScrollPosition() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _lastScrollOffset = prefs.getDouble('lastScrollOffset') ?? 0.0;
+    });
+  }
+
+  _saveScrollPosition() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('lastScrollOffset', _scrollController.position.pixels);
+  }
+
+  @override
+  void dispose() {
+    _saveScrollPosition(); // Save scroll position on dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController messageController = TextEditingController();
-
     return ColorfulSafeArea(
       color: Theme.of(context).colorScheme.background,
       child: Scaffold(
         appBar: AppBar(
-          flexibleSpace: Row(
-            children: [
-              kWIdth40,
-              Padding(
-                padding: const EdgeInsets.all(7.0),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage:
-                      NetworkImage(widget.chatUser.profileImageUrl!),
-                ),
-              ),
-            ],
-          ),
-          title: Text(widget.chatUser.username),
-          centerTitle: true,
+          //... (your existing app bar)
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -53,16 +66,18 @@ class _ChatScreenState extends State<ChatScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final messages = snapshot.data!;
-                      if (messages.isEmpty) {
-                        return const Center(
-                          child: Text('Say hi'),
-                        );
-                      }
+                      messages.sort((a, b) => b.sentTime.compareTo(a.sentTime)); // Sort messages in reverse order
+
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _scrollController.jumpTo(_lastScrollOffset);
+                      });
+
                       return ListView.builder(
+                        reverse: true, // Display messages in reverse order
+                        controller: _scrollController,
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
-                          final isSender = messages[index].senderId ==
-                              FirebaseAuth.instance.currentUser!.uid;
+                          final isSender = messages[index].senderId == FirebaseAuth.instance.currentUser!.uid;
                           return MessageCardWidget(
                             chatUser: widget.chatUser,
                             message: messages[index],
@@ -91,8 +106,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             fillColor: Theme.of(context).colorScheme.primary,
                             filled: true,
                             border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(20)),
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             hintText: 'Type here...',
                           ),
                         ),
@@ -124,11 +140,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class MessageCardWidget extends StatelessWidget {
   const MessageCardWidget({
-    Key? key,
+    super.key,
     required this.message,
     required this.isSender,
     required this.chatUser,
-  }) : super(key: key);
+  });
 
   final UserModel chatUser;
   final Message message;
@@ -136,55 +152,26 @@ class MessageCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(message.sentTime);
     return Row(
-      mainAxisAlignment:
-          isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              //  isSender ? SizedBox() : Text(formatChatTime(message.sentTime)),
-
               isSender
                   ? Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: Text(
                         formatChatTime(message.sentTime),
-                        style: TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                       ),
                     )
-                  : SizedBox(),
-
+                  : const SizedBox(),
               InkWell(
                 onLongPress: () async {
-                  await MessageService().deleteMessage(
-                      messageId: message.messageId!, toId: message.toId);
-
-                  // showDialog(
-                  //   context: context,
-                  //   builder: (ctx) => AlertDialog.adaptive(
-                  //     title: const Text("Delete message"),
-                  //     content: const Text(
-                  //       "Are you sure you want to delete?",
-                  //     ),
-                  //     actions: [
-                  //       TextButton(
-                  //         onPressed: () async {
-
-                  //         },
-                  //         child: Text(
-                  //           'Delete',
-                  //           style: TextStyle(
-                  //               color:
-                  //                   Theme.of(context).colorScheme.background),
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // );
+                  // ... (your message deletion logic)
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
@@ -202,16 +189,14 @@ class MessageCardWidget extends StatelessWidget {
                 ),
               ),
               isSender
-                  ? SizedBox()
+                  ? const SizedBox()
                   : Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Text(
                         formatChatTime(message.sentTime),
-                        style: TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
-
-              //  isSender ?  CircleAvatar(radius: 8,backgroundImage: NetworkImage(message.),):SizedBox(),
             ],
           ),
         ),
