@@ -1,4 +1,4 @@
-import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
+import 'package:flip/data/firebase_services/auth_data_resourse/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flip/application/presentation/screens/login_screen/login_screen.dart';

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/follow/follow_bloc.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/data/firebase/follow_data_resource/follow_data_resourse.dart';
+import 'package:flip/data/firebase_services/follow_data_resourse/follow_data_resourse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

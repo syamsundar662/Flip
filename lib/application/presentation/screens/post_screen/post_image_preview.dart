@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/domain/models/post_model/post_model.dart';
+import 'package:flip/data/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

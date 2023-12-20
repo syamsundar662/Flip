@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/screens/comment_screen/comment_screen.dart';
-import 'package:flip/data/firebase/like_data_reposotory/like_data_repository.dart';
-import 'package:flip/data/firebase/save_post_data_service/save_post_service.dart';
-import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
-import 'package:flip/domain/models/post_model/post_model.dart';
+import 'package:flip/data/firebase_services/like_data_resourse/like_data_resourse.dart';
+import 'package:flip/data/firebase_services/save_post_data_resourse/save_post_service.dart';
+import 'package:flip/data/firebase_services/user_data_resourse/user_data.dart';
+import 'package:flip/data/models/post_model/post_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';

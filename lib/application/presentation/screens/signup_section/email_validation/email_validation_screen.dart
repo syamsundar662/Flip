@@ -4,8 +4,8 @@ import 'package:flip/application/presentation/screens/signup_section/email_verif
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/elevated_button/elavated_button_widgets.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
-import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
-import 'package:flip/domain/models/sign_up_model/sign_up_model.dart';
+import 'package:flip/data/firebase_services/auth_data_resourse/auth_services.dart';
+import 'package:flip/data/models/sign_up_model/sign_up_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

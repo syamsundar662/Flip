@@ -13,7 +13,7 @@ import 'package:flip/application/presentation/widgets/animations/slide_animation
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/business_logic/bloc/auth/auth_bloc.dart';
-import 'package:flip/domain/models/login_model/login_model.dart';
+import 'package:flip/data/models/login_model/login_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

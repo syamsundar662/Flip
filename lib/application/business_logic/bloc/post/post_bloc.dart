@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/utils/image/image_picker.dart';
-import 'package:flip/domain/models/post_model/post_model.dart';
-import 'package:flip/domain/repositories/post_repository/post_repository.dart';
-import 'package:flip/domain/repositories/user_repository/user_repository.dart';
+import 'package:flip/data/models/post_model/post_model.dart';
+import 'package:flip/data/repositories/post_repository/post_repository.dart';
+import 'package:flip/data/repositories/user_repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 
 part 'post_event.dart';

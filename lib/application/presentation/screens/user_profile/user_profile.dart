@@ -4,8 +4,8 @@ import 'package:flip/application/presentation/screens/followers_list/followers.d
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
 import 'package:flip/application/presentation/screens/user_profile/user_posts.dart';
 import 'package:flip/application/presentation/screens/user_profile/widgets/follow_button.dart';
-import 'package:flip/domain/models/post_model/post_model.dart';
-import 'package:flip/domain/models/user_model/user_model.dart';
+import 'package:flip/data/models/post_model/post_model.dart';
+import 'package:flip/data/models/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_gradient/image_gradient.dart';

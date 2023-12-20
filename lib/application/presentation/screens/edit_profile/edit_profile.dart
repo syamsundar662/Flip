@@ -5,8 +5,8 @@ import 'package:flip/application/presentation/screens/profile_screen/widgets/sho
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/image/image_picker.dart';
 import 'package:flip/application/presentation/widgets/text_form_fields/textformfield_widget.dart';
-import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
-import 'package:flip/domain/models/user_model/user_model.dart';
+import 'package:flip/data/firebase_services/user_data_resourse/user_data.dart';
+import 'package:flip/data/models/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';

@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/presentation/screens/edit_profile/edit_profile.dart';
 import 'package:flip/application/presentation/screens/followers_list/followers.dart';
+import 'package:flip/application/presentation/screens/menu/menu.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_section.dart';
-import 'package:flip/data/firebase/save_post_data_service/save_post_service.dart';
+import 'package:flip/data/firebase_services/save_post_data_resourse/save_post_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +12,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_gradient/image_gradient.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
-import 'package:flip/application/presentation/screens/profile_screen/widgets/show_sliding.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -126,11 +126,12 @@ class _ProfileScreenState extends State<ProfileScreen>
       actions: [
         IconButton(
             onPressed: () {
-              SlideUpWidget().showSlidingBoxWidget(
-                  context: context,
-                  height: screenFullHeight / 2.35,
-                  buttonTitle: SlideUpWidget.optionsForProfileScreen,
-                  buttonIcons: SlideUpWidget.optionIconListForProfileScreen);
+              // SlideUpWidget().showSlidingBoxWidget(
+              //     context: context,
+              //     height: screenFullHeight / 2.5,
+              //     buttonTitle: SlideUpWidget.optionsForProfileScreen,
+              //     buttonIcons: SlideUpWidget.optionIconListForProfileScreen);
+              Navigator.push(context, CupertinoPageRoute(builder: (context)=>const MenuScreen()));
             },
             icon: const Icon(Icons.menu_outlined)),
       ],

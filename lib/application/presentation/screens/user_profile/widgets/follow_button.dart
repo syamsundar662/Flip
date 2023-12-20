@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/presentation/screens/chat_screen/chat.dart';
-import 'package:flip/data/firebase/follow_data_resource/follow_data_resourse.dart';
-import 'package:flip/domain/models/user_model/user_model.dart';
+import 'package:flip/data/firebase_services/follow_data_resourse/follow_data_resourse.dart';
+import 'package:flip/data/models/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 

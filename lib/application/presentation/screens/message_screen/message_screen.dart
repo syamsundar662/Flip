@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/presentation/screens/chat_screen/chat.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
-import 'package:flip/data/firebase/message_data_resourse/message_data.dart';
-import 'package:flip/domain/models/message_model/message.dart';
+import 'package:flip/data/firebase_services/message_data_resourse/message_data.dart';
+import 'package:flip/data/models/message_model/message.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 

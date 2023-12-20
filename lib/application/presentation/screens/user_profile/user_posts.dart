@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/profile_screen/widgets/post_view.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/domain/models/user_model/user_model.dart';
+import 'package:flip/data/models/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';

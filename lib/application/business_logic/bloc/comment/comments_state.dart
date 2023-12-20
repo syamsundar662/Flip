@@ -1,4 +1,4 @@
-import 'package:flip/domain/models/comment_model/comment_model.dart';
+import 'package:flip/data/models/comment_model/comment_model.dart';
 
 class CommentsState {
   final List<CommentWithUserProfile>? comments;

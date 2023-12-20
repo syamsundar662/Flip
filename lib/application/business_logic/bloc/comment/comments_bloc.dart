@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flip/application/business_logic/bloc/comment/comments_state.dart';
-import 'package:flip/domain/models/comment_model/comment_model.dart';
-import 'package:flip/domain/repositories/comment_repository/comment_repository.dart';
+import 'package:flip/data/models/comment_model/comment_model.dart';
+import 'package:flip/data/repositories/comment_repository/comment_repository.dart';
 import 'package:flutter/material.dart';
 part 'comments_event.dart';
 

@@ -51,14 +51,6 @@ class SlideUpWidget {
 
   static List<IconButton> optionIconListForProfileScreen = [
     IconButton(
-      icon: const Icon(Icons.settings),
-      onPressed: () {},
-    ),
-    IconButton(
-      icon: const Icon(Icons.bookmark),
-      onPressed: () {},
-    ),
-    IconButton(
       icon: const Icon(Icons.privacy_tip_rounded),
       onPressed: () {},
     ),
@@ -70,15 +62,13 @@ class SlideUpWidget {
       icon: const Icon(Icons.logout),
       onPressed: () {},
     ),
-  ];
+  ]; 
 
 //view post from userprofile
 
   static List<String> optionsForProfileScreen = [
-    'Settings',
-    'Saves',
     'Privacy and Security',
-    'Help',
+    'Help and Support',
     'Sign out',
   ];
 }

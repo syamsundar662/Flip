@@ -6,7 +6,7 @@ class ProfileInitial extends ProfileState {}
 
 class UserProfileInitialState extends ProfileState {
   final int value;
-
+ 
   UserProfileInitialState({this.value = 0});
 }
 

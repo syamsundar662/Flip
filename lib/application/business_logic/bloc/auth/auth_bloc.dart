@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/domain/models/login_model/login_model.dart';
-import 'package:flip/domain/models/sign_up_model/sign_up_model.dart';
-import 'package:flip/domain/repositories/auth_repository/auth_repository.dart';
+import 'package:flip/data/models/login_model/login_model.dart';
+import 'package:flip/data/models/sign_up_model/sign_up_model.dart';
+import 'package:flip/data/repositories/auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 
 part 'auth_event.dart';

@@ -722,7 +722,7 @@ PODS:
     - Flutter
   - google_maps_flutter_ios (0.0.1):
     - Flutter
-    - GoogleMaps (< 8.0)
+    - GoogleMaps (< 9.0)
   - google_sign_in_ios (0.0.1):
     - Flutter
     - GoogleSignIn (~> 7.0)
@@ -953,7 +953,7 @@ SPEC CHECKSUMS:
   flutter_storage_path: b24ac562c2d31a2dd933798a5b0207116176c6f7
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
-  google_maps_flutter_ios: abdac20d6ce8931f6ebc5f46616df241bfaa2cfd
+  google_maps_flutter_ios: 590249c67f34f422122c232f2a626192adbc78ee
   google_sign_in_ios: 8115e3fbe097e6509beb819ed602d47369d9011f
   GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842

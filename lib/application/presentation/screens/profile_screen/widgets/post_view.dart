@@ -5,7 +5,7 @@ import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.d
 import 'package:flip/application/presentation/screens/home_screen/widgets/main_card_buttons.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
-import 'package:flip/domain/models/post_model/post_model.dart';
+import 'package:flip/data/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sliding_box/flutter_sliding_box.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flip/domain/models/post_model/post_model.dart';
-import 'package:flip/domain/repositories/post_repository/post_repository.dart';
+import 'package:flip/data/models/post_model/post_model.dart';
+import 'package:flip/data/repositories/post_repository/post_repository.dart';
 part 'fetch_event.dart';
 part 'fetch_state.dart';
 

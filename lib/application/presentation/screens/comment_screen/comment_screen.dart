@@ -4,8 +4,8 @@ import 'package:flip/application/business_logic/bloc/comment/comments_bloc.dart'
 import 'package:flip/application/business_logic/bloc/comment/comments_state.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
-import 'package:flip/domain/models/comment_model/comment_model.dart';
-import 'package:flip/domain/models/post_model/post_model.dart';
+import 'package:flip/data/models/comment_model/comment_model.dart';
+import 'package:flip/data/models/post_model/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';

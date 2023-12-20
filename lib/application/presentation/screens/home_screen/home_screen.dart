@@ -10,10 +10,10 @@ import 'package:flip/application/presentation/screens/user_profile/user_profile.
 import 'package:flip/application/presentation/utils/timestamp/time_stamp.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/data/firebase/auth_data_resourse/auth_services.dart';
-import 'package:flip/data/firebase/post_data_resourse/post_data.dart';
-import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
-import 'package:flip/domain/models/story_model/story_model.dart';
+import 'package:flip/data/firebase_services/auth_data_resourse/auth_services.dart';
+import 'package:flip/data/firebase_services/post_data_resourse/post_data.dart';
+import 'package:flip/data/firebase_services/user_data_resourse/user_data.dart';
+import 'package:flip/data/models/story_model/story_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

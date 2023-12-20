@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/data/firebase/notification_data_service/notification_service.dart';
-import 'package:flip/domain/models/notification_model/notification.dart';
+import 'package:flip/data/firebase_services/notification_data_resourse/notification_service.dart';
+import 'package:flip/data/models/notification_model/notification.dart';
 import 'package:flutter/material.dart';
 
 class NotificationTileWidget extends StatelessWidget {

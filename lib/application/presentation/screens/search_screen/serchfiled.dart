@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip/application/presentation/screens/user_profile/user_profile.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
-import 'package:flip/domain/models/user_model/user_model.dart';
+import 'package:flip/data/models/user_model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultTileWidget extends StatelessWidget {

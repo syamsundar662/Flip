@@ -5,8 +5,8 @@ import 'package:flip/application/business_logic/bloc/home/fetch_bloc.dart';
 import 'package:flip/application/business_logic/bloc/search/search_bloc.dart';
 import 'package:flip/application/business_logic/bloc/user_profile/profile_bloc.dart';
 import 'package:flip/application/presentation/screens/root_screen/widgets/bottom_navigation_bar/bottom_nav_bar.dart';
-import 'package:flip/data/firebase/notification_data_service/notification_service.dart';
-import 'package:flip/data/firebase/save_post_data_service/save_post_service.dart';
+import 'package:flip/data/firebase_services/notification_data_resourse/notification_service.dart';
+import 'package:flip/data/firebase_services/save_post_data_resourse/save_post_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
