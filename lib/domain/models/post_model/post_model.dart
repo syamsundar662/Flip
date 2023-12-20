@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flip/domain/models/comment_model/comment_model.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
 
 class PostModel {

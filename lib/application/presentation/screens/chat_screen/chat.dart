@@ -61,7 +61,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 padding: const EdgeInsets.all(7.0),
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: CachedNetworkImageProvider(widget.chatUser.profileImageUrl!),
+                  backgroundImage: CachedNetworkImageProvider(
+                      widget.chatUser.profileImageUrl!),
                 ),
               ),
             ],
@@ -80,7 +81,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final messages = snapshot.data!;
-                      messages.sort((a, b) => b.sentTime.compareTo(a.sentTime)); // Sort messages in reverse order
+                      messages.sort((a, b) => b.sentTime.compareTo(
+                          a.sentTime)); // Sort messages in reverse order
 
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         _scrollController.jumpTo(_lastScrollOffset);
@@ -91,7 +93,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         controller: _scrollController,
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
-                          final isSender = messages[index].senderId == FirebaseAuth.instance.currentUser!.uid;
+                          final isSender = messages[index].senderId ==
+                              FirebaseAuth.instance.currentUser!.uid;
                           return MessageCardWidget(
                             chatUser: widget.chatUser,
                             message: messages[index],
@@ -164,7 +167,8 @@ class MessageCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment:
+          isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
@@ -186,7 +190,7 @@ class MessageCardWidget extends StatelessWidget {
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  constraints: BoxConstraints(maxWidth: screenFullWidth / 2.3),
+                  constraints: BoxConstraints(maxWidth: screenFullWidth / 1.3),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: isSender ? Colors.blue : Colors.grey,

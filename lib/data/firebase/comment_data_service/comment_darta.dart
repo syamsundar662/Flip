@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/data/firebase/user_data_resourse/user_data.dart';
 import 'package:flip/domain/models/comment_model/comment_model.dart';
 import 'package:flip/domain/repositories/comment_repository/comment_repository.dart';
@@ -8,7 +7,7 @@ class CommentServises extends CommentRepository {
   final FirebaseFirestore instance = FirebaseFirestore.instance;
   @override
   Future<void> addComments(Comments comments, String postId) async {
-    // final postId = _firestore.collection('PostCollection').doc().id;
+    final docRef = instance.collection('PostCollection').doc(postId);
 
     final commentCollection = instance
         .collection('PostCollection')
@@ -24,6 +23,9 @@ class CommentServises extends CommentRepository {
       'likes': comments.likes
     };
     await commentCollection.set(comment);
+    await docRef.update({
+      'comments': FieldValue.arrayUnion([commentCollection.id])
+    });
   }
 
   @override
@@ -59,11 +61,15 @@ class CommentServises extends CommentRepository {
 
   @override
   Future<void> deleteComment(Comments comments) async {
+    final docRef = instance.collection('PostCollection').doc(comments.postId);
     instance
         .collection('PostCollection')
         .doc(comments.postId)
         .collection('Comments')
         .doc(comments.commentId)
         .delete();
+    await docRef.update({
+      'comments': FieldValue.arrayRemove([comments.commentId])
+    });
   }
 }

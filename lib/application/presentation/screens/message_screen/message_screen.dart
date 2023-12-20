@@ -102,7 +102,9 @@ class MessageTileWidget extends StatelessWidget {
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       final lastMessage = snapshot.data!;
-                                      return Text(lastMessage.content);
+                                      return Container(
+                                         constraints: BoxConstraints(maxWidth: screenFullWidth/2), 
+                                        child: Text(lastMessage.content,overflow: TextOverflow.clip,maxLines: 1,));
                                     } else {
                                       return const SizedBox();
                                     }

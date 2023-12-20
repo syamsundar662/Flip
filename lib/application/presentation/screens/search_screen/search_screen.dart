@@ -30,8 +30,7 @@ class SearchScreen extends StatelessWidget {
                     childAspectRatio: 1 / 1.5),
                 itemCount: state.postDatas.length,
                 itemBuilder: (BuildContext context, int index) {
-                  print(state.postDatas.length);
-                  return CachedNetworkImage(imageUrl: state.postDatas[index].imageUrls[0],);
+                  return CachedNetworkImage(imageUrl: state.postDatas[index].imageUrls[0],fit: BoxFit.cover,);
                 });
           } else {
             return GridView.builder(

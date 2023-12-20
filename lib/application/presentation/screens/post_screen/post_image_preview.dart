@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/application/business_logic/bloc/post/post_bloc.dart';
-import 'package:flip/application/presentation/screens/post_screen/post_screen.dart';
 import 'package:flip/application/presentation/screens/root_screen/root_screen.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/domain/models/post_model/post_model.dart';
@@ -15,7 +14,6 @@ class PostImagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final postBlocProvider = context.read<PostBloc>();
     return Scaffold(
       body: SingleChildScrollView(
@@ -71,10 +69,11 @@ class PostImagePreview extends StatelessWidget {
                                     .textContentController.text.isNotEmpty) {
                               final post = PostModel(
                                   username: '',
-                                   userId:
+                                  userId:
                                       FirebaseAuth.instance.currentUser!.uid,
                                   textContent: postBlocProvider
-                                      .textContentController.text.trim(),
+                                      .textContentController.text
+                                      .trim(),
                                   imageUrls: selecedImage
                                       .map((image) => image.path)
                                       .toList(),
