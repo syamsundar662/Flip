@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip/domain/models/user_model/user_model.dart';
@@ -59,5 +61,29 @@ class UserService implements UserRepository {
       'posts': user.posts
     };
     userDoc.set(userData);
+  }
+
+  @override
+  Future<List<UserModel>> searchUsersByUsername(String username) async {
+    final CollectionReference users = _firestore.collection('UserCollection');
+    if (username.isEmpty) return [];
+    final userProfiles = <UserModel>[];
+    final queryFields = ['username'];
+
+    try {
+      for (final field in queryFields) {
+        final querySnapshot =
+            await users.where(field, isGreaterThanOrEqualTo: username).get();
+
+        for (final doc in querySnapshot.docs) {
+          final userData = doc.data() as Map<String, dynamic>;
+          final userProfile = UserModel.fromJson(userData);
+          userProfiles.add(userProfile);
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return userProfiles;
   }
 }

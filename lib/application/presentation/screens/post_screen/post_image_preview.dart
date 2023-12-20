@@ -85,6 +85,7 @@ class PostImagePreview extends StatelessWidget {
                                   userId:
                                       FirebaseAuth.instance.currentUser!.uid));
                             }
+                            postBlocProvider.textContentController.clear();
                           },
                         );
                       },

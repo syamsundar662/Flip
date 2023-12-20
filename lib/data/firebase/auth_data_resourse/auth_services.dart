@@ -88,7 +88,6 @@ class AuthServices implements AuthRepository {
           completer.complete(AuthenticationResults.verificationSuccess);
         }
       });
-      // A timeout mechanism to handle long waits
       await Future.delayed(const Duration(seconds: 5), () {
         if (!completer.isCompleted) {
           timer?.cancel();

@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<FollowBloc>(
             create: (context) => FollowBloc(FollowDataSources())),
         BlocProvider<SearchBloc>(
-            create: (context) => SearchBloc(PostServices())),
+            create: (context) => SearchBloc(PostServices(),UserService())),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

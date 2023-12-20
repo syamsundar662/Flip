@@ -11,3 +11,12 @@ final class SearchPageInitialFeedFechedEvent extends SearchState {
 
   SearchPageInitialFeedFechedEvent({required this.postDatas});
 }
+
+class SearchLoading extends SearchState {}
+
+class SearchResultEmpty extends SearchState {}
+
+class SearchResultFound extends SearchState {
+  final List<UserModel> users;
+  SearchResultFound({required this.users});
+}

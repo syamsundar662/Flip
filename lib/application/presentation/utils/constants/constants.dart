@@ -53,3 +53,5 @@ timeout
   following
 
  }
+
+enum SearchType { gloabal, chatSearch }
