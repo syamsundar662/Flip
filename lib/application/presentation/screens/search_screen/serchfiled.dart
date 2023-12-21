@@ -48,14 +48,14 @@ class SearchResultTileWidget extends StatelessWidget {
                 Text(
                   user.username,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      '@${user.username}',
-                    ),
-                    kHeight10,
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Text(
+                //       '@${user.username}',
+                //     ),
+                //     kHeight10,
+                //   ],
+                // ),
               ],
             ),
           ],
@@ -64,3 +64,4 @@ class SearchResultTileWidget extends StatelessWidget {
     );
   }
 }
+ 

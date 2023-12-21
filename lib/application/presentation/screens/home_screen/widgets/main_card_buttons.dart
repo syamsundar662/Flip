@@ -95,9 +95,9 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
 
 class PostSaveButtonWidget extends StatefulWidget {
   const PostSaveButtonWidget({
-    Key? key,
+    super.key,
     required this.post,
-  }) : super(key: key);
+  });
 
   final LikeButtonWidget post;
 

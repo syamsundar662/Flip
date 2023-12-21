@@ -131,7 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen>
               //     height: screenFullHeight / 2.5,
               //     buttonTitle: SlideUpWidget.optionsForProfileScreen,
               //     buttonIcons: SlideUpWidget.optionIconListForProfileScreen);
-              Navigator.push(context, CupertinoPageRoute(builder: (context)=>const MenuScreen()));
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => const MenuScreen()));
             },
             icon: const Icon(Icons.menu_outlined)),
       ],

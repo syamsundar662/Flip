@@ -3,7 +3,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 
 class ProfileShimmerEffect extends StatelessWidget {
-  const ProfileShimmerEffect({Key? key}) : super(key: key);
+  const ProfileShimmerEffect({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,6 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.menu))],
           title: const Text('Notifications'),
           centerTitle: false,
         ),

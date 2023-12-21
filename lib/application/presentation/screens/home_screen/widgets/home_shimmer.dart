@@ -6,7 +6,7 @@ import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/application/presentation/widgets/flip_logo/flip_logo.dart';
 
 class HomeShimmer extends StatelessWidget {
-  HomeShimmer({Key? key}) : super(key: key);
+  HomeShimmer({super.key});
 
   final List<Widget> wid = List.generate(
     10,

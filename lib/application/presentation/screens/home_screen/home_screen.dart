@@ -85,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen>
                     state.model[index].postModel[index].imageUrls.isNotEmpty
                         ? _mainFeedCard(state, index)
                         : _mainThoughtsCard(state, index),
-                    PostMainCommonButtons(post: state.model[index].postModel[index]),
+                    PostMainCommonButtons(
+                        post: state.model[index].postModel[index]),
                     state.model[index].postModel[index].imageUrls.isNotEmpty
                         ? Padding(
                             padding: const EdgeInsets.only(left: 14, right: 10),
@@ -122,11 +123,11 @@ class _HomeScreenState extends State<HomeScreen>
       HomeDataFechedState state, int index, BuildContext context) {
     return InkWell(
       onTap: () async {
-        final user = 
-            await UserService().fetchDataByUser(state.model[index].postModel[index].userId);
+        final user = await UserService()
+            .fetchDataByUser(state.model[index].postModel[index].userId);
         // ignore: use_build_context_synchronously
         Navigator.push(
-            context, 
+            context,
             MaterialPageRoute(
                 builder: (context) => UserProfileScreen(
                       userModel: user!,
@@ -135,13 +136,14 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: Row(
         children: [
-          kWidth10, 
-           CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(state.model[index].userModel.profileImageUrl!),
+          kWidth10,
+          CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(
+                state.model[index].userModel.profileImageUrl!),
             backgroundColor: Colors.grey[900],
             radius: 18,
           ),
-          kWidth10, 
+          kWidth10,
           Text(
             state.model[index].postModel[index].username,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),

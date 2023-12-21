@@ -115,7 +115,7 @@ class PostServices extends PostRepository {
     } catch (e) {
       log('Error fetching posts with user data: $e');
     }
-    print(fetchPostWithUserProfile.length);
+    log(fetchPostWithUserProfile.length.toString());
     return fetchPostWithUserProfile;
   }
 }

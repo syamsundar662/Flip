@@ -11,7 +11,7 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pages = [ PrivacyPolicy(), const HelpAndSupport()];
+    final pages = [ const PrivacyPolicy(), const HelpAndSupport()];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
