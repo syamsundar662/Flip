@@ -13,13 +13,12 @@ import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase_services/auth_data_resourse/auth_services.dart';
 import 'package:flip/data/firebase_services/post_data_resourse/post_data.dart';
 import 'package:flip/data/firebase_services/user_data_resourse/user_data.dart';
-import 'package:flip/data/models/story_model/story_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
-List<StoryWithUser> storiesIn = [];
+// List<StoryWithUser> storiesIn = [];
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -138,8 +137,8 @@ class _HomeScreenState extends State<HomeScreen>
         children: [
           kWidth10,
           CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(
-                state.model[index].userModel.profileImageUrl!),
+            backgroundImage: NetworkImage( state.model[index].userModel.profileImageUrl!),
+          
             backgroundColor: Colors.grey[900],
             radius: 18,
           ),

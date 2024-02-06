@@ -97,25 +97,50 @@ class PostServices extends PostRepository {
   }
 
   @override
+  // Future<List<FetchPostWithUserProfile>> getPostsWithUserData() async {
+  //   final List<FetchPostWithUserProfile> fetchPostWithUserProfile = [];
+
+  //   try {
+  //     final postData = await instance.collection('PostCollection').get();
+  //     final posts =
+  //         postData.docs.map((doc) => PostModel.fromJson(doc.data())).toList();
+
+  //     for (var post in posts) {
+  //       final user = await UserService().fetchDataByUser(post.userId);
+  //       fetchPostWithUserProfile
+  //           .add(FetchPostWithUserProfile(postModel: posts, userModel: user!));
+  //     }
+  //   } catch (e) {
+  //     log('Error fetching posts with user data: $e');
+  //   }
+  //   log(fetchPostWithUserProfile.length.toString());
+  //   return fetchPostWithUserProfile;
+  // }
   Future<List<FetchPostWithUserProfile>> getPostsWithUserData() async {
-    final List<FetchPostWithUserProfile> fetchPostWithUserProfile = [];
+  final List<FetchPostWithUserProfile> fetchPostWithUserProfile = [];
 
-    try {
-      final postData = await instance.collection('PostCollection').get();
-      final posts =
-          postData.docs.map((doc) => PostModel.fromJson(doc.data())).toList();
+  try {
+    final postData = await instance.collection('PostCollection').get();
+    final posts = postData.docs.map((doc) => PostModel.fromJson(doc.data())).toList();
 
-
-
-      for (var post in posts) {
-        final user = await UserService().fetchDataByUser(post.userId);
-        fetchPostWithUserProfile
-            .add(FetchPostWithUserProfile(postModel: posts, userModel: user!));
+    for (var post in posts) {
+      final user = await UserService().fetchDataByUser(post.userId);
+      if (user != null) {
+        fetchPostWithUserProfile.add(FetchPostWithUserProfile(postModel: posts, userModel: user));
+      } else {
+        // Handle the case where user data couldn't be fetched for a post
+        // You might want to skip this post or handle it differently based on your application's logic
+        // Logging the issue is a good start
+        log('User data not found for post with userId: ${post.userId}');
       }
-    } catch (e) {
-      log('Error fetching posts with user data: $e');
     }
-    log(fetchPostWithUserProfile.length.toString());
-    return fetchPostWithUserProfile;
+  } catch (e, stackTrace) {
+    // Ensure to log both the error message and the stack trace for better debugging
+    log('Error fetching posts with user data: $e', stackTrace: stackTrace);
   }
+
+  log('Fetched ${fetchPostWithUserProfile.length} posts with user data');
+  return fetchPostWithUserProfile;
+}
+
 }

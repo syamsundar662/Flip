@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flip/application/presentation/utils/constants/constants.dart';
 import 'package:flip/data/firebase_services/notification_data_resourse/notification_service.dart';
 import 'package:flip/data/models/notification_model/notification.dart';
@@ -45,7 +45,7 @@ class NotificationTileWidget extends StatelessWidget {
                     kWidth10,
                     CircleAvatar(
                       backgroundColor: Colors.grey[900],
-                      backgroundImage: CachedNetworkImageProvider(
+                      backgroundImage: NetworkImage(
                           notifications[index].userProfile.profileImageUrl!),
                       radius: 30,
                     ),
