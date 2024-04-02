@@ -9,7 +9,7 @@ class LikeDataService extends LikeRepository {
   @override
   Future<PostModel> toggleLike(
       {required PostModel post, required String userId}) async {
-    if (post.likes.contains(userId)) {
+    if (post.likes.contains(userId)) { 
       post.likes.remove(userId);
     } else {
       post.likes.add(userId);

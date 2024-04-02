@@ -137,8 +137,12 @@ class _HomeScreenState extends State<HomeScreen>
         children: [
           kWidth10,
           CircleAvatar(
-            backgroundImage: NetworkImage( state.model[index].userModel.profileImageUrl!),
-          
+            // child: Image.network(state.model[index].userModel.profileImageUrl!),
+            backgroundImage:
+                CachedNetworkImageProvider(
+                  
+                scale: 1,
+                  state.model[index].userModel.profileImageUrl!),
             backgroundColor: Colors.grey[900],
             radius: 18,
           ),
@@ -179,10 +183,11 @@ class _HomeScreenState extends State<HomeScreen>
             child: Container(
               constraints: BoxConstraints(maxHeight: screenFullHeight / 1.8),
               width: double.infinity,
-              child: CachedNetworkImage(
-                imageUrl: state.model[index].postModel[index].imageUrls[0],
-                fit: BoxFit.cover,
-              ),
+              child: Image.network(state.model[index].postModel[index].imageUrls[0],fit: BoxFit.cover,),
+              // child: CachedNetworkImage(
+              //   imageUrl: state.model[index].postModel[index].imageUrls[0],
+              //   fit: BoxFit.cover,
+              // ),
             ),
           ),
         ),
@@ -263,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen>
 
 // class StorySection extends StatelessWidget {
 //   const StorySection({
-//     super.key,
+//     super.key,9
 //   });
 
 //   @override
